@@ -14,6 +14,12 @@ dependencies:
   cupertino_icons: ^1.0.2
   shared_preferences: ^2.0.16
   flutter_native_splash: ^2.2.17
+  equatable: ^2.0.5
+  dio: ^4.0.6
+  provider: ^6.0.5
+  get_it: ^7.2.0
+  logger: ^1.1.0
+  jwt_decode: ^0.3.1
 
 dev_dependencies:
   flutter_test:
