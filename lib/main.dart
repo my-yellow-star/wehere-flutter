@@ -8,11 +8,9 @@ Future<void> main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   await initializeDependencies();
-  final memberProvider = injector<MemberProvider>();
-  await memberProvider.getMember();
   FlutterNativeSplash.remove();
   runApp(ChangeNotifierProvider(
-    create: (context) => memberProvider,
+    create: (context) => injector<MemberProvider>(),
     child: MaterialApp(
       home: Home(),
     ),

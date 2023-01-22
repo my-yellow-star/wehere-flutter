@@ -3,51 +3,61 @@
 <plist version="1.0">
 	<dict>
 		<key>CFBundleDevelopmentRegion</key>
-		<string>$(DEVELOPMENT_LANGUAGE)</string>
+		    <string>$(DEVELOPMENT_LANGUAGE)</string>
 		<key>CFBundleDisplayName</key>
-		<string>Wehere Client</string>
+		    <string>Wehere Client</string>
 		<key>CFBundleExecutable</key>
-		<string>$(EXECUTABLE_NAME)</string>
+		    <string>$(EXECUTABLE_NAME)</string>
 		<key>CFBundleIdentifier</key>
-		<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+		    <string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 		<key>CFBundleInfoDictionaryVersion</key>
-		<string>6.0</string>
+		    <string>6.0</string>
 		<key>CFBundleName</key>
-		<string>wehere_client</string>
+		    <string>wehere_client</string>
 		<key>CFBundlePackageType</key>
-		<string>APPL</string>
+		    <string>APPL</string>
 		<key>CFBundleShortVersionString</key>
-		<string>$(FLUTTER_BUILD_NAME)</string>
+		    <string>$(FLUTTER_BUILD_NAME)</string>
 		<key>CFBundleSignature</key>
-		<string>????</string>
+		    <string>????</string>
 		<key>CFBundleVersion</key>
-		<string>$(FLUTTER_BUILD_NUMBER)</string>
+		    <string>$(FLUTTER_BUILD_NUMBER)</string>
+		<key>CFBundleURLTypes</key>
+            <array>
+                <dict>
+                <key>CFBundleURLSchemes</key>
+                <array>
+                    <!-- google login -->
+                    <string>com.googleusercontent.apps.66529775241-qku4li7q5olme9ffq4vp5b55lpi32fcn</string>
+                </array>
+                </dict>
+            </array>
 		<key>LSRequiresIPhoneOS</key>
-		<true/>
+		    <true/>
 		<key>UILaunchStoryboardName</key>
-		<string>LaunchScreen</string>
+		    <string>LaunchScreen</string>
 		<key>UIMainStoryboardFile</key>
-		<string>Main</string>
+		    <string>Main</string>
 		<key>UISupportedInterfaceOrientations</key>
-		<array>
-			<string>UIInterfaceOrientationPortrait</string>
-			<string>UIInterfaceOrientationLandscapeLeft</string>
-			<string>UIInterfaceOrientationLandscapeRight</string>
-		</array>
+		    <array>
+                <string>UIInterfaceOrientationPortrait</string>
+                <string>UIInterfaceOrientationLandscapeLeft</string>
+                <string>UIInterfaceOrientationLandscapeRight</string>
+		    </array>
 		<key>UISupportedInterfaceOrientations~ipad</key>
-		<array>
-			<string>UIInterfaceOrientationPortrait</string>
-			<string>UIInterfaceOrientationPortraitUpsideDown</string>
-			<string>UIInterfaceOrientationLandscapeLeft</string>
-			<string>UIInterfaceOrientationLandscapeRight</string>
-		</array>
+		    <array>
+                <string>UIInterfaceOrientationPortrait</string>
+                <string>UIInterfaceOrientationPortraitUpsideDown</string>
+                <string>UIInterfaceOrientationLandscapeLeft</string>
+                <string>UIInterfaceOrientationLandscapeRight</string>
+		    </array>
 		<key>UIViewControllerBasedStatusBarAppearance</key>
-		<false/>
+		    <false/>
 		<key>CADisableMinimumFrameDurationOnPhone</key>
-		<true/>
+		    <true/>
 		<key>UIApplicationSupportsIndirectInputEvents</key>
-		<true/>
+		    <true/>
 		<key>UIStatusBarHidden</key>
-		<false/>
+		    <false/>
 	</dict>
 </plist>

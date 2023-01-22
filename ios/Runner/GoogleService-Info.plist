@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	    <string>66529775241-qku4li7q5olme9ffq4vp5b55lpi32fcn.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	    <string>com.googleusercontent.apps.66529775241-qku4li7q5olme9ffq4vp5b55lpi32fcn</string>
+	<key>PLIST_VERSION</key>
+	    <string>1</string>
+	<key>BUNDLE_ID</key>
+	    <string>com.chana.wehereClient</string>
+</dict>
+</plist>
