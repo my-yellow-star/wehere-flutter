@@ -1,20 +1,20 @@
-import 'package:flutter/cupertino.dart';
-import 'package:wehere_client/presentation/screens/login_screen.dart';
-import 'package:wehere_client/presentation/screens/main_screen.dart';
-import 'package:wehere_client/presentation/screens/screen.dart';
+import 'package:flutter/material.dart';
 
 class Routes {
-  static final screens = [LoginScreen(), MainScreen()];
-
-  static final routes = {
-    for (var screen in screens) screen.path: (context) => screen
-  };
-
-  static void push(BuildContext context, StatelessScreen screen) {
-    Navigator.pushNamed(context, screen.path);
+  static void push(BuildContext context, Widget screen) {
+    Navigator.push(context, _noAnimation(screen));
   }
 
-  static void replace(BuildContext context, StatelessScreen screen) {
-    Navigator.pushReplacementNamed(context, screen.path);
+  static void replace(BuildContext context, Widget screen) {
+    Navigator.pushReplacement(
+      context,
+      _noAnimation(screen),
+    );
   }
+
+  static PageRouteBuilder _noAnimation(Widget screen) => PageRouteBuilder(
+        pageBuilder: (context, anim1, anim2) => screen,
+        transitionDuration: Duration.zero,
+        reverseTransitionDuration: Duration.zero,
+      );
 }

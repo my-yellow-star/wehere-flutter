@@ -6,7 +6,6 @@ import 'package:wehere_client/presentation/provider/authentication_provider.dart
 import 'package:wehere_client/presentation/provider/nostalgia_list_provider.dart';
 import 'package:wehere_client/presentation/screens/login_screen.dart';
 import 'package:wehere_client/presentation/screens/main_screen.dart';
-import 'package:wehere_client/routes.dart';
 
 Future<void> main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -14,7 +13,7 @@ Future<void> main() async {
   await initializeDependencies();
 
   final authenticationProvider = injector<AuthenticationProvider>();
-  await authenticationProvider.initialize();
+  // await authenticationProvider.initialize();
   final authentication = authenticationProvider.authentication;
 
   FlutterNativeSplash.remove();
@@ -25,7 +24,6 @@ Future<void> main() async {
     ],
     child: MaterialApp(
       home: authentication != null ? MainScreen() : LoginScreen(),
-      routes: Routes.routes,
     ),
   ));
 }
