@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:provider/provider.dart';
 import 'package:wehere_client/injector.dart';
-import 'package:wehere_client/presentation/provider/authentication_provider.dart';
-import 'package:wehere_client/presentation/provider/nostalgia_list_provider.dart';
+import 'package:wehere_client/presentation/providers/authentication_provider.dart';
+import 'package:wehere_client/presentation/providers/nostalgia_list_provider.dart';
 import 'package:wehere_client/presentation/screens/login_screen.dart';
 import 'package:wehere_client/presentation/screens/main_screen.dart';
 

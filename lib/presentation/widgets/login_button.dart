@@ -3,7 +3,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 import 'package:wehere_client/core/params/oauth2_login.dart';
 import 'package:wehere_client/core/resources/constant.dart';
-import 'package:wehere_client/presentation/provider/authentication_provider.dart';
+import 'package:wehere_client/presentation/providers/authentication_provider.dart';
 
 class LoginButton {
   static Widget build(String path, VoidCallback onTap) {

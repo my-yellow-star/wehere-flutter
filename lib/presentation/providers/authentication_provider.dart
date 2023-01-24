@@ -4,7 +4,7 @@ import 'package:wehere_client/domain/entities/authentication.dart';
 import 'package:wehere_client/domain/usecases/get_profile_usecase.dart';
 import 'package:wehere_client/domain/usecases/logout_usecase.dart';
 import 'package:wehere_client/domain/usecases/oauth2_login_usecase.dart';
-import 'package:wehere_client/presentation/provider/api_provider.dart';
+import 'package:wehere_client/presentation/providers/api_provider.dart';
 
 class AuthenticationProvider extends ApiProvider {
   final OAuth2LoginUseCase _oAuth2LoginUseCase;

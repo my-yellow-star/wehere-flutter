@@ -9,8 +9,8 @@ import 'package:wehere_client/domain/usecases/get_nostalgia_list_usecase.dart';
 import 'package:wehere_client/domain/usecases/get_profile_usecase.dart';
 import 'package:wehere_client/domain/usecases/logout_usecase.dart';
 import 'package:wehere_client/domain/usecases/oauth2_login_usecase.dart';
-import 'package:wehere_client/presentation/provider/authentication_provider.dart';
-import 'package:wehere_client/presentation/provider/nostalgia_list_provider.dart';
+import 'package:wehere_client/presentation/providers/authentication_provider.dart';
+import 'package:wehere_client/presentation/providers/nostalgia_list_provider.dart';
 
 final injector = GetIt.instance;
 

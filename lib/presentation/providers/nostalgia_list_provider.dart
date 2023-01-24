@@ -1,7 +1,7 @@
 import 'package:wehere_client/core/params/get_nostalgia.dart';
 import 'package:wehere_client/domain/entities/nostalgia_summary.dart';
 import 'package:wehere_client/domain/usecases/get_nostalgia_list_usecase.dart';
-import 'package:wehere_client/presentation/provider/api_provider.dart';
+import 'package:wehere_client/presentation/providers/api_provider.dart';
 
 class NostalgiaListProvider extends ApiProvider {
   final GetNostalgiaListUseCase _getNostalgiaListUseCase;
