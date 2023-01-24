@@ -10,7 +10,6 @@ import 'package:wehere_client/domain/usecases/get_profile_usecase.dart';
 import 'package:wehere_client/domain/usecases/logout_usecase.dart';
 import 'package:wehere_client/domain/usecases/oauth2_login_usecase.dart';
 import 'package:wehere_client/presentation/provider/authentication_provider.dart';
-import 'package:wehere_client/presentation/provider/member_provider.dart';
 import 'package:wehere_client/presentation/provider/nostalgia_list_provider.dart';
 
 final injector = GetIt.instance;
@@ -29,8 +28,7 @@ Future<void> initializeDependencies() async {
   injector.registerSingleton(LogoutUseCase(injector()));
 
   // provider
-  injector.registerFactory(() => MemberProvider(injector()));
-  injector
-      .registerFactory(() => AuthenticationProvider(injector(), injector()));
+  injector.registerFactory(
+      () => AuthenticationProvider(injector(), injector(), injector()));
   injector.registerFactory(() => NostalgiaListProvider(injector()));
 }

@@ -1,10 +1,11 @@
 import 'package:equatable/equatable.dart';
+import 'package:wehere_client/domain/entities/member.dart';
 
 class Authentication extends Equatable {
-  final String provider;
+  final Member member;
 
-  const Authentication(this.provider);
+  const Authentication(this.member);
 
   @override
-  List<Object?> get props => [provider];
+  List<Object?> get props => [member];
 }
