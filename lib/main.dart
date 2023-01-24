@@ -4,6 +4,9 @@ import 'package:provider/provider.dart';
 import 'package:wehere_client/injector.dart';
 import 'package:wehere_client/presentation/provider/authentication_provider.dart';
 import 'package:wehere_client/presentation/provider/nostalgia_list_provider.dart';
+import 'package:wehere_client/presentation/screens/login_screen.dart';
+import 'package:wehere_client/presentation/screens/main_screen.dart';
+import 'package:wehere_client/routes.dart';
 
 Future<void> main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -20,6 +23,9 @@ Future<void> main() async {
       ChangeNotifierProvider(create: (_) => authenticationProvider),
       ChangeNotifierProvider(create: (_) => injector<NostalgiaListProvider>())
     ],
-    child: MaterialApp(),
+    child: MaterialApp(
+      home: authentication != null ? MainScreen() : LoginScreen(),
+      routes: Routes.routes,
+    ),
   ));
 }
