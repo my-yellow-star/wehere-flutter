@@ -1,5 +1,5 @@
 abstract class UseCase<T, P> {
-  Future<T> call({P params});
+  Future<T> call(P params);
 }
 
 abstract class SimpleUseCase<T> {
