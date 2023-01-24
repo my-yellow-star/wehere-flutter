@@ -85,4 +85,10 @@ class LoggingInterceptor extends Interceptor {
     apiLogger.i('response: ${response.data}');
     super.onResponse(response, handler);
   }
+
+  @override
+  void onError(DioError err, ErrorInterceptorHandler handler) {
+    apiLogger.e('error: ${err.message}');
+    super.onError(err, handler);
+  }
 }

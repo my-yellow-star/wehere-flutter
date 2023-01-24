@@ -1,4 +1,4 @@
-import 'package:wehere_client/data/datasources/Api.dart';
+import 'package:wehere_client/data/datasources/api.dart';
 import 'package:wehere_client/data/models/member_model.dart';
 
 class MemberService {
