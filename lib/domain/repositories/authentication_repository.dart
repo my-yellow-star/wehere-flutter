@@ -4,4 +4,6 @@ import 'package:wehere_client/domain/entities/authentication.dart';
 
 abstract class AuthenticationRepository {
   Future<DataState<Authentication>> oauth2Login(OAuth2LoginParams params);
+
+  Future<void> logout();
 }

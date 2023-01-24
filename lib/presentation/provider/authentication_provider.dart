@@ -1,13 +1,15 @@
 import 'package:wehere_client/core/params/oauth2_login.dart';
 import 'package:wehere_client/core/resources/data_state.dart';
 import 'package:wehere_client/domain/entities/authentication.dart';
+import 'package:wehere_client/domain/usecases/logout_usecase.dart';
 import 'package:wehere_client/domain/usecases/oauth2_login_usecase.dart';
 import 'package:wehere_client/presentation/provider/api_provider.dart';
 
 class AuthenticationProvider extends ApiProvider {
   final OAuth2LoginUseCase _oAuth2LoginUseCase;
+  final LogoutUseCase _logoutUseCase;
 
-  AuthenticationProvider(this._oAuth2LoginUseCase);
+  AuthenticationProvider(this._oAuth2LoginUseCase, this._logoutUseCase);
 
   Authentication? _authentication;
 
@@ -23,6 +25,12 @@ class AuthenticationProvider extends ApiProvider {
       error = response.error;
     }
     isLoading = false;
+    notifyListeners();
+  }
+
+  Future<void> logout() async {
+    await _logoutUseCase();
+    _authentication = null;
     notifyListeners();
   }
 }
