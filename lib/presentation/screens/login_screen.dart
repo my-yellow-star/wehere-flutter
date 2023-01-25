@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:wehere_client/presentation/providers/authentication_provider.dart';
-import 'package:wehere_client/presentation/screens/main_screen.dart';
-import 'package:wehere_client/presentation/widgets/login_button.dart';
+import 'package:wehere_client/presentation/providers/location_provider.dart';
 import 'package:wehere_client/presentation/routes.dart';
+import 'package:wehere_client/presentation/screens/map_screen.dart';
+import 'package:wehere_client/presentation/screens/permission_screen.dart';
+import 'package:wehere_client/presentation/widgets/login_button.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -15,7 +17,9 @@ class LoginScreen extends StatelessWidget {
           Provider.of<AuthenticationProvider>(context, listen: false)
               .authentication;
       if (authentication != null) {
-        Routes.replace(context, MainScreen());
+        final permitted =
+            Provider.of<LocationProvider>(context, listen: false).permitted;
+        Routes.replace(context, permitted ? MapScreen() : PermissionScreen());
       }
     });
     return Center(
