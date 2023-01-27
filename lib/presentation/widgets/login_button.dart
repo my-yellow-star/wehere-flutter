@@ -8,13 +8,13 @@ import 'package:wehere_client/presentation/providers/authentication_provider.dar
 class LoginButton {
   static Widget build(String path, VoidCallback onTap) {
     return Card(
-      elevation: 18.0,
+      elevation: 8.0,
       shape: const CircleBorder(),
       clipBehavior: Clip.antiAlias,
       child: Ink.image(
         image: AssetImage('${Constant.image}/$path'),
-        width: 60,
-        height: 60,
+        width: 48,
+        height: 48,
         child: InkWell(
           borderRadius: const BorderRadius.all(
             Radius.circular(35.0),
@@ -27,7 +27,8 @@ class LoginButton {
 }
 
 class GoogleLoginButton {
-  static void _signInWithGoogle(AuthenticationProvider provider) async {
+  static void _signInWithGoogle(
+      AuthenticationProvider provider, VoidCallback onLoginSucceed) async {
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
     final auth = await googleUser?.authentication;
@@ -36,13 +37,18 @@ class GoogleLoginButton {
     if (token != null) {
       await provider.login(OAuth2LoginParams(token, 'google'));
     }
+
+    if (provider.authentication != null) {
+      onLoginSucceed();
+    }
   }
 
-  static Widget build(BuildContext context) {
-    final provider = Provider.of<AuthenticationProvider>(context, listen: true);
+  static Widget build(BuildContext context, VoidCallback onLoginSucceed) {
     return LoginButton.build(
       'google-logo.png',
-      () => _signInWithGoogle(provider),
+      () => _signInWithGoogle(
+          Provider.of<AuthenticationProvider>(context, listen: false),
+          onLoginSucceed),
     );
   }
 }
