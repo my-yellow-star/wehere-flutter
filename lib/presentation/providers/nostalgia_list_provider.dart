@@ -17,6 +17,7 @@ class NostalgiaListProvider extends ApiProvider {
   void initialize() {
     _page = 0;
     _end = false;
+    isLoading = true;
     items = [];
   }
 
@@ -29,9 +30,6 @@ class NostalgiaListProvider extends ApiProvider {
     if (_end) {
       return;
     }
-
-    isLoading = true;
-    notifyListeners();
     final params = GetNostalgiaParams(
         page: _page,
         size: _size,
@@ -39,7 +37,7 @@ class NostalgiaListProvider extends ApiProvider {
         latitude: latitude,
         longitude: longitude);
     final response = await _getNostalgiaListUseCase(params);
-    items = response.items;
+    items = [...items, ...response.items];
     isLoading = false;
     if (response.nextPage != null) {
       _page = response.nextPage!;

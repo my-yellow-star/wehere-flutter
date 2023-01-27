@@ -14,7 +14,7 @@ class NostalgiaService {
 
   Future<PaginationModel<NostalgiaSummaryModel>> getList(
       GetNostalgiaParams params) async {
-    final queryParameter = {
+    final queryParameters = {
       'page': params.page,
       'size': params.size,
       'condition': params.condition,
@@ -23,8 +23,7 @@ class NostalgiaService {
       'maxDistance': params.maxDistance
     };
     final dio = Api().dio;
-    dio.options.queryParameters = queryParameter;
-    final response = await dio.get(_endpoint);
+    final response = await dio.get(_endpoint, queryParameters: queryParameters);
     return PaginationModel.fromJson(
         response.data, NostalgiaSummaryModel.fromJson);
   }

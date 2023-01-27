@@ -7,6 +7,8 @@ class NostalgiaSummaryModel extends NostalgiaSummary {
       {required super.id,
       required super.member,
       required super.location,
+      required super.title,
+      required super.description,
       super.distance,
       super.thumbnail,
       required super.createdAt});
@@ -15,6 +17,8 @@ class NostalgiaSummaryModel extends NostalgiaSummary {
     return NostalgiaSummaryModel(
         id: json['id'],
         member: MemberSummaryModel.fromJson(json['member']),
+        title: json['title'],
+        description: json['description'],
         location: LocationModel.fromJson(json['location']),
         distance: json['distance'],
         thumbnail: json['thumbnail'],

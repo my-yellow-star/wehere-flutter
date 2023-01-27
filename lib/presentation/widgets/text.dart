@@ -7,14 +7,17 @@ class IText extends StatelessWidget {
   final String text;
   final FontWeight? weight;
   final TextAlign? align;
+  final int? maxLines;
 
   const IText(this.text,
-      {super.key, this.size, this.color, this.weight, this.align});
+      {super.key, this.size, this.color, this.weight, this.align, this.maxLines});
 
   @override
   Widget build(BuildContext context) {
     return Text(
       text,
+      maxLines: maxLines,
+      overflow: TextOverflow.ellipsis,
       textAlign: align,
       style: TextStyle(
           fontSize: size ?? FontSize.regular,

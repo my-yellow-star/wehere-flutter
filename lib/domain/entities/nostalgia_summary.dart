@@ -5,6 +5,8 @@ import 'package:wehere_client/domain/entities/member_summary.dart';
 class NostalgiaSummary extends Equatable {
   final String id;
   final MemberSummary member;
+  final String title;
+  final String description;
   final Location location;
   final int? distance;
   final String? thumbnail;
@@ -13,6 +15,8 @@ class NostalgiaSummary extends Equatable {
   const NostalgiaSummary(
       {required this.id,
       required this.member,
+      required this.title,
+      required this.description,
       required this.location,
       this.distance,
       this.thumbnail,

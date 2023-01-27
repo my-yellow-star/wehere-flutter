@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 class Constant {
   static const apiHost = 'http://localhost:8080';
   static const image = 'asset/image';
@@ -10,4 +12,8 @@ class FontSize {
   static const double regular = 17;
   static const double big = 28;
   static const double huge = 34;
+}
+
+class ColorTheme {
+  static const primary = Colors.black;
 }
