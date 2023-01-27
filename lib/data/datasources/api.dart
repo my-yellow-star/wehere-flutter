@@ -76,7 +76,7 @@ class LoggingInterceptor extends Interceptor {
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
     apiLogger
-        .i('request: [${options.method}] ${options.baseUrl}${options.path}');
+        .i('request: [${options.method}] ${options.uri}');
     super.onRequest(options, handler);
   }
 
