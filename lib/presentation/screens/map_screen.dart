@@ -14,19 +14,16 @@ class MapScreen extends StatefulWidget {
 }
 
 class MapScreenState extends State<MapScreen> {
+  final Completer<GoogleMapController> _controller =
+      Completer<GoogleMapController>();
+
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      final provider = Provider.of<LocationProvider>(context, listen: false);
-      if (provider.location == null) {
-        provider.getLocation();
-      }
+    Future.microtask(() {
+      context.read<LocationProvider>().getLocation();
     });
     super.initState();
   }
-
-  final Completer<GoogleMapController> _controller =
-      Completer<GoogleMapController>();
 
   CameraPosition currentPosition(Location location) {
     return CameraPosition(
@@ -35,23 +32,16 @@ class MapScreenState extends State<MapScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Consumer<LocationProvider>(
-        builder: (context, value, child) {
-          if (value.location != null) {
-            return GoogleMap(
-                mapType: MapType.normal,
-                initialCameraPosition: currentPosition(value.location!),
-                myLocationEnabled: true,
-                myLocationButtonEnabled: false,
-                onMapCreated: (GoogleMapController controller) {
-                  _controller.complete(controller);
-                });
-          } else {
-            return Center(child: CircularProgressIndicator());
-          }
-        },
-      ),
-    );
+    final location = context.watch<LocationProvider>().location;
+    return location != null
+        ? GoogleMap(
+            mapType: MapType.normal,
+            initialCameraPosition: currentPosition(location),
+            myLocationEnabled: true,
+            myLocationButtonEnabled: false,
+            onMapCreated: (GoogleMapController controller) {
+              _controller.complete(controller);
+            })
+        : Center(child: CircularProgressIndicator());
   }
 }
