@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:wehere_client/core/resources/constant.dart';
 import 'package:wehere_client/presentation/routes.dart';
 import 'package:wehere_client/presentation/screens/main_screen.dart';
+import 'package:wehere_client/presentation/widgets/background_image.dart';
 import 'package:wehere_client/presentation/widgets/login_button.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -16,12 +17,9 @@ class LoginScreen extends StatelessWidget {
     return Scaffold(
       body: Stack(
         children: [
-          Container(
-            color: Colors.blue,
-          ),
+          BackgroundImage(),
           Column(children: [
-            Image(image: AssetImage('${Constant.image}/sky.jpg')),
-            Container(height: 30),
+            Container(height: MediaQuery.of(context).size.height / 3),
             Image(
                 width: 200, image: AssetImage('${Constant.image}/banner.png')),
           ]),

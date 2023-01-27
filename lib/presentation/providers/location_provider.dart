@@ -25,7 +25,16 @@ class LocationProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> requestPermission() async {
+  Future<void> getLocation() async {
+    await _requestPermission();
+    if (permitted) {
+      final position = await Geolocator.getCurrentPosition();
+      location = Location(position.latitude, position.longitude);
+    }
+    notifyListeners();
+  }
+
+  Future<void> _requestPermission() async {
     if (permitted) {
       return;
     }
@@ -36,17 +45,6 @@ class LocationProvider extends ChangeNotifier {
     }
     if (_permission == LocationPermission.deniedForever) {
       error = LocationError.permissionDeniedForever;
-    }
-
-    notifyListeners();
-  }
-
-  Future<void> getLocation() async {
-    await requestPermission();
-    if (permitted) {
-      final position = await Geolocator.getCurrentPosition();
-      location = Location(position.latitude, position.longitude);
-      notifyListeners();
     }
   }
 }
