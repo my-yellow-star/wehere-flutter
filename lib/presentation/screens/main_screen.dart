@@ -2,7 +2,9 @@ import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wehere_client/core/resources/constant.dart';
+import 'package:wehere_client/injector.dart';
 import 'package:wehere_client/presentation/providers/location_provider.dart';
+import 'package:wehere_client/presentation/providers/nostalgia_list_provider.dart';
 import 'package:wehere_client/presentation/screens/home_screen.dart';
 import 'package:wehere_client/presentation/screens/map_screen.dart';
 import 'package:wehere_client/presentation/screens/permission_screen.dart';
@@ -18,9 +20,12 @@ class MainScreenState extends State<MainScreen> {
   int _selectedIndex = 0;
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-  static const List<Widget> _widgetOptions = <Widget>[
+  static final List<Widget> _widgetOptions = <Widget>[
     HomeScreen(),
-    MapScreen(),
+    ChangeNotifierProvider(
+      create: (_) => injector<NostalgiaListProvider>(),
+      child: MapScreen(),
+    ),
     Text('13'),
   ];
 
@@ -55,9 +60,10 @@ class MainScreenState extends State<MainScreen> {
                     color: Colors.white,
                   )),
               TabItem(
-                icon: Icon(Icons.place_outlined, color: ColorTheme.primary, size: 36),
-                activeIcon:
-                    Icon(Icons.place_rounded, color: ColorTheme.primary, size: 36),
+                icon: Icon(Icons.place_outlined,
+                    color: ColorTheme.primary, size: 36),
+                activeIcon: Icon(Icons.place_rounded,
+                    color: ColorTheme.primary, size: 36),
               ),
               TabItem(
                 icon: Icon(Icons.account_circle_outlined, color: Colors.white),
