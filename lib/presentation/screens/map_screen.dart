@@ -28,6 +28,7 @@ class _MapScreenState extends State<MapScreen> with AfterLayoutMixin {
   List<NostalgiaSummary> nostalgiaList = [];
   List<Uint8List> bitmaps = [];
   NostalgiaSummary? tappedItem;
+  Set<Circle> circles = {};
   double zoom = 12;
   late Location location;
 
@@ -80,6 +81,7 @@ class _MapScreenState extends State<MapScreen> with AfterLayoutMixin {
             onTap: () {
               setState(() {
                 tappedItem = nostalgiaList[entry.key];
+                circles = {_circle(nostalgiaList[entry.key])};
               });
             },
             icon: BitmapDescriptor.fromBytes(entry.value)))
@@ -112,8 +114,16 @@ class _MapScreenState extends State<MapScreen> with AfterLayoutMixin {
     }
     setState(() {
       tappedItem = null;
+      circles = {};
     });
   }
+
+  Circle _circle(NostalgiaSummary item) => Circle(
+      circleId: CircleId('center'),
+      center: LatLng(item.location.latitude, item.location.longitude),
+      strokeWidth: 0,
+      radius: _metersPerPx() * 18,
+      fillColor: Colors.blue.withOpacity(0.5));
 
   @override
   Widget build(BuildContext context) {
@@ -137,6 +147,7 @@ class _MapScreenState extends State<MapScreen> with AfterLayoutMixin {
             _onCameraIdle(context);
           },
           onCameraMove: _onCameraMove,
+          circles: circles,
         ),
         tappedItem == null
             ? Container()
