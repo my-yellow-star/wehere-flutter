@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:wehere_client/presentation/widgets/mixin.dart';
 
 class MarkerGenerator {
   final Function(List<Uint8List>) callback;
@@ -88,15 +89,4 @@ class _MarkerHelperState extends State<_MarkerHelper> with AfterLayoutMixin {
     ByteData byteData = (await image.toByteData(format: ImageByteFormat.png))!;
     return byteData.buffer.asUint8List();
   }
-}
-
-mixin AfterLayoutMixin<T extends StatefulWidget> on State<T> {
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance
-        .addPostFrameCallback((_) => afterFirstLayout(context));
-  }
-
-  void afterFirstLayout(BuildContext context);
 }

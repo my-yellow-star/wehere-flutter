@@ -2,7 +2,7 @@ import 'package:wehere_client/core/params/pagination.dart';
 
 class GetNostalgiaParams extends PaginationParams {
   late final String condition;
-  final int? maxDistance;
+  final double? maxDistance;
   final double? latitude;
   final double? longitude;
 

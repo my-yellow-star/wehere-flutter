@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
@@ -11,54 +12,63 @@ import 'package:wehere_client/presentation/providers/location_provider.dart';
 import 'package:wehere_client/presentation/providers/nostalgia_list_provider.dart';
 import 'package:wehere_client/presentation/widgets/marker.dart';
 import 'package:wehere_client/presentation/widgets/marker_generator.dart';
+import 'package:wehere_client/presentation/widgets/mixin.dart';
 import 'package:wehere_client/presentation/widgets/nostalgia_list_card.dart';
 
 class MapScreen extends StatefulWidget {
   const MapScreen({Key? key}) : super(key: key);
 
   @override
-  State<MapScreen> createState() => MapScreenState();
+  State<MapScreen> createState() => _MapScreenState();
 }
 
-class MapScreenState extends State<MapScreen> {
+class _MapScreenState extends State<MapScreen> with AfterLayoutMixin {
   final Completer<GoogleMapController> _controller =
       Completer<GoogleMapController>();
   List<NostalgiaSummary> nostalgiaList = [];
   List<Uint8List> bitmaps = [];
   NostalgiaSummary? tappedItem;
+  double zoom = 12;
+  late Location location;
 
   @override
   void initState() {
     super.initState();
     final locationProvider = context.read<LocationProvider>();
-    final nostalgiaListProvider = context.read<NostalgiaListProvider>();
-    locationProvider.getLocation().then((_) => {
-          nostalgiaListProvider
-              .loadList(
-                  condition: NostalgiaCondition.around,
-                  latitude: locationProvider.location!.latitude,
-                  longitude: locationProvider.location!.longitude,
-                  maxDistance: 1000000)
-              .then((_) {
-            _generateMarker(context);
-          })
-        });
+    locationProvider.getLocation();
+    location = context.read<LocationProvider>().location!;
+  }
+
+  @override
+  void afterFirstLayout(BuildContext context) {
+    _generateMarker(context);
   }
 
   void _generateMarker(BuildContext context) {
-    final items = context.read<NostalgiaListProvider>().items;
-    MarkerGenerator(items.map((e) => IMarker(item: e)).toList(), (bitmaps) {
-      setState(() {
-        this.bitmaps = bitmaps;
-        nostalgiaList = items;
-      });
-    }).generate(context);
+    final nostalgia = context.read<NostalgiaListProvider>();
+    nostalgia.initialize();
+    nostalgia
+        .loadList(
+            condition: NostalgiaCondition.around,
+            latitude: location.latitude,
+            longitude: location.longitude,
+            maxDistance: _maxDistance(context))
+        .then((_) {
+      MarkerGenerator(nostalgia.items.map((e) => IMarker(item: e)).toList(),
+          (bitmaps) {
+        setState(() {
+          this.bitmaps = bitmaps;
+          nostalgiaList = nostalgia.items;
+        });
+      }).addOverlay(context);
+    });
   }
 
-  CameraPosition _currentPosition(Location location) {
-    return CameraPosition(
-        target: LatLng(location.latitude, location.longitude), zoom: 12);
-  }
+  _maxDistance(BuildContext context) =>
+      _metersPerPx() * MediaQuery.of(context).size.height / 2;
+
+  _metersPerPx() =>
+      156543.03392 * cos(location.latitude * pi / 180) / pow(2, zoom);
 
   Set<Marker> _mapBitmapsToMarkers() {
     return bitmaps
@@ -76,10 +86,27 @@ class MapScreenState extends State<MapScreen> {
         .toSet();
   }
 
+  CameraPosition _currentPosition(BuildContext context) {
+    return CameraPosition(
+        target: LatLng(location.latitude, location.longitude), zoom: zoom);
+  }
+
   LatLng _getPosition(NostalgiaSummary item) =>
       LatLng(item.location.latitude, item.location.longitude);
 
-  void onMapTapped(_) {
+  void _onCameraIdle(BuildContext context) {
+    _generateMarker(context);
+  }
+
+  void _onCameraMove(CameraPosition position) {
+    setState(() {
+      location = Location(position.target.latitude, position.target.longitude);
+      zoom = position.zoom;
+    });
+    _metersPerPx();
+  }
+
+  void _onMapTapped(_) {
     if (tappedItem == null) {
       return;
     }
@@ -90,29 +117,35 @@ class MapScreenState extends State<MapScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final location = context.watch<LocationProvider>().location;
-    return location != null
-        ? Stack(
-            children: [
-              GoogleMap(
-                  mapType: MapType.normal,
-                  initialCameraPosition: _currentPosition(location),
-                  myLocationEnabled: true,
-                  myLocationButtonEnabled: false,
-                  markers: _mapBitmapsToMarkers(),
-                  onTap: onMapTapped,
-                  onMapCreated: (GoogleMapController controller) {
-                    _controller.complete(controller);
-                  }),
-              tappedItem == null
-                  ? Container()
-                  : Align(
-                      alignment: Alignment.bottomCenter,
-                      child: Container(
-                          margin: EdgeInsets.only(bottom: 50),
-                          child: NostalgiaListCard(item: tappedItem!)))
-            ],
-          )
-        : Center(child: CircularProgressIndicator());
+    final nostalgia = context.watch<NostalgiaListProvider>();
+    if (nostalgia.isLoading) {
+      return Center(child: CircularProgressIndicator());
+    }
+    return Stack(
+      children: [
+        GoogleMap(
+          mapType: MapType.normal,
+          initialCameraPosition: _currentPosition(context),
+          myLocationEnabled: true,
+          myLocationButtonEnabled: false,
+          markers: _mapBitmapsToMarkers(),
+          onTap: _onMapTapped,
+          onMapCreated: (GoogleMapController controller) {
+            _controller.complete(controller);
+          },
+          onCameraIdle: () {
+            _onCameraIdle(context);
+          },
+          onCameraMove: _onCameraMove,
+        ),
+        tappedItem == null
+            ? Container()
+            : Align(
+                alignment: Alignment.bottomCenter,
+                child: Container(
+                    margin: EdgeInsets.only(bottom: 50),
+                    child: NostalgiaListCard(item: tappedItem!)))
+      ],
+    );
   }
 }
