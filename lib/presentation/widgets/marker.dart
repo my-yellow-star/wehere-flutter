@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wehere_client/core/resources/constant.dart';
 import 'package:wehere_client/domain/entities/nostalgia_summary.dart';
 import 'package:wehere_client/presentation/widgets/profile_image.dart';
 
@@ -7,7 +8,7 @@ class IMarker extends StatelessWidget {
   static const double circleSize = 50;
   static const double circleBorder = 4;
   static const double triangleWidth = 12;
-  static const color = Colors.black;
+  static const color = ColorTheme.primary;
 
   const IMarker({super.key, required this.item});
 
@@ -21,7 +22,7 @@ class IMarker extends StatelessWidget {
               border: Border.all(color: color, width: circleBorder)),
           child: ProfileImage(
             size: circleSize - (circleBorder * 2),
-            url: item.thumbnail,
+            url: item.member.profileImageUrl,
           ),
         ),
         Container(

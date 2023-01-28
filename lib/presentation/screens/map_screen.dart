@@ -11,6 +11,7 @@ import 'package:wehere_client/presentation/providers/location_provider.dart';
 import 'package:wehere_client/presentation/providers/nostalgia_list_provider.dart';
 import 'package:wehere_client/presentation/widgets/marker.dart';
 import 'package:wehere_client/presentation/widgets/marker_generator.dart';
+import 'package:wehere_client/presentation/widgets/nostalgia_list_card.dart';
 
 class MapScreen extends StatefulWidget {
   const MapScreen({Key? key}) : super(key: key);
@@ -24,6 +25,7 @@ class MapScreenState extends State<MapScreen> {
       Completer<GoogleMapController>();
   List<NostalgiaSummary> nostalgiaList = [];
   List<Uint8List> bitmaps = [];
+  NostalgiaSummary? tappedItem;
 
   @override
   void initState() {
@@ -65,6 +67,11 @@ class MapScreenState extends State<MapScreen> {
         .map((entry) => Marker(
             markerId: MarkerId(nostalgiaList[entry.key].id),
             position: _getPosition(nostalgiaList[entry.key]),
+            onTap: () {
+              setState(() {
+                tappedItem = nostalgiaList[entry.key];
+              });
+            },
             icon: BitmapDescriptor.fromBytes(entry.value)))
         .toSet();
   }
@@ -72,19 +79,40 @@ class MapScreenState extends State<MapScreen> {
   LatLng _getPosition(NostalgiaSummary item) =>
       LatLng(item.location.latitude, item.location.longitude);
 
+  void onMapTapped(_) {
+    if (tappedItem == null) {
+      return;
+    }
+    setState(() {
+      tappedItem = null;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final location = context.watch<LocationProvider>().location;
     return location != null
-        ? GoogleMap(
-            mapType: MapType.normal,
-            initialCameraPosition: _currentPosition(location),
-            myLocationEnabled: true,
-            myLocationButtonEnabled: false,
-            markers: _mapBitmapsToMarkers(),
-            onMapCreated: (GoogleMapController controller) {
-              _controller.complete(controller);
-            })
+        ? Stack(
+            children: [
+              GoogleMap(
+                  mapType: MapType.normal,
+                  initialCameraPosition: _currentPosition(location),
+                  myLocationEnabled: true,
+                  myLocationButtonEnabled: false,
+                  markers: _mapBitmapsToMarkers(),
+                  onTap: onMapTapped,
+                  onMapCreated: (GoogleMapController controller) {
+                    _controller.complete(controller);
+                  }),
+              tappedItem == null
+                  ? Container()
+                  : Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Container(
+                          margin: EdgeInsets.only(bottom: 50),
+                          child: NostalgiaListCard(item: tappedItem!)))
+            ],
+          )
         : Center(child: CircularProgressIndicator());
   }
 }
