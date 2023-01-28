@@ -37,9 +37,9 @@ class NostalgiaListCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                IText(item.title),
+                IText(item.title, weight: FontWeight.bold),
                 Container(height: 4),
-                IText(item.description, weight: FontWeight.w300),
+                IText(item.description, size: FontSize.small),
                 Expanded(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
