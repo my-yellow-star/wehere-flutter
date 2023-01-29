@@ -5,6 +5,7 @@ import 'package:wehere_client/core/resources/constant.dart';
 import 'package:wehere_client/injector.dart';
 import 'package:wehere_client/presentation/providers/location_provider.dart';
 import 'package:wehere_client/presentation/providers/nostalgia_list_provider.dart';
+import 'package:wehere_client/presentation/providers/statistic_provider.dart';
 import 'package:wehere_client/presentation/screens/map_screen.dart';
 import 'package:wehere_client/presentation/screens/mypage_screen.dart';
 import 'package:wehere_client/presentation/screens/permission_screen.dart';
@@ -30,7 +31,14 @@ class MainScreenState extends State<MainScreen> {
       create: (_) => injector<NostalgiaListProvider>(),
       child: MapScreen(),
     ),
-    MyPageScreen()
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+            create: (_) => injector<NostalgiaListProvider>()),
+        ChangeNotifierProvider(create: (_) => injector<StatisticProvider>())
+      ],
+      child: MyPageScreen(),
+    )
   ];
 
   void _onItemTapped(int index) {

@@ -4,8 +4,9 @@ import '../../core/resources/constant.dart';
 
 class BackgroundImage extends StatelessWidget {
   final String? url;
+  final double? opacity;
 
-  const BackgroundImage({super.key, this.url});
+  const BackgroundImage({super.key, this.url, this.opacity});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +26,7 @@ class BackgroundImage extends StatelessWidget {
                 fit: BoxFit.cover,
               ),
         Container(
-          color: ColorTheme.primary.withOpacity(0.8),
+          color: ColorTheme.primary.withOpacity(opacity ?? 0.8),
         ),
       ],
     );
