@@ -141,7 +141,9 @@ class _MapScreenState extends State<MapScreen> with AfterLayoutMixin {
           markers: _mapBitmapsToMarkers(),
           onTap: _onMapTapped,
           onMapCreated: (GoogleMapController controller) {
-            _controller.complete(controller);
+            if (!_controller.isCompleted) {
+              _controller.complete(controller);
+            }
           },
           onCameraIdle: () {
             _onCameraIdle(context);
