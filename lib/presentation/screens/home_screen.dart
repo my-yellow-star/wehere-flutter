@@ -6,6 +6,7 @@ import 'package:wehere_client/core/params/get_nostalgia.dart';
 import 'package:wehere_client/core/resources/constant.dart';
 import 'package:wehere_client/presentation/providers/location_provider.dart';
 import 'package:wehere_client/presentation/providers/nostalgia_list_provider.dart';
+import 'package:wehere_client/presentation/widgets/background_image.dart';
 import 'package:wehere_client/presentation/widgets/banner_image.dart';
 import 'package:wehere_client/presentation/widgets/nostalgia_summary_card.dart';
 import 'package:wehere_client/presentation/widgets/text.dart';
@@ -52,6 +53,16 @@ class _HomeScreenState extends State<HomeScreen>
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final nostalgia = context.watch<NostalgiaListProvider>();
+    if (nostalgia.isLoading) {
+      return Stack(
+        children: const [
+          BackgroundImage(),
+          SafeArea(child: BannerImage()),
+          Center(child: CircularProgressIndicator())
+        ],
+      );
+    }
     final items = context.watch<NostalgiaListProvider>().items;
     final item = items[_selectedIndex];
     return Scaffold(
