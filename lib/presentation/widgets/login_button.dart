@@ -27,8 +27,8 @@ class LoginButton {
 }
 
 class GoogleLoginButton {
-  static void _signInWithGoogle(
-      AuthenticationProvider provider, VoidCallback onLoginSucceed) async {
+  static void _signInWithGoogle(AuthenticationProvider provider,
+      VoidCallback onLoginSucceed, VoidCallback onLoginFailed) async {
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
     final auth = await googleUser?.authentication;
@@ -40,15 +40,19 @@ class GoogleLoginButton {
 
     if (provider.authentication != null) {
       onLoginSucceed();
+    } else {
+      onLoginFailed();
     }
   }
 
-  static Widget build(BuildContext context, VoidCallback onLoginSucceed) {
+  static Widget build(BuildContext context, VoidCallback onLoginSucceed,
+      VoidCallback onLoginFailed) {
     return LoginButton.build(
       'google-logo.png',
       () => _signInWithGoogle(
           Provider.of<AuthenticationProvider>(context, listen: false),
-          onLoginSucceed),
+          onLoginSucceed,
+          onLoginFailed),
     );
   }
 }
