@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wehere_client/core/resources/constant.dart';
 import 'package:wehere_client/presentation/providers/location_provider.dart';
+import 'package:wehere_client/presentation/widgets/alert.dart';
 import 'package:wehere_client/presentation/widgets/background_image.dart';
 import 'package:wehere_client/presentation/widgets/text.dart';
 
@@ -15,6 +16,18 @@ class PermissionScreen extends StatelessWidget {
           IText(text, size: FontSize.small, weight: FontWeight.bold)
         ]),
       );
+
+  void _onTap(BuildContext context) {
+    final provider = Provider.of<LocationProvider>(context, listen: false);
+    provider.getLocation().then((_) => {
+          if (!provider.permitted) {
+            Alert.build(context,
+                  title: '위치 정보 제공 오류',
+                  description:
+                      '위치 정보를 불러오지 못했어요.\n서비스를 이용하기 위해 위치 정보 제공에 동의해주세요.')
+            }
+        });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,11 +79,7 @@ class PermissionScreen extends StatelessWidget {
                                               width: 0.8))),
                                   child: IText('네, 이해했어요!'),
                                 ),
-                                onTap: () {
-                                  Provider.of<LocationProvider>(context,
-                                          listen: false)
-                                      .getLocation();
-                                },
+                                onTap: () => _onTap(context),
                               )
                             ],
                           ),

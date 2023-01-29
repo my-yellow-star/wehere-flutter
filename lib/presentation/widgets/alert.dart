@@ -54,7 +54,7 @@ class _AlertWidget extends StatelessWidget {
       backgroundColor: ColorTheme.primary,
       title: IText(title),
       content: description != null
-          ? IText(description!, size: FontSize.small)
+          ? IText(description!, size: FontSize.small, maxLines: 3)
           : null,
       actions: [
         showCancelButton
