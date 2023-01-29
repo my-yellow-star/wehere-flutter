@@ -2,6 +2,7 @@ import 'package:wehere_client/core/params/get_nostalgia.dart';
 import 'package:wehere_client/data/datasources/api.dart';
 import 'package:wehere_client/data/models/nostalgia_summary_model.dart';
 import 'package:wehere_client/data/models/pagination_model.dart';
+import 'package:wehere_client/data/models/statistic_summary_model.dart';
 
 class NostalgiaService {
   static const _endpoint = '/api/nostalgia';
@@ -26,5 +27,11 @@ class NostalgiaService {
     final response = await dio.get(_endpoint, queryParameters: queryParameters);
     return PaginationModel.fromJson(
         response.data, NostalgiaSummaryModel.fromJson);
+  }
+
+  Future<StatisticSummaryModel> getStatisticSummary(String memberId) async {
+    final dio = Api().dio;
+    final response = await dio.get('$_endpoint/statistics/$memberId');
+    return StatisticSummaryModel.fromJson(response.data);
   }
 }
