@@ -8,9 +8,16 @@ class IText extends StatelessWidget {
   final FontWeight? weight;
   final TextAlign? align;
   final int? maxLines;
+  final List<Shadow>? shadows;
 
   const IText(this.text,
-      {super.key, this.size, this.color, this.weight, this.align, this.maxLines});
+      {super.key,
+      this.size,
+      this.color,
+      this.weight,
+      this.align,
+      this.maxLines,
+      this.shadows});
 
   @override
   Widget build(BuildContext context) {
@@ -20,6 +27,7 @@ class IText extends StatelessWidget {
       overflow: TextOverflow.ellipsis,
       textAlign: align,
       style: TextStyle(
+          shadows: shadows,
           fontSize: size ?? FontSize.regular,
           color: color ?? Colors.white,
           fontWeight: weight ?? FontWeight.normal),

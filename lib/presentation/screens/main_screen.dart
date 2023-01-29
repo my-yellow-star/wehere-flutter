@@ -5,9 +5,10 @@ import 'package:wehere_client/core/resources/constant.dart';
 import 'package:wehere_client/injector.dart';
 import 'package:wehere_client/presentation/providers/location_provider.dart';
 import 'package:wehere_client/presentation/providers/nostalgia_list_provider.dart';
-import 'package:wehere_client/presentation/screens/home_screen.dart';
 import 'package:wehere_client/presentation/screens/map_screen.dart';
+import 'package:wehere_client/presentation/screens/mypage_screen.dart';
 import 'package:wehere_client/presentation/screens/permission_screen.dart';
+import 'package:wehere_client/presentation/screens/home_screen.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -21,12 +22,15 @@ class MainScreenState extends State<MainScreen> {
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static final List<Widget> _widgetOptions = <Widget>[
-    HomeScreen(),
+    ChangeNotifierProvider(
+      create: (_) => injector<NostalgiaListProvider>(),
+      child: HomeScreen(),
+    ),
     ChangeNotifierProvider(
       create: (_) => injector<NostalgiaListProvider>(),
       child: MapScreen(),
     ),
-    Text('13'),
+    MyPageScreen()
   ];
 
   void _onItemTapped(int index) {
@@ -40,15 +44,8 @@ class MainScreenState extends State<MainScreen> {
     return Consumer<LocationProvider>(builder: (context, value, child) {
       if (value.permitted) {
         return Scaffold(
-          body: Stack(
-            children: [
-              Container(color: ColorTheme.primary),
-              SafeArea(
-                child: Center(
-                  child: _widgetOptions.elementAt(_selectedIndex),
-                ),
-              ),
-            ],
+          body: Center(
+            child: _widgetOptions.elementAt(_selectedIndex),
           ),
           bottomNavigationBar: ConvexAppBar(
             backgroundColor: ColorTheme.primary,

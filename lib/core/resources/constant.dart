@@ -16,4 +16,5 @@ class FontSize {
 
 class ColorTheme {
   static const primary = Colors.black;
+  static final transparent = Colors.black.withOpacity(1);
 }

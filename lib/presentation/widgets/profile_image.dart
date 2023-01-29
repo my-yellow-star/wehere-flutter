@@ -8,11 +8,18 @@ class ProfileImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return url != null
-        ? CircleAvatar(
-            radius: size / 2,
-            backgroundImage: NetworkImage(url!),
-          )
-        : Icon(Icons.account_circle, size: size, color: Colors.grey);
+    return Container(
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(size)),
+          boxShadow: [
+            BoxShadow(color: Colors.black.withOpacity(0.3), blurRadius: 4)
+          ]),
+      child: url != null
+          ? CircleAvatar(
+              radius: size / 2,
+              backgroundImage: NetworkImage(url!),
+            )
+          : Icon(Icons.account_circle, size: size, color: Colors.grey),
+    );
   }
 }

@@ -1,12 +1,15 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wehere_client/core/params/get_nostalgia.dart';
 import 'package:wehere_client/core/resources/constant.dart';
-import 'package:wehere_client/injector.dart';
 import 'package:wehere_client/presentation/providers/location_provider.dart';
 import 'package:wehere_client/presentation/providers/nostalgia_list_provider.dart';
+import 'package:wehere_client/presentation/widgets/banner_image.dart';
 import 'package:wehere_client/presentation/widgets/nostalgia_summary_card.dart';
 import 'package:wehere_client/presentation/widgets/text.dart';
+import 'package:wehere_client/core/extensions.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -15,72 +18,132 @@ class HomeScreen extends StatefulWidget {
   _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen>
+    with SingleTickerProviderStateMixin {
+  static const double _foregroundPageViewportFraction = 0.8;
+  final PageController _backgroundPageController = PageController();
+  final PageController _foregroundPageController =
+      PageController(viewportFraction: _foregroundPageViewportFraction);
+  int _selectedIndex = 0;
+
   @override
   void initState() {
-    Future.microtask(() {
-      final locationProvider = context.read<LocationProvider>();
-      locationProvider.getLocation();
-    });
     super.initState();
+    context.read<NostalgiaListProvider>().initialize();
+    _loadItems();
   }
 
-  ChangeNotifierProvider<NostalgiaListProvider> _nostalgiaListContainer(
-      NostalgiaCondition condition) {
-    return ChangeNotifierProvider<NostalgiaListProvider>(
-        create: (_) => injector<NostalgiaListProvider>(),
-        child:
-            Consumer<NostalgiaListProvider>(builder: (context, value, child) {
-          if (!value.end && value.items.isEmpty) {
-            value.loadList(
-              condition: condition,
-              latitude: context.read<LocationProvider>().location?.latitude,
-              longitude: context.read<LocationProvider>().location?.longitude,
-            );
-          }
-          if (value.isLoading) {
-            return CircularProgressIndicator();
-          }
-          return SizedBox(
-            height: 200,
-            child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: value.items.length,
-                itemBuilder: (context, index) {
-                  final item = value.items.elementAt(index);
-                  return NostalgiaSummaryCard(item: item);
-                }),
-          );
-        }));
+  void _loadItems() {
+    final locationProvider = context.read<LocationProvider>();
+    context.read<NostalgiaListProvider>().loadList(
+          condition: NostalgiaCondition.recent,
+          latitude: locationProvider.location?.latitude,
+          longitude: locationProvider.location?.longitude,
+        );
+  }
+
+  @override
+  void dispose() {
+    _backgroundPageController.dispose();
+    _foregroundPageController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final items = context.watch<NostalgiaListProvider>().items;
+    final item = items[_selectedIndex];
     return Scaffold(
-        backgroundColor: ColorTheme.primary,
-        appBar: AppBar(
-          backgroundColor: ColorTheme.primary,
-          elevation: 0,
-          title: Align(
-              alignment: Alignment.topLeft,
-              child: Image.asset('${Constant.image}/banner.png', width: 160)),
-        ),
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-                padding: EdgeInsets.only(left: 16, right: 16, top: 24),
-                child: IText(
-                  '실시간',
-                )),
-            _nostalgiaListContainer(NostalgiaCondition.recent),
-            Container(
-                padding: EdgeInsets.only(left: 16, right: 16, top: 24),
-                child: IText(
-                  '내주변',
-                )),
-            _nostalgiaListContainer(NostalgiaCondition.around)
-          ],
-        ));
+      body: Stack(
+        children: [
+          PageView.builder(
+            itemCount: items.length,
+            controller: _backgroundPageController,
+            physics: NeverScrollableScrollPhysics(),
+            itemBuilder: (context, index) {
+              return ImageFiltered(
+                imageFilter: ImageFilter.blur(sigmaX: 16, sigmaY: 16),
+                child: Image.network(
+                  item.thumbnail!,
+                  fit: BoxFit.cover,
+                ),
+              );
+            },
+          ),
+          SafeArea(child: BannerImage()),
+          Positioned.fill(
+            bottom: size.height * .05,
+            child: Visibility(
+              visible: true,
+              maintainState: true,
+              child: PageView.builder(
+                itemCount: items.length,
+                controller: _foregroundPageController,
+                onPageChanged: (i) {
+                  setState(() => _selectedIndex = i);
+                  if (i == items.length - 1) {
+                    _loadItems();
+                  }
+                },
+                itemBuilder: (context, index) {
+                  return NostalgiaSummaryCard(item: items[index]);
+                },
+              ),
+            ),
+          ),
+          Positioned(
+            bottom: 0,
+            child: UnconstrainedBox(
+              child: Container(
+                width: size.width,
+                height: size.height * .2,
+                color: Colors.black.withOpacity(0.5),
+                padding: EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        IText(item.title, weight: FontWeight.bold),
+                        Container(height: 8),
+                        IText(
+                          item.description,
+                          maxLines: 3,
+                          weight: FontWeight.w100,
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Icon(Icons.place_outlined,
+                                color: Colors.white, size: 16),
+                            Container(width: 2),
+                            IText(
+                              item.distance?.parseDistance() ?? '???',
+                              size: FontSize.small,
+                            )
+                          ],
+                        ),
+                        IText(
+                          item.createdAt.parseDate(),
+                          size: FontSize.small,
+                        )
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            ),
+          )
+        ],
+      ),
+    );
   }
 }
