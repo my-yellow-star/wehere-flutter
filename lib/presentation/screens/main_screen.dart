@@ -65,10 +65,10 @@ class MainScreenState extends State<MainScreen> {
                     color: Colors.white,
                   )),
               TabItem(
-                icon: Icon(Icons.place_outlined,
+                icon: Icon(Icons.place_rounded,
                     color: ColorTheme.primary, size: 36),
-                activeIcon: Icon(Icons.place_rounded,
-                    color: ColorTheme.primary, size: 36),
+                activeIcon:
+                    Icon(Icons.add_circle, color: ColorTheme.primary, size: 36),
               ),
               TabItem(
                 icon: Icon(Icons.account_circle_outlined, color: Colors.white),

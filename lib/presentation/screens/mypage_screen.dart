@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wehere_client/core/params/get_nostalgia.dart';
 import 'package:wehere_client/core/resources/constant.dart';
+import 'package:wehere_client/domain/entities/nostalgia_summary.dart';
 import 'package:wehere_client/presentation/providers/authentication_provider.dart';
 import 'package:wehere_client/presentation/providers/location_provider.dart';
 import 'package:wehere_client/presentation/providers/nostalgia_list_provider.dart';
@@ -9,6 +10,7 @@ import 'package:wehere_client/presentation/providers/statistic_provider.dart';
 import 'package:wehere_client/presentation/widgets/background_image.dart';
 import 'package:wehere_client/presentation/widgets/mixin.dart';
 import 'package:wehere_client/presentation/widgets/nostalgia_list_grid.dart';
+import 'package:wehere_client/presentation/widgets/profile_map_view.dart';
 import 'package:wehere_client/presentation/widgets/profile_summary.dart';
 import 'package:wehere_client/presentation/widgets/text.dart';
 
@@ -20,6 +22,8 @@ class MyPageScreen extends StatefulWidget {
 }
 
 class _MyPageScreenState extends State<MyPageScreen> with AfterLayoutMixin {
+  List<NostalgiaSummary> _recent30Items = [];
+
   @override
   void initState() {
     super.initState();
@@ -37,11 +41,20 @@ class _MyPageScreenState extends State<MyPageScreen> with AfterLayoutMixin {
 
   void _loadList() {
     final location = context.read<LocationProvider>().location!;
-    context.read<NostalgiaListProvider>().loadList(
-        size: 12,
-        condition: NostalgiaCondition.member,
-        latitude: location.latitude,
-        longitude: location.longitude);
+    final nostalgia = context.read<NostalgiaListProvider>();
+    nostalgia
+        .loadList(
+            size: 30,
+            condition: NostalgiaCondition.member,
+            latitude: location.latitude,
+            longitude: location.longitude)
+        .then((_) {
+      if (_recent30Items.isEmpty) {
+        setState(() {
+          _recent30Items = nostalgia.items;
+        });
+      }
+    });
   }
 
   void _onTapEditButton() {}
@@ -72,6 +85,11 @@ class _MyPageScreenState extends State<MyPageScreen> with AfterLayoutMixin {
               child: CustomScrollView(
                 slivers: [
                   ProfileSummaryContainer(member: member, summary: summary),
+                  SliverToBoxAdapter(
+                    child: _recent30Items.isNotEmpty
+                        ? ProfileMapView(items: _recent30Items)
+                        : Container(),
+                  ),
                   NostalgiaListGrid(items: items),
                 ],
               ),

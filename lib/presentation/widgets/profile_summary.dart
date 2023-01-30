@@ -50,7 +50,7 @@ class ProfileSummaryContainer extends StatelessWidget {
                             Column(
                               children: [
                                 IText(
-                                  '추억 ${summary?.totalCount ?? 0}곳',
+                                  '추억 ${summary?.totalCount ?? 0}개',
                                   weight: FontWeight.w100,
                                 ),
                                 IText(
