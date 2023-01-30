@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
@@ -23,6 +25,7 @@ class _ProfileMapViewState extends State<ProfileMapView> {
   static const double _mapHeight = 200;
   final Completer<GoogleMapController> _controller =
       Completer<GoogleMapController>();
+  double _realZoomLevel = 0;
 
   late double _maxDistance;
 
@@ -48,6 +51,29 @@ class _ProfileMapViewState extends State<ProfileMapView> {
   LatLng _toLatLng(Location location) =>
       LatLng(location.latitude, location.longitude);
 
+  Set<Circle> _createCircles() {
+    final circles = widget.items
+        .map((e) => Circle(
+            circleId: CircleId('${e.id}-blur'),
+            strokeWidth: 0,
+            radius: LocationUtil.metersPerPx(
+                    context.read<LocationProvider>().location!,
+                    _realZoomLevel) *
+                8,
+            fillColor: Colors.red.withOpacity(0.1),
+            center: _toLatLng(e.location)))
+        .toSet();
+    circles.addAll(widget.items.map((e) => Circle(
+        circleId: CircleId(e.id),
+        strokeWidth: 0,
+        radius: LocationUtil.metersPerPx(
+                context.read<LocationProvider>().location!, _realZoomLevel) *
+            4,
+        fillColor: Colors.red,
+        center: _toLatLng(e.location))));
+    return circles;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -55,28 +81,28 @@ class _ProfileMapViewState extends State<ProfileMapView> {
         SizedBox(
           height: _mapHeight,
           child: GoogleMap(
-              myLocationButtonEnabled: false,
-              circles: widget.items
-                  .map((e) => Circle(
-                      circleId: CircleId(e.id),
-                      strokeWidth: 0,
-                      radius: LocationUtil.metersPerPx(
-                              context.read<LocationProvider>().location!,
-                              _getZoom()) *
-                          2,
-                      fillColor: Colors.red,
-                      center: _toLatLng(e.location)))
-                  .toSet(),
-              polygons: {
-                Polygon(
-                    polygonId: PolygonId("polygon1"),
-                    points:
-                        widget.items.map((e) => _toLatLng(e.location)).toList(),
-                    fillColor: Colors.white.withOpacity(0.5),
-                    strokeColor: Colors.white.withOpacity(0.8),
-                    strokeWidth: 1)
+              onLongPress: (argument) {
+                _controller.future.then((value) {
+                  value.animateCamera(CameraUpdate.zoomTo(0));
+                });
               },
+              onCameraMove: (position) {
+                setState(() {
+                  _realZoomLevel = position.zoom;
+                });
+              },
+              gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>{
+                Factory<OneSequenceGestureRecognizer>(
+                    () => EagerGestureRecognizer())
+              },
+              myLocationButtonEnabled: false,
+              circles: _createCircles(),
               onMapCreated: (controller) {
+                controller.getZoomLevel().then((value) {
+                  setState(() {
+                    _realZoomLevel = value;
+                  });
+                });
                 _controller.complete(controller);
               },
               initialCameraPosition: _initialCameraPosition()),

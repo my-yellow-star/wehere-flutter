@@ -133,23 +133,27 @@ class _MapScreenState extends State<MapScreen> with AfterLayoutMixin {
     }
     return Stack(
       children: [
-        GoogleMap(
-          mapType: MapType.normal,
-          initialCameraPosition: _currentPosition(context),
-          myLocationEnabled: true,
-          myLocationButtonEnabled: false,
-          markers: _mapBitmapsToMarkers(),
-          onTap: _onMapTapped,
-          onMapCreated: (GoogleMapController controller) {
-            if (!_controller.isCompleted) {
-              _controller.complete(controller);
-            }
-          },
-          onCameraIdle: () {
-            _onCameraIdle(context);
-          },
-          onCameraMove: _onCameraMove,
-          circles: circles,
+        SizedBox(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+          child: GoogleMap(
+            mapType: MapType.normal,
+            initialCameraPosition: _currentPosition(context),
+            myLocationEnabled: true,
+            myLocationButtonEnabled: false,
+            markers: _mapBitmapsToMarkers(),
+            onTap: _onMapTapped,
+            onMapCreated: (GoogleMapController controller) {
+              if (!_controller.isCompleted) {
+                _controller.complete(controller);
+              }
+            },
+            onCameraIdle: () {
+              _onCameraIdle(context);
+            },
+            onCameraMove: _onCameraMove,
+            circles: circles,
+          ),
         ),
         tappedItem == null
             ? Container()
