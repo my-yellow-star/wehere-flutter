@@ -30,7 +30,22 @@ class IText extends StatelessWidget {
           shadows: shadows,
           fontSize: size ?? FontSize.regular,
           color: color ?? Colors.white,
-          fontWeight: weight ?? FontWeight.normal),
+          fontWeight: weight ?? FontWeight.normal,
+          fontFamilyFallback: const [
+            '-apple-system',
+            'BlinkMacSystemFont',
+            'system-ui',
+            'Roboto',
+            'Helvetica Neue',
+            'Segoe UI',
+            'Apple SD Gothic Neo',
+            'Noto Sans KR',
+            'Malgun Gothic',
+            'Apple Color Emoji',
+            'Segoe UI Emoji',
+            'Segoe UI Symbol',
+            'sans-serif'
+          ]),
     );
   }
 }
