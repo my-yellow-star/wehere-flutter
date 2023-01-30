@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:glassmorphism/glassmorphism.dart';
-import 'package:wehere_client/core/resources/constant.dart';
 import 'package:wehere_client/domain/entities/member.dart';
 import 'package:wehere_client/domain/entities/statistic_summary.dart';
 import 'package:wehere_client/presentation/widgets/profile_image.dart';
@@ -43,33 +42,23 @@ class ProfileSummaryContainer extends StatelessWidget {
                     padding: EdgeInsets.all(16),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.end,
+                            Column(
                               children: [
-                                IText('추억'),
-                                Container(width: 4),
                                 IText(
-                                  '${summary?.totalCount ?? 0}',
-                                  size: FontSize.big,
+                                  '추억 ${summary?.totalCount ?? 0}곳',
+                                  weight: FontWeight.w100,
+                                ),
+                                IText(
+                                  '여행거리 ${((summary?.accumulatedDistance ?? 0) / 1000).round().toString()}km',
+                                  weight: FontWeight.w100,
                                 )
                               ],
                             ),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                IText(
-                                  ((summary?.accumulatedDistance ?? 0) / 1000)
-                                      .round().toString(),
-                                  size: FontSize.big,
-                                ),
-                                IText('km'),
-                                Container(width: 4)
-                              ],
-                            )
                           ],
                         )
                       ],
@@ -89,7 +78,10 @@ class ProfileSummaryContainer extends StatelessWidget {
                       child:
                           ProfileImage(size: 80, url: member.profileImageUrl)),
                   Container(height: 16),
-                  IText(member.nickname)
+                  IText(
+                    member.nickname,
+                    weight: FontWeight.w200,
+                  )
                 ],
               ),
             ],

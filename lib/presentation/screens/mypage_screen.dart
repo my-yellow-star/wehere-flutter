@@ -10,6 +10,7 @@ import 'package:wehere_client/presentation/widgets/background_image.dart';
 import 'package:wehere_client/presentation/widgets/mixin.dart';
 import 'package:wehere_client/presentation/widgets/nostalgia_list_grid.dart';
 import 'package:wehere_client/presentation/widgets/profile_summary.dart';
+import 'package:wehere_client/presentation/widgets/text.dart';
 
 class MyPageScreen extends StatefulWidget {
   const MyPageScreen({super.key});
@@ -43,6 +44,12 @@ class _MyPageScreenState extends State<MyPageScreen> with AfterLayoutMixin {
         longitude: location.longitude);
   }
 
+  void _onTapEditButton() {}
+
+  void _onTapPlusButton() {}
+
+  void _onTapSettingButton() {}
+
   @override
   Widget build(BuildContext context) {
     final member =
@@ -68,7 +75,48 @@ class _MyPageScreenState extends State<MyPageScreen> with AfterLayoutMixin {
                   NostalgiaListGrid(items: items),
                 ],
               ),
-            )
+            ),
+            SafeArea(
+                child: Container(
+              padding: EdgeInsets.only(left: 16, right: 16),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  InkWell(
+                    onTap: _onTapEditButton,
+                    child: IText(
+                      '편집',
+                      color: Colors.white.withOpacity(0.8),
+                      weight: FontWeight.w100,
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      InkWell(
+                        onTap: _onTapPlusButton,
+                        child: Icon(
+                          Icons.add_circle,
+                          size: 24,
+                          color: Colors.white,
+                        ),
+                      ),
+                      Container(
+                        padding: EdgeInsets.only(left: 16),
+                        child: InkWell(
+                          onTap: _onTapSettingButton,
+                          child: Icon(
+                            Icons.settings,
+                            size: 24,
+                            color: Colors.white,
+                          ),
+                        ),
+                      )
+                    ],
+                  )
+                ],
+              ),
+            ))
           ],
         ));
   }
