@@ -5,6 +5,7 @@ import 'package:wehere_client/core/resources/constant.dart';
 import 'package:wehere_client/injector.dart';
 import 'package:wehere_client/presentation/providers/authentication_provider.dart';
 import 'package:wehere_client/presentation/providers/location_provider.dart';
+import 'package:wehere_client/presentation/providers/nostalgia_provider.dart';
 import 'package:wehere_client/presentation/screens/login_screen.dart';
 import 'package:wehere_client/presentation/screens/main_screen.dart';
 
@@ -34,6 +35,8 @@ Future<void> main() async {
       providers: [
         ChangeNotifierProvider(create: (_) => authenticationProvider),
         ChangeNotifierProvider(create: (_) => locationProvider),
+        ChangeNotifierProvider(
+            create: (_) => injector<CreateNostalgiaProvider>())
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

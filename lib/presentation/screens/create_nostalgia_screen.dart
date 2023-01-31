@@ -38,6 +38,7 @@ class _CreateNostalgiaScreenState extends State<CreateNostalgiaScreen> {
     await nostalgia.create(context.read<LocationProvider>().location!);
     if (nostalgia.id != null) {
       nostalgia.initialize();
+      if (mounted) Navigator.pop(context);
     }
   }
 

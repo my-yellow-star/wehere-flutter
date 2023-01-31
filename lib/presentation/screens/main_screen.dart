@@ -6,10 +6,11 @@ import 'package:wehere_client/injector.dart';
 import 'package:wehere_client/presentation/providers/location_provider.dart';
 import 'package:wehere_client/presentation/providers/nostalgia_list_provider.dart';
 import 'package:wehere_client/presentation/providers/statistic_provider.dart';
+import 'package:wehere_client/presentation/screens/create_nostalgia_screen.dart';
+import 'package:wehere_client/presentation/screens/home_screen.dart';
 import 'package:wehere_client/presentation/screens/map_screen.dart';
 import 'package:wehere_client/presentation/screens/mypage_screen.dart';
 import 'package:wehere_client/presentation/screens/permission_screen.dart';
-import 'package:wehere_client/presentation/screens/home_screen.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -42,6 +43,13 @@ class MainScreenState extends State<MainScreen> {
   ];
 
   void _onItemTapped(int index) {
+    if (_selectedIndex == index && index == 1) {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => CreateNostalgiaScreen(),
+          ));
+    }
     setState(() {
       _selectedIndex = index;
     });
@@ -49,41 +57,39 @@ class MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<LocationProvider>(builder: (context, value, child) {
-      if (value.permitted) {
-        return Scaffold(
-          body: Center(
-            child: _widgetOptions.elementAt(_selectedIndex),
-          ),
-          bottomNavigationBar: ConvexAppBar(
-            backgroundColor: ColorTheme.primary,
-            items: const [
-              TabItem(
-                  icon: Icon(Icons.home_outlined, color: Colors.white),
-                  activeIcon: Icon(
-                    Icons.home,
-                    color: Colors.white,
-                  )),
-              TabItem(
-                icon: Icon(Icons.place_rounded,
-                    color: ColorTheme.primary, size: 36),
-                activeIcon:
-                    Icon(Icons.add_circle, color: ColorTheme.primary, size: 36),
-              ),
-              TabItem(
-                icon: Icon(Icons.account_circle_outlined, color: Colors.white),
-                activeIcon: Icon(Icons.account_circle, color: Colors.white),
-              ),
-            ],
-            style: TabStyle.fixedCircle,
-            initialActiveIndex: 0,
-            onTap: _onItemTapped,
-            color: Colors.white,
-          ),
-        );
-      } else {
-        return PermissionScreen();
-      }
-    });
+    if (context.watch<LocationProvider>().permitted) {
+      return Scaffold(
+        body: Center(
+          child: _widgetOptions.elementAt(_selectedIndex),
+        ),
+        bottomNavigationBar: ConvexAppBar(
+          backgroundColor: ColorTheme.primary,
+          items: const [
+            TabItem(
+                icon: Icon(Icons.home_outlined, color: Colors.white),
+                activeIcon: Icon(
+                  Icons.home,
+                  color: Colors.white,
+                )),
+            TabItem(
+              icon: Icon(Icons.place_rounded,
+                  color: ColorTheme.primary, size: 36),
+              activeIcon:
+                  Icon(Icons.add_circle, color: ColorTheme.primary, size: 36),
+            ),
+            TabItem(
+              icon: Icon(Icons.account_circle_outlined, color: Colors.white),
+              activeIcon: Icon(Icons.account_circle, color: Colors.white),
+            ),
+          ],
+          style: TabStyle.fixedCircle,
+          initialActiveIndex: 0,
+          onTap: _onItemTapped,
+          color: Colors.white,
+        ),
+      );
+    } else {
+      return PermissionScreen();
+    }
   }
 }
