@@ -25,6 +25,9 @@ dependencies:
   geolocator: ^9.0.2
   convex_bottom_bar: ^3.1.0+1
   glassmorphism: ^3.0.0
+  image_picker: ^0.8.6+1
+  cached_network_image: ^3.2.3
+  photo_view: ^0.14.0
 
 dev_dependencies:
   flutter_test:

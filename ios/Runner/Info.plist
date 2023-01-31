@@ -34,6 +34,10 @@
 		</array>
 		<key>NSLocationWhenInUseUsageDescription</key>
 		<string>The app needs location permission</string>
+		<key>NSPhotoLibraryUsageDescription</key>
+        <string>The app needs photo library permission to upload image</string>
+        <key>NSCameraUsageDescription</key>
+        <string>The app needs camera permission to upload picture</string>
 		<key>LSRequiresIPhoneOS</key>
 		<true/>
 		<key>UILaunchStoryboardName</key>

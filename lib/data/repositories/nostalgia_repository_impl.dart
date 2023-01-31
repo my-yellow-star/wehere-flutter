@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:wehere_client/core/params/create_nostalgia.dart';
 import 'package:wehere_client/core/params/get_nostalgia.dart';
 import 'package:wehere_client/core/resources/data_state.dart';
 import 'package:wehere_client/data/datasources/nostalgia_service.dart';
@@ -21,6 +22,16 @@ class NostalgiaRepositoryImpl extends NostalgiaRepository {
       String memberId) async {
     try {
       final response = await _nostalgiaService.getStatisticSummary(memberId);
+      return DataSuccess(response);
+    } on DioError catch (error) {
+      return DataFailed(error);
+    }
+  }
+
+  @override
+  Future<DataState<String>> create(CreateNostalgiaParams params) async {
+    try {
+      final response = await _nostalgiaService.create(params);
       return DataSuccess(response);
     } on DioError catch (error) {
       return DataFailed(error);

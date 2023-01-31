@@ -7,6 +7,7 @@ import 'package:wehere_client/presentation/providers/authentication_provider.dar
 import 'package:wehere_client/presentation/providers/location_provider.dart';
 import 'package:wehere_client/presentation/providers/nostalgia_list_provider.dart';
 import 'package:wehere_client/presentation/providers/statistic_provider.dart';
+import 'package:wehere_client/presentation/screens/create_nostalgia_screen.dart';
 import 'package:wehere_client/presentation/widgets/background_image.dart';
 import 'package:wehere_client/presentation/widgets/mixin.dart';
 import 'package:wehere_client/presentation/widgets/nostalgia_list_grid.dart';
@@ -59,7 +60,9 @@ class _MyPageScreenState extends State<MyPageScreen> with AfterLayoutMixin {
 
   void _onTapEditButton() {}
 
-  void _onTapPlusButton() {}
+  void _onTapPlusButton() {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => CreateNostalgiaScreen(),));
+  }
 
   void _onTapSettingButton() {}
 

@@ -1,3 +1,4 @@
+import 'package:wehere_client/core/params/create_nostalgia.dart';
 import 'package:wehere_client/core/params/get_nostalgia.dart';
 import 'package:wehere_client/core/resources/data_state.dart';
 import 'package:wehere_client/domain/entities/nostalgia_summary.dart';
@@ -8,4 +9,6 @@ abstract class NostalgiaRepository {
   Future<Pagination<NostalgiaSummary>> getList(GetNostalgiaParams params);
 
   Future<DataState<StatisticSummary>> getStatisticSummary(String memberId);
+
+  Future<DataState<String>> create(CreateNostalgiaParams params);
 }
