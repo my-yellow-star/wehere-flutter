@@ -72,6 +72,7 @@ class _MapScreenState extends State<MapScreen> with AfterLayoutMixin {
       156543.03392 * cos(location.latitude * pi / 180) / pow(2, zoom);
 
   Set<Marker> _mapBitmapsToMarkers() {
+    if (nostalgiaList.isEmpty) return {};
     return bitmaps
         .asMap()
         .entries

@@ -20,6 +20,7 @@ class CreateNostalgiaScreen extends StatefulWidget {
 class _CreateNostalgiaScreenState extends State<CreateNostalgiaScreen> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
+  final FocusNode _descriptionFocusNode = FocusNode();
 
   @override
   void initState() {
@@ -50,106 +51,120 @@ class _CreateNostalgiaScreenState extends State<CreateNostalgiaScreen> {
       Alert.build(context,
           title: '오류', description: '오류가 발생했어요. 잠시 후 다시 시도해주세요.');
     }
-    return Scaffold(
-      body: Stack(
-        children: [
-          Column(
-            children: [
-              Stack(
-                children: [
-                  nostalgia.images.isNotEmpty
-                      ? Gallery(
-                          height: size.height * .3,
-                          width: size.width,
-                          urls: nostalgia.images,
-                        )
-                      : Container(
-                          height: size.height * .3,
-                          color: Colors.black,
-                        ),
-                  Positioned(bottom: 16, right: 16, child: UploadButton()),
-                  SafeArea(
-                      child: Container(
-                          margin: EdgeInsets.only(top: 16, left: 16),
-                          child: RoundBackButton()))
-                ],
-              ),
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Container(
-                    padding: EdgeInsets.only(left: 16, right: 16),
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            VisibilityDropdown(
-                                selectedVisibility: nostalgia.visibility)
-                          ],
-                        ),
-                        TextField(
-                          autofocus: true,
-                          key: GlobalKey<EditableTextState>(),
-                          controller: _titleController,
-                          onChanged: nostalgia.updateTitle,
-                          style: TextStyle(
-                              color: ColorTheme.primary,
-                              fontWeight: FontWeight.bold),
-                          decoration: InputDecoration(
-                              hintText: '네가 있던 그곳',
-                              hintStyle: TextStyle(
-                                  color: ColorTheme.primary.withOpacity(0.2),
-                                  fontWeight: FontWeight.bold),
-                              border: InputBorder.none),
-                        ),
-                        TextField(
-                          key: GlobalKey<EditableTextState>(),
-                          controller: _descriptionController,
-                          onChanged: nostalgia.updateDescription,
-                          style: TextStyle(
-                              color: ColorTheme.primary,
-                              fontWeight: FontWeight.w200),
-                          decoration: InputDecoration(
-                              hintText: '지나고 보니 추억이었다',
-                              hintStyle: TextStyle(
-                                  color: ColorTheme.primary.withOpacity(0.2),
-                                  fontWeight: FontWeight.w200),
-                              border: InputBorder.none),
-                          maxLines: null,
-                        ),
-                      ],
+    return GestureDetector(
+      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        body: Stack(
+          children: [
+            Column(
+              children: [
+                Stack(
+                  children: [
+                    nostalgia.images.isNotEmpty
+                        ? Gallery(
+                            height: size.height * .3,
+                            width: size.width,
+                            urls: nostalgia.images,
+                          )
+                        : Container(
+                            height: size.height * .3,
+                            width: size.width,
+                            color: Colors.black,
+                            child: Center(
+                                child: IText('그곳의 사진을 올려보세요',
+                                    weight: FontWeight.w100)),
+                          ),
+                    Positioned(bottom: 16, right: 16, child: UploadButton()),
+                    SafeArea(
+                        child: Container(
+                            margin: EdgeInsets.only(top: 16, left: 16),
+                            child: RoundBackButton()))
+                  ],
+                ),
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Container(
+                      padding: EdgeInsets.only(left: 16, right: 16),
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              VisibilityDropdown(
+                                  selectedVisibility: nostalgia.visibility)
+                            ],
+                          ),
+                          TextField(
+                            autofocus: true,
+                            key: GlobalKey<EditableTextState>(
+                                debugLabel: 'title key'),
+                            controller: _titleController,
+                            onChanged: nostalgia.updateTitle,
+                            style: TextStyle(
+                                color: ColorTheme.primary,
+                                fontWeight: FontWeight.bold),
+                            decoration: InputDecoration(
+                                hintText: '네가 있던 그곳',
+                                hintStyle: TextStyle(
+                                    color: ColorTheme.primary.withOpacity(0.2),
+                                    fontWeight: FontWeight.bold),
+                                border: InputBorder.none),
+                            onSubmitted: (_) {
+                              _descriptionFocusNode.requestFocus();
+                            },
+                          ),
+                          TextField(
+                            focusNode: _descriptionFocusNode,
+                            key: GlobalKey<EditableTextState>(
+                                debugLabel: 'description key'),
+                            controller: _descriptionController,
+                            onChanged: nostalgia.updateDescription,
+                            style: TextStyle(
+                                color: ColorTheme.primary,
+                                fontWeight: FontWeight.w200),
+                            decoration: InputDecoration(
+                                hintText: '지나고 보니 추억이었다',
+                                hintStyle: TextStyle(
+                                    color: ColorTheme.primary.withOpacity(0.2),
+                                    fontWeight: FontWeight.w200),
+                                border: InputBorder.none),
+                            maxLines: null,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-              Container(
-                color: Colors.black,
-                height: 100,
-                child: SafeArea(
-                  top: false,
-                  child: InkWell(
-                    onTap: _create,
-                    child: Center(
-                        child: IText(
-                      '업로드',
-                      weight: FontWeight.bold,
-                    )),
-                  ),
-                ),
-              )
-            ],
-          ),
-          nostalgia.isLoading
-              ? Container(
-                  width: size.width,
-                  height: size.height,
-                  color: Colors.black.withOpacity(0.2),
-                  child: Center(
-                    child: CircularProgressIndicator(),
+                Container(
+                  color: Colors.black,
+                  height: 100,
+                  child: SafeArea(
+                    top: false,
+                    child: InkWell(
+                      onTap: _create,
+                      child: Center(
+                          child: IText(
+                        '업로드',
+                        weight: FontWeight.bold,
+                      )),
+                    ),
                   ),
                 )
-              : Container()
-        ],
+              ],
+            ),
+            nostalgia.isLoading
+                ? Container(
+                    width: size.width,
+                    height: size.height,
+                    color: Colors.black.withOpacity(0.2),
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  )
+                : Container()
+          ],
+        ),
       ),
     );
   }
