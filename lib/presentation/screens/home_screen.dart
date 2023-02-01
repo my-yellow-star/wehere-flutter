@@ -84,7 +84,7 @@ class _HomeScreenState extends State<HomeScreen>
               return ImageFiltered(
                 imageFilter: ImageFilter.blur(sigmaX: 16, sigmaY: 16),
                 child: CachedNetworkImage(
-                  imageUrl: item.thumbnail!,
+                  imageUrl: item.thumbnail ?? Constant.defaultImage,
                   fit: BoxFit.cover,
                 ),
               );

@@ -16,7 +16,7 @@ class NostalgiaSummaryCard extends StatelessWidget {
     return UnconstrainedBox(
       constrainedAxis: Axis.horizontal,
       child: CachedNetworkImage(
-        imageUrl: item.thumbnail!,
+        imageUrl: item.thumbnail ?? Constant.defaultImage,
         imageBuilder: (context, imageProvider) => Container(
           height: size.height / 2,
           margin: EdgeInsets.only(right: 24, left: 24),

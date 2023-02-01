@@ -14,7 +14,7 @@ class BackgroundImage extends StatelessWidget {
       children: [
         url == null
             ? Image.asset(
-                '${Constant.image}/airplane_window.jpg',
+                '${Constant.image}/sky-airplane.png',
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.height,
                 fit: BoxFit.cover,
