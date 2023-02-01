@@ -5,7 +5,7 @@
 		<key>CFBundleDevelopmentRegion</key>
 		<string>$(DEVELOPMENT_LANGUAGE)</string>
 		<key>CFBundleDisplayName</key>
-		<string>Wehere Client</string>
+		<string>Pinpl</string>
 		<key>CFBundleExecutable</key>
 		<string>$(EXECUTABLE_NAME)</string>
 		<key>CFBundleIdentifier</key>
@@ -35,9 +35,9 @@
 		<key>NSLocationWhenInUseUsageDescription</key>
 		<string>The app needs location permission</string>
 		<key>NSPhotoLibraryUsageDescription</key>
-        <string>The app needs photo library permission to upload image</string>
-        <key>NSCameraUsageDescription</key>
-        <string>The app needs camera permission to upload picture</string>
+		<string>The app needs photo library permission to upload image</string>
+		<key>NSCameraUsageDescription</key>
+		<string>The app needs camera permission to upload picture</string>
 		<key>LSRequiresIPhoneOS</key>
 		<true/>
 		<key>UILaunchStoryboardName</key>
@@ -64,6 +64,8 @@
 		<key>UIApplicationSupportsIndirectInputEvents</key>
 		<true/>
 		<key>UIStatusBarHidden</key>
+		<false/>
+		<key>ITSAppUsesNonExemptEncryption</key>
 		<false/>
 	</dict>
 </plist>
