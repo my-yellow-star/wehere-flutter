@@ -131,7 +131,7 @@ class _MyPageScreenState extends State<MyPageScreen> with AfterLayoutMixin {
             ),
             SafeArea(
                 child: Container(
-              padding: EdgeInsets.only(left: 16, right: 16),
+              padding: EdgeInsets.only(left: 16, right: 16, top: 16),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [

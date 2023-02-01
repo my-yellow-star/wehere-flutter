@@ -2,15 +2,15 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:wehere_client/core/extensions.dart';
 import 'package:wehere_client/core/params/get_nostalgia.dart';
 import 'package:wehere_client/core/resources/constant.dart';
 import 'package:wehere_client/presentation/providers/location_provider.dart';
 import 'package:wehere_client/presentation/providers/nostalgia_list_provider.dart';
+import 'package:wehere_client/presentation/screens/create_nostalgia_screen.dart';
 import 'package:wehere_client/presentation/widgets/background_image.dart';
-import 'package:wehere_client/presentation/widgets/banner_image.dart';
 import 'package:wehere_client/presentation/widgets/nostalgia_summary_card.dart';
 import 'package:wehere_client/presentation/widgets/text.dart';
-import 'package:wehere_client/core/extensions.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -50,6 +50,14 @@ class _HomeScreenState extends State<HomeScreen>
     super.dispose();
   }
 
+  void _createNostalgia() {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => CreateNostalgiaScreen(),
+        ));
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -58,7 +66,6 @@ class _HomeScreenState extends State<HomeScreen>
       return Stack(
         children: const [
           BackgroundImage(),
-          SafeArea(child: BannerImage()),
           Center(child: CircularProgressIndicator())
         ],
       );
@@ -82,7 +89,6 @@ class _HomeScreenState extends State<HomeScreen>
               );
             },
           ),
-          SafeArea(child: BannerImage()),
           Positioned.fill(
             bottom: size.height * .05,
             child: Visibility(
@@ -152,7 +158,33 @@ class _HomeScreenState extends State<HomeScreen>
                 ),
               ),
             ),
-          )
+          ),
+          SafeArea(
+              child: Container(
+                  padding: EdgeInsets.only(left: 16, top: 16, right: 16),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      IText(
+                        '실시간',
+                        weight: FontWeight.w100,
+                        shadows: const [
+                          Shadow(blurRadius: 2, color: Colors.black)
+                        ],
+                      ),
+                      InkWell(
+                        onTap: _createNostalgia,
+                        child: Icon(
+                          Icons.add_circle_outline,
+                          color: Colors.white,
+                          weight: 0.5,
+                          shadows: const [
+                            Shadow(blurRadius: 2, color: Colors.black)
+                          ],
+                        ),
+                      )
+                    ],
+                  )))
         ],
       ),
     );
