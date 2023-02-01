@@ -9,6 +9,8 @@ class StatisticSummaryModel extends StatisticSummary {
     return StatisticSummaryModel(
         json['totalCount'],
         json['accumulatedDistance'],
-        LocationModel.fromJson(json['lastLocation']));
+        json['lastLocation'] != null
+            ? LocationModel.fromJson(json['lastLocation'])
+            : null);
   }
 }
