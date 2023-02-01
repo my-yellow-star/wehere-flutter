@@ -60,8 +60,12 @@ class _MyPageScreenState extends State<MyPageScreen> with AfterLayoutMixin {
 
   void _onTapEditButton() {}
 
-  void _onTapPlusButton() {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => CreateNostalgiaScreen(),));
+  void _createNostalgia() {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => CreateNostalgiaScreen(),
+        ));
   }
 
   void _onTapSettingButton() {}
@@ -73,11 +77,19 @@ class _MyPageScreenState extends State<MyPageScreen> with AfterLayoutMixin {
 
     final summary = context.watch<StatisticProvider>().summary;
     final items = context.watch<NostalgiaListProvider>().items;
+    final size = MediaQuery.of(context).size;
     return Scaffold(
         backgroundColor: ColorTheme.transparent,
         body: Stack(
           children: [
             BackgroundImage(opacity: 0),
+            Positioned(
+                bottom: 0,
+                child: Container(
+                  height: size.height * .45,
+                  width: size.width,
+                  color: Colors.black,
+                )),
             NotificationListener<ScrollNotification>(
               onNotification: (notification) {
                 if (notification is ScrollEndNotification) {
@@ -86,6 +98,7 @@ class _MyPageScreenState extends State<MyPageScreen> with AfterLayoutMixin {
                 return false;
               },
               child: CustomScrollView(
+                physics: RangeMaintainingScrollPhysics(),
                 slivers: [
                   ProfileSummaryContainer(member: member, summary: summary),
                   SliverToBoxAdapter(
@@ -93,7 +106,26 @@ class _MyPageScreenState extends State<MyPageScreen> with AfterLayoutMixin {
                         ? ProfileMapView(items: _recent30Items)
                         : Container(),
                   ),
-                  NostalgiaListGrid(items: items),
+                  items.isNotEmpty
+                      ? NostalgiaListGrid(items: items)
+                      : SliverToBoxAdapter(
+                          child: SizedBox(
+                          height: size.height * .4,
+                          child: Stack(
+                            children: [
+                              InkWell(
+                                onTap: _createNostalgia,
+                                child: Center(
+                                  child: IText(
+                                    '추억이 비어있어요\n첫 추억을 남겨보세요!',
+                                    weight: FontWeight.w100,
+                                    align: TextAlign.center,
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ))
                 ],
               ),
             ),
@@ -115,7 +147,7 @@ class _MyPageScreenState extends State<MyPageScreen> with AfterLayoutMixin {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       InkWell(
-                        onTap: _onTapPlusButton,
+                        onTap: _createNostalgia,
                         child: Icon(
                           Icons.add_circle,
                           size: 24,
