@@ -22,6 +22,12 @@ class _CreateNostalgiaScreenState extends State<CreateNostalgiaScreen> {
   final TextEditingController _descriptionController = TextEditingController();
   final FocusNode _descriptionFocusNode = FocusNode();
 
+  static final _titleKey =
+      GlobalKey<EditableTextState>(debugLabel: 'title key');
+
+  static final _descriptionKey =
+      GlobalKey<EditableTextState>(debugLabel: 'description key');
+
   @override
   void initState() {
     final provider = context.read<CreateNostalgiaProvider>();
@@ -97,8 +103,7 @@ class _CreateNostalgiaScreenState extends State<CreateNostalgiaScreen> {
                           ),
                           TextField(
                             autofocus: true,
-                            key: GlobalKey<EditableTextState>(
-                                debugLabel: 'title key'),
+                            key: _titleKey,
                             controller: _titleController,
                             onChanged: nostalgia.updateTitle,
                             style: TextStyle(
@@ -116,8 +121,7 @@ class _CreateNostalgiaScreenState extends State<CreateNostalgiaScreen> {
                           ),
                           TextField(
                             focusNode: _descriptionFocusNode,
-                            key: GlobalKey<EditableTextState>(
-                                debugLabel: 'description key'),
+                            key: _descriptionKey,
                             controller: _descriptionController,
                             onChanged: nostalgia.updateDescription,
                             style: TextStyle(
