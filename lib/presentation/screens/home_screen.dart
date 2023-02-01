@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wehere_client/core/extensions.dart';
@@ -82,8 +83,8 @@ class _HomeScreenState extends State<HomeScreen>
             itemBuilder: (context, index) {
               return ImageFiltered(
                 imageFilter: ImageFilter.blur(sigmaX: 16, sigmaY: 16),
-                child: Image.network(
-                  item.thumbnail!,
+                child: CachedNetworkImage(
+                  imageUrl: item.thumbnail!,
                   fit: BoxFit.cover,
                 ),
               );

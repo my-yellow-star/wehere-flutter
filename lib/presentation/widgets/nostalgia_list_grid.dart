@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:wehere_client/domain/entities/nostalgia_summary.dart';
 
@@ -16,8 +17,8 @@ class NostalgiaListGrid extends StatelessWidget {
         crossAxisSpacing: 1,
       ),
       delegate: SliverChildBuilderDelegate(
-          (context, index) => Image.network(
-                items[index].thumbnail!,
+          (context, index) => CachedNetworkImage(
+                imageUrl: items[index].thumbnail!,
                 width: size.width / 3,
                 height: size.width / 3,
                 fit: BoxFit.cover,
