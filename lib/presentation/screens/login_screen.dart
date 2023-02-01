@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:wehere_client/core/resources/constant.dart';
 import 'package:wehere_client/presentation/routes.dart';
 import 'package:wehere_client/presentation/screens/main_screen.dart';
 import 'package:wehere_client/presentation/widgets/alert.dart';
 import 'package:wehere_client/presentation/widgets/background_image.dart';
 import 'package:wehere_client/presentation/widgets/login_button.dart';
+import 'package:wehere_client/presentation/widgets/text.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -29,8 +29,7 @@ class LoginScreen extends StatelessWidget {
           BackgroundImage(),
           Column(children: [
             Container(height: MediaQuery.of(context).size.height / 3),
-            Image(
-                width: 200, image: AssetImage('${Constant.image}/banner.png')),
+            IText('Tempus fugit,non autem memoria', weight: FontWeight.w100)
           ]),
           SafeArea(
             child: Row(children: [
@@ -43,8 +42,10 @@ class LoginScreen extends StatelessWidget {
                         padding: EdgeInsets.only(bottom: 48),
                         child: Column(
                           children: [
-                            Text('다음 계정으로 로그인',
-                                style: TextStyle(color: Colors.white)),
+                            IText(
+                              '다음 계정으로 시작',
+                              weight: FontWeight.w100,
+                            ),
                             Container(
                               margin: EdgeInsets.only(top: 12),
                               child: GoogleLoginButton.build(

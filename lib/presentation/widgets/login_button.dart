@@ -30,9 +30,10 @@ class GoogleLoginButton {
   static void _signInWithGoogle(AuthenticationProvider provider,
       VoidCallback onLoginSucceed, VoidCallback onLoginFailed) async {
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+    if (googleUser == null) return;
 
-    final auth = await googleUser?.authentication;
-    final token = auth?.idToken;
+    final auth = await googleUser.authentication;
+    final token = auth.idToken;
 
     if (token != null) {
       await provider.login(OAuth2LoginParams(token, 'google'));
