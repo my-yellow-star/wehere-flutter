@@ -45,7 +45,10 @@ class _ProfileMapViewState extends State<ProfileMapView> {
 
   double _getZoom() {
     return LocationUtil.calculateZoom(
-        context.read<LocationProvider>().location!, _maxDistance, _mapHeight);
+            context.read<LocationProvider>().location!,
+            _maxDistance,
+            _mapHeight)
+        .clamp(0, 12);
   }
 
   LatLng _toLatLng(Location location) =>
