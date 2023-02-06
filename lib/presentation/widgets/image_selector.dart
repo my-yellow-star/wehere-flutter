@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
@@ -17,16 +16,16 @@ class _ImageSelectorState extends State<ImageSelector> {
   final ImagePicker _picker = ImagePicker();
 
   Future<void> _pickImage(ImageSource source) async {
-    final List<MultipartFile> files = [];
+    final List<XFile> files = [];
     final provider = context.read<CreateNostalgiaProvider>();
     if (source == ImageSource.camera) {
       final XFile? image = await _picker.pickImage(source: source);
       if (image != null) {
-        files.add(MultipartFile.fromFileSync(image.path));
+        files.add(image);
       }
     } else {
       final List<XFile> images = await _picker.pickMultiImage();
-      files.addAll(images.map((e) => MultipartFile.fromFileSync(e.path)));
+      files.addAll(images);
     }
     provider.addImages(files);
   }

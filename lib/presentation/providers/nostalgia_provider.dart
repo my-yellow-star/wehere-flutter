@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:wehere_client/core/params/create_nostalgia.dart';
 import 'package:wehere_client/core/params/nostalgia_visibility.dart';
 import 'package:wehere_client/core/resources/data_state.dart';
-import 'package:wehere_client/core/resources/logger.dart';
 import 'package:wehere_client/domain/entities/location.dart';
 import 'package:wehere_client/domain/usecases/create_nostalgia_usecase.dart';
 import 'package:wehere_client/domain/usecases/upload_file_usecase.dart';
@@ -15,7 +15,7 @@ class CreateNostalgiaProvider extends ApiProvider {
   String title = '';
   String description = '';
   NostalgiaVisibility visibility = NostalgiaVisibility.all;
-  List<String> images = [];
+  List<XFile> images = [];
 
   CreateNostalgiaProvider(
       this._createNostalgiaUseCase, this._uploadFileUseCase);
@@ -36,7 +36,7 @@ class CreateNostalgiaProvider extends ApiProvider {
       title: title,
       description: description,
       visibility: visibility,
-      images: images,
+      images: await _uploadImages(images),
       latitude: location.latitude,
       longitude: location.longitude,
     ));
@@ -62,19 +62,8 @@ class CreateNostalgiaProvider extends ApiProvider {
     notifyListeners();
   }
 
-  Future<void> addImages(List<MultipartFile> files) async {
-    isLoading = true;
-    notifyListeners();
-    final response = await _uploadFileUseCase(files);
-    apiLogger.d(images);
-    apiLogger.d(response);
-    for (var element in response) {
-      if (element is DataSuccess) {
-        images = [...images, element.data!];
-      }
-    }
-    apiLogger.d(images);
-    isLoading = false;
+  Future<void> addImages(List<XFile> images) async {
+    this.images = [...this.images, ...images];
     notifyListeners();
   }
 
@@ -85,5 +74,18 @@ class CreateNostalgiaProvider extends ApiProvider {
 
   bool isWriting() {
     return title.isNotEmpty || description.isNotEmpty || images.isNotEmpty;
+  }
+
+  Future<List<String>> _uploadImages(List<XFile> images) async {
+    final files =
+        images.map((e) => MultipartFile.fromFileSync(e.path)).toList();
+    final responses = await _uploadFileUseCase(files);
+    final List<String> uploadedUrls = [];
+    for (var response in responses) {
+      if (response is DataSuccess) {
+        uploadedUrls.add(response.data!);
+      }
+    }
+    return uploadedUrls;
   }
 }

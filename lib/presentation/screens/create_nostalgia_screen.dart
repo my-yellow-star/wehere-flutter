@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wehere_client/core/resources/constant.dart';
@@ -71,7 +73,10 @@ class _CreateNostalgiaScreenState extends State<CreateNostalgiaScreen> {
                         ? Gallery(
                             height: size.height * .3,
                             width: size.width,
-                            urls: nostalgia.images,
+                            images: nostalgia.images
+                                .map((e) => File(e.path))
+                                .toList(),
+                            onDeleteItem: nostalgia.deleteImage,
                           )
                         : Container(
                             height: size.height * .3,
