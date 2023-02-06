@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:wehere_client/core/resources/constant.dart';
-import 'package:wehere_client/presentation/providers/nostalgia_provider.dart';
+import 'package:wehere_client/presentation/providers/create_nostalgia_provider.dart';
 import 'package:wehere_client/presentation/widgets/text.dart';
 
 class ImageSelector extends StatefulWidget {
