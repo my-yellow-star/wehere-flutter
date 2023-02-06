@@ -12,6 +12,7 @@ import 'package:wehere_client/presentation/image.dart';
 import 'package:wehere_client/presentation/providers/authentication_provider.dart';
 import 'package:wehere_client/presentation/providers/location_provider.dart';
 import 'package:wehere_client/presentation/providers/nostalgia_provider.dart';
+import 'package:wehere_client/presentation/widgets/alert.dart';
 import 'package:wehere_client/presentation/widgets/back_button.dart';
 import 'package:wehere_client/presentation/widgets/bottom_sheet.dart';
 import 'package:wehere_client/presentation/widgets/button.dart';
@@ -19,6 +20,8 @@ import 'package:wehere_client/presentation/widgets/gallery.dart';
 import 'package:wehere_client/presentation/widgets/mixin.dart';
 import 'package:wehere_client/presentation/widgets/profile_image.dart';
 import 'package:wehere_client/presentation/widgets/text.dart';
+
+import 'package:wehere_client/presentation/widgets/not_found_view.dart';
 
 class NostalgiaDetailScreen extends StatefulWidget {
   const NostalgiaDetailScreen({super.key});
@@ -50,7 +53,8 @@ class _NostalgiaDetailScreenState extends State<NostalgiaDetailScreen>
   void _onTapProfile() {}
 
   void _onTapSetting() {
-    final nostalgia = context.read<NostalgiaProvider>().nostalgia!;
+    final provider = context.read<NostalgiaProvider>();
+    final nostalgia = provider.nostalgia!;
     showModalBottomSheet(
         context: context,
         builder: (_) => IBottomSheet(items: [
@@ -61,14 +65,30 @@ class _NostalgiaDetailScreenState extends State<NostalgiaDetailScreen>
                       arguments: nostalgia.id);
                 },
               ),
-              BottomSheetItem(title: '삭제', onPress: () {}, color: Colors.red)
+              BottomSheetItem(
+                  title: '삭제', onPress: _showDeleteDialog, color: Colors.red)
             ]));
+  }
+
+  Future<void> _showDeleteDialog() async {
+    Alert.build(context,
+        title: '정말 삭제하시겠습니까?',
+        description: '지워진 추억은 돌아오지 않아요',
+        showCancelButton: true,
+        confirmCallback: _delete);
+  }
+
+  Future<void> _delete() async {
+    final provider = context.read<NostalgiaProvider>();
+    await provider.delete();
+    if (mounted) Navigator.pop(context);
   }
 
   Widget _mapView(Location location) {
     final position = LatLng(location.latitude, location.longitude);
     return GoogleMap(
       onMapCreated: (controller) {
+        if (_controller.isCompleted) return;
         _controller.complete(controller);
       },
       myLocationButtonEnabled: false,
@@ -89,6 +109,11 @@ class _NostalgiaDetailScreenState extends State<NostalgiaDetailScreen>
     final isMine =
         context.read<AuthenticationProvider>().authentication?.member.id ==
             item?.member.id;
+
+    if (provider.error?.isNotFound == true) {
+      return NotFoundView();
+    }
+
     return Scaffold(
         body: provider.isLoading
             ? Center(child: CircularProgressIndicator())

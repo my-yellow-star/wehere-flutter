@@ -75,4 +75,9 @@ class NostalgiaService {
     dio.options.contentType = 'application/json';
     await dio.patch('$_endpoint/${params.id}', data: requestBody);
   }
+
+  Future<void> delete(String nostalgiaId) async {
+    final dio = Api().dio;
+    await dio.delete('$_endpoint/$nostalgiaId');
+  }
 }

@@ -8,6 +8,7 @@ import 'package:wehere_client/domain/repositories/file_repository.dart';
 import 'package:wehere_client/domain/repositories/member_repository.dart';
 import 'package:wehere_client/domain/repositories/nostalgia_repository.dart';
 import 'package:wehere_client/domain/usecases/create_nostalgia_usecase.dart';
+import 'package:wehere_client/domain/usecases/delete_nostalgia_usecase.dart';
 import 'package:wehere_client/domain/usecases/get_nostalgia_list_usecase.dart';
 import 'package:wehere_client/domain/usecases/get_nostalgia_usecase.dart';
 import 'package:wehere_client/domain/usecases/get_profile_usecase.dart';
@@ -42,6 +43,7 @@ Future<void> initializeDependencies() async {
   injector.registerSingleton(UploadFileUseCase(injector()));
   injector.registerSingleton(GetNostalgiaUseCase(injector()));
   injector.registerSingleton(UpdateNostalgiaUseCase(injector()));
+  injector.registerSingleton(DeleteNostalgiaUseCase(injector()));
 
   // provider
   injector.registerFactory(
@@ -50,5 +52,5 @@ Future<void> initializeDependencies() async {
   injector.registerFactory(() => StatisticProvider(injector()));
   injector.registerFactory(() =>
       NostalgiaEditorProvider(injector(), injector(), injector(), injector()));
-  injector.registerFactory(() => NostalgiaProvider(injector()));
+  injector.registerFactory(() => NostalgiaProvider(injector(), injector()));
 }

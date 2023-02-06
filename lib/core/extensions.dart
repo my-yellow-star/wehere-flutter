@@ -1,3 +1,5 @@
+import 'package:dio/dio.dart';
+
 extension DistanceParser on int {
   String parseDistance() {
     if (this < 1000) {
@@ -42,5 +44,11 @@ extension DateParser on DateTime {
 
   String parseString() {
     return '$year. $month. $day.';
+  }
+}
+
+extension ErrorConverter on DioError {
+  bool get isNotFound {
+    return response?.statusCode == 404;
   }
 }

@@ -59,4 +59,14 @@ class NostalgiaRepositoryImpl extends NostalgiaRepository {
       return DataFailed(error);
     }
   }
+
+  @override
+  Future<DataState<dynamic>> delete(String nostalgiaId) async {
+    try {
+      await _nostalgiaService.delete(nostalgiaId);
+      return DataSuccess(null);
+    } on DioError catch (error) {
+      return DataFailed(error);
+    }
+  }
 }
