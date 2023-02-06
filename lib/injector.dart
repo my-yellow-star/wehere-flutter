@@ -14,10 +14,11 @@ import 'package:wehere_client/domain/usecases/get_profile_usecase.dart';
 import 'package:wehere_client/domain/usecases/get_statistic_summary_usecase.dart';
 import 'package:wehere_client/domain/usecases/logout_usecase.dart';
 import 'package:wehere_client/domain/usecases/oauth2_login_usecase.dart';
+import 'package:wehere_client/domain/usecases/update_nostalgia_usecase.dart';
 import 'package:wehere_client/domain/usecases/upload_file_usecase.dart';
 import 'package:wehere_client/presentation/providers/authentication_provider.dart';
 import 'package:wehere_client/presentation/providers/nostalgia_list_provider.dart';
-import 'package:wehere_client/presentation/providers/create_nostalgia_provider.dart';
+import 'package:wehere_client/presentation/providers/nostalgia_editor_provider.dart';
 import 'package:wehere_client/presentation/providers/nostalgia_provider.dart';
 import 'package:wehere_client/presentation/providers/statistic_provider.dart';
 
@@ -40,13 +41,14 @@ Future<void> initializeDependencies() async {
   injector.registerSingleton(CreateNostalgiaUseCase(injector()));
   injector.registerSingleton(UploadFileUseCase(injector()));
   injector.registerSingleton(GetNostalgiaUseCase(injector()));
+  injector.registerSingleton(UpdateNostalgiaUseCase(injector()));
 
   // provider
   injector.registerFactory(
       () => AuthenticationProvider(injector(), injector(), injector()));
   injector.registerFactory(() => NostalgiaListProvider(injector()));
   injector.registerFactory(() => StatisticProvider(injector()));
-  injector
-      .registerFactory(() => CreateNostalgiaProvider(injector(), injector()));
+  injector.registerFactory(() =>
+      NostalgiaEditorProvider(injector(), injector(), injector(), injector()));
   injector.registerFactory(() => NostalgiaProvider(injector()));
 }

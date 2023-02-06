@@ -1,5 +1,6 @@
 import 'package:wehere_client/core/params/create_nostalgia.dart';
 import 'package:wehere_client/core/params/get_nostalgia.dart';
+import 'package:wehere_client/core/params/update_nostalgia.dart';
 import 'package:wehere_client/data/datasources/api.dart';
 import 'package:wehere_client/data/models/nostalgia_model.dart';
 import 'package:wehere_client/data/models/nostalgia_summary_model.dart';
@@ -61,5 +62,17 @@ class NostalgiaService {
     dio.options.contentType = 'application/json';
     final response = await dio.post(_endpoint, data: requestBody);
     return response.data['id'];
+  }
+
+  Future<void> update(UpdateNostalgiaParams params) async {
+    final dio = Api().dio;
+    final requestBody = {
+      'title': params.title,
+      'description': params.description,
+      'visibility': params.visibility?.name.toUpperCase(),
+      'images': params.images
+    };
+    dio.options.contentType = 'application/json';
+    await dio.patch('$_endpoint/${params.id}', data: requestBody);
   }
 }

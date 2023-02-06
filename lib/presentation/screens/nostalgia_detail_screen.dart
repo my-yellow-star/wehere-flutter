@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:wehere_client/core/extensions.dart';
 import 'package:wehere_client/core/resources/constant.dart';
 import 'package:wehere_client/domain/entities/location.dart';
+import 'package:wehere_client/presentation/image.dart';
 import 'package:wehere_client/presentation/providers/authentication_provider.dart';
 import 'package:wehere_client/presentation/providers/location_provider.dart';
 import 'package:wehere_client/presentation/providers/nostalgia_provider.dart';
@@ -49,12 +50,16 @@ class _NostalgiaDetailScreenState extends State<NostalgiaDetailScreen>
   void _onTapProfile() {}
 
   void _onTapSetting() {
+    final nostalgia = context.read<NostalgiaProvider>().nostalgia!;
     showModalBottomSheet(
         context: context,
         builder: (_) => IBottomSheet(items: [
               BottomSheetItem(
                 title: '수정',
-                onPress: () {},
+                onPress: () {
+                  Navigator.pushNamed(context, 'nostalgia-editor',
+                      arguments: nostalgia.id);
+                },
               ),
               BottomSheetItem(title: '삭제', onPress: () {}, color: Colors.red)
             ]));
@@ -116,8 +121,10 @@ class _NostalgiaDetailScreenState extends State<NostalgiaDetailScreen>
                                   ? Gallery(
                                       height: size.height * .3,
                                       width: size.width,
-                                      images: item.images,
-                                      imageType: ImageType.network)
+                                      images: item.images
+                                          .map((url) => IImageSource(
+                                              url, ImageType.network))
+                                          .toList())
                                   : Image.asset(
                                       Constant.defaultImageAsset,
                                       height: size.height * .3,
