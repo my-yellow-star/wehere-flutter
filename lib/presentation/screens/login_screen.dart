@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wehere_client/core/resources/constant.dart';
 import 'package:wehere_client/presentation/routes.dart';
 import 'package:wehere_client/presentation/screens/main_screen.dart';
 import 'package:wehere_client/presentation/widgets/alert.dart';
@@ -29,7 +30,14 @@ class LoginScreen extends StatelessWidget {
           BackgroundImage(),
           Column(children: [
             Container(height: MediaQuery.of(context).size.height / 3),
-            IText('Tempus fugit,non autem memoria', weight: FontWeight.w100)
+            Image.asset(
+              '${Constant.image}/logo-white.png',
+              height: 48,
+              width: 48,
+            ),
+            Container(height: 18),
+            IText('PINPLE'),
+            IText('이순간을 기억할 때', weight: FontWeight.w100)
           ]),
           SafeArea(
             child: Row(children: [
