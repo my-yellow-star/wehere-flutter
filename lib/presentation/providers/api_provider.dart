@@ -1,9 +1,11 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 
-class ApiProvider extends ChangeNotifier {
+abstract class ApiProvider extends ChangeNotifier {
   bool _isLoading = false;
   DioError? _error;
+
+  void initialize();
 
   bool get isLoading => _isLoading;
 

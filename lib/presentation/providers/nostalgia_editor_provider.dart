@@ -27,12 +27,14 @@ class NostalgiaEditorProvider extends ApiProvider {
   NostalgiaEditorProvider(this._createNostalgiaUseCase, this._uploadFileUseCase,
       this._updateNostalgiaUseCase, this._getNostalgiaUseCase);
 
+  @override
   void initialize() {
     title = '';
     description = '';
     visibility = NostalgiaVisibility.all;
     images = [];
     isLoading = false;
+    error = null;
   }
 
   Future<void> loadNostalgia(String id) async {

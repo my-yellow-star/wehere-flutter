@@ -14,11 +14,13 @@ class NostalgiaListProvider extends ApiProvider {
 
   NostalgiaListProvider(this._getNostalgiaListUseCase);
 
+  @override
   void initialize() {
     _page = 0;
     _end = false;
     isLoading = true;
     items = [];
+    error = null;
   }
 
   Future<void> loadList({

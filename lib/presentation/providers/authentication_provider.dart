@@ -18,7 +18,10 @@ class AuthenticationProvider extends ApiProvider {
 
   Authentication? get authentication => _authentication;
 
+  @override
   Future<void> initialize() async {
+    error = null;
+    isLoading = false;
     final response = await _getProfileUseCase();
     if (response is DataSuccess && response.data != null) {
       _authentication = Authentication(response.data!);

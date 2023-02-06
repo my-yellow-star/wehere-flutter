@@ -9,9 +9,11 @@ class StatisticProvider extends ApiProvider {
 
   StatisticProvider(this._getStatisticSummaryUseCase);
 
+  @override
   void initialize() {
     summary = null;
     isLoading = true;
+    error = null;
   }
 
   Future<void> getSummary(String memberId) async {
