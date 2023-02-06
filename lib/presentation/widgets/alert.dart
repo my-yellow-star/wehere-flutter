@@ -17,12 +17,12 @@ class Alert {
                 title: title,
                 description: description,
                 onCancel: () {
-                  cancelCallback?.call();
                   Navigator.pop(context);
+                  cancelCallback?.call();
                 },
                 onConfirm: () {
-                  confirmCallback?.call();
                   Navigator.pop(context);
+                  confirmCallback?.call();
                 },
                 showCancelButton: showCancelButton,
                 cancelButtonTitle: '취소',
