@@ -18,4 +18,12 @@ class GetNostalgiaParams extends PaginationParams {
   }
 }
 
+class GetNostalgiaDetailParams {
+  final String nostalgiaId;
+  final double? latitude;
+  final double? longitude;
+
+  GetNostalgiaDetailParams(this.nostalgiaId, this.latitude, this.longitude);
+}
+
 enum NostalgiaCondition { around, member, recent }

@@ -6,6 +6,8 @@ import 'package:wehere_client/injector.dart';
 import 'package:wehere_client/presentation/providers/authentication_provider.dart';
 import 'package:wehere_client/presentation/providers/location_provider.dart';
 import 'package:wehere_client/presentation/providers/create_nostalgia_provider.dart';
+import 'package:wehere_client/presentation/providers/nostalgia_provider.dart';
+import 'package:wehere_client/presentation/routes.dart';
 import 'package:wehere_client/presentation/screens/login_screen.dart';
 import 'package:wehere_client/presentation/screens/main_screen.dart';
 
@@ -36,11 +38,13 @@ Future<void> main() async {
         ChangeNotifierProvider(create: (_) => authenticationProvider),
         ChangeNotifierProvider(create: (_) => locationProvider),
         ChangeNotifierProvider(
-            create: (_) => injector<CreateNostalgiaProvider>())
+            create: (_) => injector<CreateNostalgiaProvider>()),
+        ChangeNotifierProvider(create: (_) => injector<NostalgiaProvider>())
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(fontFamily: Constant.fontFamily),
         home: resolveScreen(),
+        routes: Routes.map,
       )));
 }

@@ -1,10 +1,8 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wehere_client/core/resources/constant.dart';
-import 'package:wehere_client/presentation/providers/location_provider.dart';
 import 'package:wehere_client/presentation/providers/create_nostalgia_provider.dart';
+import 'package:wehere_client/presentation/providers/location_provider.dart';
 import 'package:wehere_client/presentation/widgets/alert.dart';
 import 'package:wehere_client/presentation/widgets/back_button.dart';
 import 'package:wehere_client/presentation/widgets/gallery.dart';
@@ -73,9 +71,9 @@ class _CreateNostalgiaScreenState extends State<CreateNostalgiaScreen> {
                         ? Gallery(
                             height: size.height * .3,
                             width: size.width,
-                            images: nostalgia.images
-                                .map((e) => File(e.path))
-                                .toList(),
+                            images:
+                                nostalgia.images.map((e) => e.path).toList(),
+                            imageType: ImageType.file,
                             onDeleteItem: nostalgia.deleteImage,
                           )
                         : Container(

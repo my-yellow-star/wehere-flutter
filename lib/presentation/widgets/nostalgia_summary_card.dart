@@ -13,43 +13,49 @@ class NostalgiaSummaryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return UnconstrainedBox(
-      constrainedAxis: Axis.horizontal,
-      child: CachedNetworkImage(
-        imageUrl: item.thumbnail ?? Constant.defaultImage,
-        imageBuilder: (context, imageProvider) => Container(
-          height: size.height / 2,
-          margin: EdgeInsets.only(right: 24, left: 24),
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12),
-              boxShadow: const [
-                BoxShadow(
-                    offset: Offset(0, 26),
-                    color: Colors.black54,
-                    blurRadius: 16,
-                    spreadRadius: -12),
-              ],
-              image: DecorationImage(fit: BoxFit.cover, image: imageProvider)),
-          child: Container(
-            padding: EdgeInsets.all(16),
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    ProfileImage(size: 18, url: item.member.profileImageUrl),
-                    Container(width: 8),
-                    IText(
-                      item.member.nickname,
-                      size: FontSize.small,
-                      shadows: [
-                        Shadow(
-                            color: Colors.black.withOpacity(0.4),
-                            blurRadius: 16)
-                      ],
-                    )
-                  ],
-                ),
-              ],
+    return InkWell(
+      onTap: () {
+        Navigator.pushNamed(context, 'nostalgia-detail', arguments: item.id);
+      },
+      child: UnconstrainedBox(
+        constrainedAxis: Axis.horizontal,
+        child: CachedNetworkImage(
+          imageUrl: item.thumbnail ?? Constant.defaultImage,
+          imageBuilder: (context, imageProvider) => Container(
+            height: size.height / 2,
+            margin: EdgeInsets.only(right: 24, left: 24),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                boxShadow: const [
+                  BoxShadow(
+                      offset: Offset(0, 26),
+                      color: Colors.black54,
+                      blurRadius: 16,
+                      spreadRadius: -12),
+                ],
+                image:
+                    DecorationImage(fit: BoxFit.cover, image: imageProvider)),
+            child: Container(
+              padding: EdgeInsets.all(16),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      ProfileImage(size: 18, url: item.member.profileImageUrl),
+                      Container(width: 8),
+                      IText(
+                        item.member.nickname,
+                        size: FontSize.small,
+                        shadows: [
+                          Shadow(
+                              color: Colors.black.withOpacity(0.4),
+                              blurRadius: 16)
+                        ],
+                      )
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ),

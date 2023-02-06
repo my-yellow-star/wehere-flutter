@@ -1,6 +1,7 @@
 import 'package:wehere_client/core/params/create_nostalgia.dart';
 import 'package:wehere_client/core/params/get_nostalgia.dart';
 import 'package:wehere_client/data/datasources/api.dart';
+import 'package:wehere_client/data/models/nostalgia_model.dart';
 import 'package:wehere_client/data/models/nostalgia_summary_model.dart';
 import 'package:wehere_client/data/models/pagination_model.dart';
 import 'package:wehere_client/data/models/statistic_summary_model.dart';
@@ -28,6 +29,17 @@ class NostalgiaService {
     final response = await dio.get(_endpoint, queryParameters: queryParameters);
     return PaginationModel.fromJson(
         response.data, NostalgiaSummaryModel.fromJson);
+  }
+
+  Future<NostalgiaModel> get(GetNostalgiaDetailParams params) async {
+    final queryParameters = {
+      'latitude': params.latitude,
+      'longitude': params.longitude
+    };
+    final dio = Api().dio;
+    final response = await dio.get('$_endpoint/${params.nostalgiaId}',
+        queryParameters: queryParameters);
+    return NostalgiaModel.fromJson(response.data);
   }
 
   Future<StatisticSummaryModel> getStatisticSummary(String memberId) async {

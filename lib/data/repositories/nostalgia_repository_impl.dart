@@ -3,6 +3,7 @@ import 'package:wehere_client/core/params/create_nostalgia.dart';
 import 'package:wehere_client/core/params/get_nostalgia.dart';
 import 'package:wehere_client/core/resources/data_state.dart';
 import 'package:wehere_client/data/datasources/nostalgia_service.dart';
+import 'package:wehere_client/domain/entities/nostalgia.dart';
 import 'package:wehere_client/domain/entities/nostalgia_summary.dart';
 import 'package:wehere_client/domain/entities/pagination.dart';
 import 'package:wehere_client/domain/entities/statistic_summary.dart';
@@ -15,6 +16,16 @@ class NostalgiaRepositoryImpl extends NostalgiaRepository {
   Future<Pagination<NostalgiaSummary>> getList(
       GetNostalgiaParams params) async {
     return await _nostalgiaService.getList(params);
+  }
+
+  @override
+  Future<DataState<Nostalgia>> get(GetNostalgiaDetailParams params) async {
+    try {
+      final response = await _nostalgiaService.get(params);
+      return DataSuccess(response);
+    } on DioError catch (error) {
+      return DataFailed(error);
+    }
   }
 
   @override

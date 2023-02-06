@@ -39,4 +39,8 @@ extension DateParser on DateTime {
 
     return '${deltaInMonths ~/ 12}년 전'; // yrs ago
   }
+
+  String parseString() {
+    return '$year. $month. $day.';
+  }
 }

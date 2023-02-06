@@ -18,11 +18,17 @@ class NostalgiaListGrid extends StatelessWidget {
         crossAxisSpacing: 1,
       ),
       delegate: SliverChildBuilderDelegate(
-          (context, index) => CachedNetworkImage(
-                imageUrl: items[index].thumbnail ?? Constant.defaultImage,
-                width: size.width / 3,
-                height: size.width / 3,
-                fit: BoxFit.cover,
+          (context, index) => InkWell(
+                onTap: () {
+                  Navigator.pushNamed(context, 'nostalgia-detail',
+                      arguments: items[index].id);
+                },
+                child: CachedNetworkImage(
+                  imageUrl: items[index].thumbnail ?? Constant.defaultImage,
+                  width: size.width / 3,
+                  height: size.width / 3,
+                  fit: BoxFit.cover,
+                ),
               ),
           childCount: items.length),
     );
