@@ -4,30 +4,28 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
+import 'package:wehere_client/presentation/image.dart';
 import 'package:wehere_client/presentation/widgets/back_button.dart';
 import 'package:wehere_client/presentation/widgets/button.dart';
 import 'package:wehere_client/presentation/widgets/text.dart';
 
 class Gallery extends StatefulWidget {
-  final List<String> images;
-  final ImageType imageType;
+  final List<IImageSource> images;
   final double height;
   final double? width;
   final Function(int)? onDeleteItem;
 
-  const Gallery(
-      {super.key,
-      required this.images,
-      required this.height,
-      this.width,
-      this.onDeleteItem,
-      this.imageType = ImageType.network});
+  const Gallery({
+    super.key,
+    required this.images,
+    required this.height,
+    this.width,
+    this.onDeleteItem,
+  });
 
   @override
   _GalleryState createState() => _GalleryState();
 }
-
-enum ImageType { network, file }
 
 class _GalleryState extends State<Gallery> {
   int _itemIndex = 0;
@@ -38,7 +36,6 @@ class _GalleryState extends State<Gallery> {
       MaterialPageRoute(
         builder: (context) => GalleryPhotoViewWrapper(
           galleryItems: widget.images,
-          imageType: widget.imageType,
           backgroundDecoration: const BoxDecoration(
             color: Colors.black,
           ),
@@ -50,16 +47,16 @@ class _GalleryState extends State<Gallery> {
     );
   }
 
-  Widget _resolveImage(String path) {
-    switch (widget.imageType) {
+  Widget _resolveImage(IImageSource image) {
+    switch (image.type) {
       case ImageType.network:
         return CachedNetworkImage(
-          imageUrl: path,
+          imageUrl: image.path,
           fit: BoxFit.cover,
         );
       case ImageType.file:
         return Image.file(
-          File(path),
+          File(image.path),
           fit: BoxFit.cover,
         );
     }
@@ -114,7 +111,6 @@ class GalleryPhotoViewWrapper extends StatefulWidget {
     required this.galleryItems,
     this.scrollDirection = Axis.horizontal,
     this.onDeleteItem,
-    required this.imageType,
   }) : pageController = PageController(initialPage: initialIndex);
 
   final LoadingBuilder? loadingBuilder;
@@ -123,8 +119,7 @@ class GalleryPhotoViewWrapper extends StatefulWidget {
   final dynamic maxScale;
   final int initialIndex;
   final PageController pageController;
-  final List<String> galleryItems;
-  final ImageType imageType;
+  final List<IImageSource> galleryItems;
   final Axis scrollDirection;
   final Function(int)? onDeleteItem;
 
@@ -190,12 +185,12 @@ class _GalleryPhotoViewWrapperState extends State<GalleryPhotoViewWrapper> {
     );
   }
 
-  ImageProvider _resolveImageProvider(String path) {
-    switch (widget.imageType) {
+  ImageProvider _resolveImageProvider(IImageSource image) {
+    switch (image.type) {
       case ImageType.network:
-        return NetworkImage(path);
+        return NetworkImage(image.path);
       case ImageType.file:
-        return FileImage(File(path));
+        return FileImage(File(image.path));
     }
   }
 

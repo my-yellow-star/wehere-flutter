@@ -1,26 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wehere_client/core/resources/constant.dart';
-import 'package:wehere_client/presentation/providers/create_nostalgia_provider.dart';
 import 'package:wehere_client/presentation/providers/location_provider.dart';
+import 'package:wehere_client/presentation/providers/nostalgia_editor_provider.dart';
 import 'package:wehere_client/presentation/widgets/alert.dart';
 import 'package:wehere_client/presentation/widgets/back_button.dart';
 import 'package:wehere_client/presentation/widgets/gallery.dart';
+import 'package:wehere_client/presentation/widgets/mixin.dart';
 import 'package:wehere_client/presentation/widgets/text.dart';
 import 'package:wehere_client/presentation/widgets/upload_button.dart';
 import 'package:wehere_client/presentation/widgets/visibility_dropdown.dart';
 
-class CreateNostalgiaScreen extends StatefulWidget {
-  const CreateNostalgiaScreen({super.key});
+class NostalgiaEditorScreen extends StatefulWidget {
+  const NostalgiaEditorScreen({super.key});
 
   @override
-  _CreateNostalgiaScreenState createState() => _CreateNostalgiaScreenState();
+  _NostalgiaEditorScreenState createState() => _NostalgiaEditorScreenState();
 }
 
-class _CreateNostalgiaScreenState extends State<CreateNostalgiaScreen> {
+class _NostalgiaEditorScreenState extends State<NostalgiaEditorScreen>
+    with AfterLayoutMixin {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final FocusNode _descriptionFocusNode = FocusNode();
+  bool _editMode = false;
 
   static final _titleKey =
       GlobalKey<EditableTextState>(debugLabel: 'title key');
@@ -30,29 +33,48 @@ class _CreateNostalgiaScreenState extends State<CreateNostalgiaScreen> {
 
   @override
   void initState() {
-    final provider = context.read<CreateNostalgiaProvider>();
-    _titleController.text = provider.title;
-    _descriptionController.text = provider.description;
+    final provider = context.read<NostalgiaEditorProvider>();
+    provider.initialize();
     super.initState();
   }
 
-  Future<void> _create() async {
-    final nostalgia = context.read<CreateNostalgiaProvider>();
+  @override
+  void afterFirstLayout(BuildContext context) {
+    final args = ModalRoute.of(context)!.settings.arguments;
+    if (args != null) {
+      final provider = context.read<NostalgiaEditorProvider>();
+      provider.loadNostalgia(args as String).then((_) {
+        _titleController.text = provider.title;
+        _descriptionController.text = provider.description;
+      });
+      setState(() {
+        _editMode = true;
+      });
+    }
+  }
+
+  Future<void> _createOrUpdate() async {
+    final nostalgia = context.read<NostalgiaEditorProvider>();
     if (nostalgia.title.isEmpty) {
       Alert.build(context, title: '필수 항목을 입력해주세요', description: '제목을 입력해주세요');
       return;
     }
-    await nostalgia.create(context.read<LocationProvider>().location!);
-    if (nostalgia.id != null) {
-      nostalgia.initialize();
-      if (mounted) Navigator.pop(context);
+    if (_editMode) {
+      await nostalgia.update();
+    } else {
+      await nostalgia.create(context.read<LocationProvider>().location!);
+    }
+    if (nostalgia.error == null && mounted) {
+      Navigator.pushNamedAndRemoveUntil(context, 'nostalgia-detail',
+          ModalRoute.withName('main'),
+          arguments: nostalgia.id);
     }
   }
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final nostalgia = context.watch<CreateNostalgiaProvider>();
+    final nostalgia = context.watch<NostalgiaEditorProvider>();
     if (nostalgia.error != null) {
       Alert.build(context,
           title: '오류', description: '오류가 발생했어요. 잠시 후 다시 시도해주세요.');
@@ -71,9 +93,7 @@ class _CreateNostalgiaScreenState extends State<CreateNostalgiaScreen> {
                         ? Gallery(
                             height: size.height * .3,
                             width: size.width,
-                            images:
-                                nostalgia.images.map((e) => e.path).toList(),
-                            imageType: ImageType.file,
+                            images: nostalgia.images,
                             onDeleteItem: nostalgia.deleteImage,
                           )
                         : Container(
@@ -149,7 +169,7 @@ class _CreateNostalgiaScreenState extends State<CreateNostalgiaScreen> {
                   child: SafeArea(
                     top: false,
                     child: InkWell(
-                      onTap: _create,
+                      onTap: _createOrUpdate,
                       child: Center(
                           child: IText(
                         '업로드',

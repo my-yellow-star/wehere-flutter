@@ -6,7 +6,7 @@ import 'package:wehere_client/injector.dart';
 import 'package:wehere_client/presentation/providers/location_provider.dart';
 import 'package:wehere_client/presentation/providers/nostalgia_list_provider.dart';
 import 'package:wehere_client/presentation/providers/statistic_provider.dart';
-import 'package:wehere_client/presentation/screens/create_nostalgia_screen.dart';
+import 'package:wehere_client/presentation/screens/nostalgia_editor_screen.dart';
 import 'package:wehere_client/presentation/screens/home_screen.dart';
 import 'package:wehere_client/presentation/screens/map_screen.dart';
 import 'package:wehere_client/presentation/screens/mypage_screen.dart';
@@ -47,7 +47,7 @@ class MainScreenState extends State<MainScreen> {
       Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => CreateNostalgiaScreen(),
+            builder: (context) => NostalgiaEditorScreen(),
           ));
     }
     setState(() {

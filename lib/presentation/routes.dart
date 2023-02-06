@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:wehere_client/presentation/screens/create_nostalgia_screen.dart';
+import 'package:wehere_client/presentation/screens/nostalgia_editor_screen.dart';
 import 'package:wehere_client/presentation/screens/home_screen.dart';
 import 'package:wehere_client/presentation/screens/login_screen.dart';
 import 'package:wehere_client/presentation/screens/main_screen.dart';
@@ -16,7 +16,7 @@ class Routes {
     'home': (_) => HomeScreen(),
     'map': (_) => MapScreen(),
     'my-page': (_) => MyPageScreen(),
-    'create-nostalgia': (_) => CreateNostalgiaScreen(),
+    'nostalgia-editor': (_) => NostalgiaEditorScreen(),
     'nostalgia-detail': (_) => NostalgiaDetailScreen()
   };
 

@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wehere_client/core/params/nostalgia_visibility.dart';
 import 'package:wehere_client/core/resources/constant.dart';
-import 'package:wehere_client/presentation/providers/create_nostalgia_provider.dart';
+import 'package:wehere_client/presentation/providers/nostalgia_editor_provider.dart';
 import 'package:wehere_client/presentation/widgets/text.dart';
 
 class VisibilitySelector extends StatelessWidget {
   const VisibilitySelector({super.key});
 
   List<Widget> _items(BuildContext context) {
-    final provider = context.read<CreateNostalgiaProvider>();
+    final provider = context.read<NostalgiaEditorProvider>();
     return NostalgiaVisibility.values
         .map((e) => InkWell(
               onTap: () {

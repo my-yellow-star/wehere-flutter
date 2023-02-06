@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:wehere_client/core/resources/constant.dart';
-import 'package:wehere_client/presentation/providers/create_nostalgia_provider.dart';
+import 'package:wehere_client/presentation/image.dart';
+import 'package:wehere_client/presentation/providers/nostalgia_editor_provider.dart';
 import 'package:wehere_client/presentation/widgets/text.dart';
 
 class ImageSelector extends StatefulWidget {
@@ -17,7 +18,7 @@ class _ImageSelectorState extends State<ImageSelector> {
 
   Future<void> _pickImage(ImageSource source) async {
     final List<XFile> files = [];
-    final provider = context.read<CreateNostalgiaProvider>();
+    final provider = context.read<NostalgiaEditorProvider>();
     if (source == ImageSource.camera) {
       final XFile? image = await _picker.pickImage(source: source);
       if (image != null) {
@@ -27,7 +28,8 @@ class _ImageSelectorState extends State<ImageSelector> {
       final List<XFile> images = await _picker.pickMultiImage();
       files.addAll(images);
     }
-    provider.addImages(files);
+    provider.addImages(
+        files.map((e) => IImageSource(e.path, ImageType.file)).toList());
   }
 
   List<Widget> _items() {

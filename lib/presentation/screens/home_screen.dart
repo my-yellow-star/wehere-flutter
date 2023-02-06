@@ -8,7 +8,7 @@ import 'package:wehere_client/core/params/get_nostalgia.dart';
 import 'package:wehere_client/core/resources/constant.dart';
 import 'package:wehere_client/presentation/providers/location_provider.dart';
 import 'package:wehere_client/presentation/providers/nostalgia_list_provider.dart';
-import 'package:wehere_client/presentation/screens/create_nostalgia_screen.dart';
+import 'package:wehere_client/presentation/screens/nostalgia_editor_screen.dart';
 import 'package:wehere_client/presentation/widgets/background_image.dart';
 import 'package:wehere_client/presentation/widgets/nostalgia_summary_card.dart';
 import 'package:wehere_client/presentation/widgets/text.dart';
@@ -55,7 +55,7 @@ class _HomeScreenState extends State<HomeScreen>
     Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => CreateNostalgiaScreen(),
+          builder: (context) => NostalgiaEditorScreen(),
         ));
   }
 
