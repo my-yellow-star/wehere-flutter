@@ -8,6 +8,7 @@ class NostalgiaListProvider extends ApiProvider {
   final int _size = 10;
   int _page = 0;
   bool _end = false;
+  int total = 0;
   List<NostalgiaSummary> items = [];
 
   bool get end => _end;
@@ -20,6 +21,7 @@ class NostalgiaListProvider extends ApiProvider {
     _end = false;
     isLoading = true;
     items = [];
+    total = 0;
     error = null;
   }
 
@@ -42,6 +44,7 @@ class NostalgiaListProvider extends ApiProvider {
         longitude: longitude);
     final response = await _getNostalgiaListUseCase(params);
     items = [...items, ...response.items];
+    total = response.total;
     isLoading = false;
     if (response.nextPage != null) {
       _page = response.nextPage!;

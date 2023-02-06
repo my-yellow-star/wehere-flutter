@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:wehere_client/core/params/get_nostalgia.dart';
+import 'package:wehere_client/core/resources/constant.dart';
 import 'package:wehere_client/domain/entities/location.dart';
 import 'package:wehere_client/domain/entities/nostalgia_summary.dart';
 import 'package:wehere_client/presentation/providers/location_provider.dart';
@@ -13,7 +14,8 @@ import 'package:wehere_client/presentation/providers/nostalgia_list_provider.dar
 import 'package:wehere_client/presentation/widgets/marker.dart';
 import 'package:wehere_client/presentation/widgets/marker_generator.dart';
 import 'package:wehere_client/presentation/widgets/mixin.dart';
-import 'package:wehere_client/presentation/widgets/nostalgia_list_card.dart';
+import 'package:wehere_client/presentation/widgets/nostalgia_map_card.dart';
+import 'package:wehere_client/presentation/widgets/text.dart';
 
 class MapScreen extends StatefulWidget {
   const MapScreen({Key? key}) : super(key: key);
@@ -77,6 +79,7 @@ class _MapScreenState extends State<MapScreen> with AfterLayoutMixin {
         .asMap()
         .entries
         .map((entry) => Marker(
+            consumeTapEvents: true,
             markerId: MarkerId(nostalgiaList[entry.key].id),
             position: _getPosition(nostalgiaList[entry.key]),
             onTap: () {
@@ -123,8 +126,8 @@ class _MapScreenState extends State<MapScreen> with AfterLayoutMixin {
       circleId: CircleId('center'),
       center: LatLng(item.location.latitude, item.location.longitude),
       strokeWidth: 0,
-      radius: _metersPerPx() * 18,
-      fillColor: Colors.blue.withOpacity(0.5));
+      radius: _metersPerPx() * 12,
+      fillColor: Colors.blue.withOpacity(0.7));
 
   @override
   Widget build(BuildContext context) {
@@ -160,9 +163,31 @@ class _MapScreenState extends State<MapScreen> with AfterLayoutMixin {
             ? Container()
             : Align(
                 alignment: Alignment.bottomCenter,
-                child: Container(
-                    margin: EdgeInsets.only(bottom: 50),
-                    child: NostalgiaListCard(item: tappedItem!)))
+                child: NostalgiaMapCard(item: tappedItem!)),
+        SafeArea(
+            child: Container(
+          margin: EdgeInsets.all(16),
+          padding: EdgeInsets.fromLTRB(24, 6, 24, 6),
+          decoration: BoxDecoration(
+              color: Colors.black,
+              borderRadius: BorderRadius.circular(100),
+              boxShadow: [
+                BoxShadow(color: Colors.black.withOpacity(0.5), blurRadius: 8)
+              ]),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              IText(
+                '근처 추억 ',
+                size: FontSize.small,
+              ),
+              IText(
+                '${nostalgia.total}',
+                weight: FontWeight.bold,
+              ),
+            ],
+          ),
+        ))
       ],
     );
   }
