@@ -6,6 +6,7 @@ import 'package:wehere_client/injector.dart';
 import 'package:wehere_client/presentation/providers/authentication_provider.dart';
 import 'package:wehere_client/presentation/providers/location_provider.dart';
 import 'package:wehere_client/presentation/providers/nostalgia_list_provider.dart';
+import 'package:wehere_client/presentation/providers/nostalgia_map_provider.dart';
 import 'package:wehere_client/presentation/providers/statistic_provider.dart';
 import 'package:wehere_client/presentation/screens/home_screen.dart';
 import 'package:wehere_client/presentation/screens/map_screen.dart';
@@ -49,6 +50,7 @@ class MainScreenState extends State<MainScreen> with AfterLayoutMixin {
       providers: [
         ChangeNotifierProvider(
             create: (_) => injector<NostalgiaListProvider>()),
+        ChangeNotifierProvider(create: (_) => injector<NostalgiaMapProvider>()),
         ChangeNotifierProvider(create: (_) => injector<StatisticProvider>())
       ],
       child: MyPageScreen(),
