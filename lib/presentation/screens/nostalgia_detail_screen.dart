@@ -35,6 +35,7 @@ class _NostalgiaDetailScreenState extends State<NostalgiaDetailScreen>
   static const textColor = ColorTheme.primary;
   final Completer<GoogleMapController> _controller =
       Completer<GoogleMapController>();
+  final Set<Marker> _marker = {};
 
   @override
   void initState() {
@@ -47,7 +48,10 @@ class _NostalgiaDetailScreenState extends State<NostalgiaDetailScreen>
     final itemId = ModalRoute.of(context)!.settings.arguments as String;
     context
         .read<NostalgiaProvider>()
-        .loadItem(itemId, context.read<LocationProvider>().location!);
+        .loadItem(itemId, context.read<LocationProvider>().location!)
+        .then((_) {
+      _addMarker();
+    });
   }
 
   void _onTapProfile() {}
@@ -84,8 +88,19 @@ class _NostalgiaDetailScreenState extends State<NostalgiaDetailScreen>
     if (mounted) Navigator.pop(context);
   }
 
+  void _addMarker() async {
+    final item = context.read<NostalgiaProvider>().nostalgia;
+    final icon = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(), Constant.defaultMarker36);
+    setState(() {
+      _marker.add(Marker(
+          markerId: MarkerId(item!.id),
+          position: LatLng(item.location.latitude, item.location.longitude),
+          icon: icon));
+    });
+  }
+
   Widget _mapView(Location location) {
-    final position = LatLng(location.latitude, location.longitude);
     return GoogleMap(
       onMapCreated: (controller) {
         if (_controller.isCompleted) return;
@@ -97,7 +112,7 @@ class _NostalgiaDetailScreenState extends State<NostalgiaDetailScreen>
       },
       initialCameraPosition: CameraPosition(
           target: LatLng(location.latitude, location.longitude), zoom: 10),
-      markers: {Marker(markerId: MarkerId('item'), position: position)},
+      markers: _marker,
     );
   }
 
