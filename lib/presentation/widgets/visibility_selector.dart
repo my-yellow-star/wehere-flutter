@@ -10,7 +10,8 @@ class VisibilitySelector extends StatelessWidget {
 
   List<Widget> _items(BuildContext context) {
     final provider = context.read<NostalgiaEditorProvider>();
-    return NostalgiaVisibility.values
+    final options = [NostalgiaVisibility.all, NostalgiaVisibility.owner];
+    return options
         .map((e) => InkWell(
               onTap: () {
                 Navigator.pop(context);
