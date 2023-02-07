@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:wehere_client/core/params/update_member.dart';
 import 'package:wehere_client/core/resources/data_state.dart';
 import 'package:wehere_client/data/datasources/member_service.dart';
 import 'package:wehere_client/domain/entities/member.dart';
@@ -18,9 +19,29 @@ class MemberRepositoryImpl extends MemberRepository {
   }
 
   @override
+  Future<DataState<Member>> getOtherProfile(String memberId) async {
+    try {
+      final response = await _memberService.getOtherProfile(memberId);
+      return DataSuccess(response);
+    } on DioError catch (e) {
+      return DataFailed(e);
+    }
+  }
+
+  @override
   Future<DataState<dynamic>> resign() async {
     try {
       await _memberService.resign();
+      return DataSuccess(null);
+    } on DioError catch (error) {
+      return DataFailed(error);
+    }
+  }
+
+  @override
+  Future<DataState<dynamic>> update(UpdateMemberParams params) async {
+    try {
+      await _memberService.update(params);
       return DataSuccess(null);
     } on DioError catch (error) {
       return DataFailed(error);

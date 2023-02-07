@@ -11,14 +11,17 @@ import 'package:wehere_client/domain/usecases/create_nostalgia_usecase.dart';
 import 'package:wehere_client/domain/usecases/delete_nostalgia_usecase.dart';
 import 'package:wehere_client/domain/usecases/get_nostalgia_list_usecase.dart';
 import 'package:wehere_client/domain/usecases/get_nostalgia_usecase.dart';
+import 'package:wehere_client/domain/usecases/get_other_profile_usecase.dart';
 import 'package:wehere_client/domain/usecases/get_profile_usecase.dart';
 import 'package:wehere_client/domain/usecases/get_statistic_summary_usecase.dart';
 import 'package:wehere_client/domain/usecases/logout_usecase.dart';
 import 'package:wehere_client/domain/usecases/oauth2_login_usecase.dart';
 import 'package:wehere_client/domain/usecases/resign_usecase.dart';
+import 'package:wehere_client/domain/usecases/update_member_usecase.dart';
 import 'package:wehere_client/domain/usecases/update_nostalgia_usecase.dart';
 import 'package:wehere_client/domain/usecases/upload_file_usecase.dart';
 import 'package:wehere_client/presentation/providers/authentication_provider.dart';
+import 'package:wehere_client/presentation/providers/member_provider.dart';
 import 'package:wehere_client/presentation/providers/nostalgia_list_provider.dart';
 import 'package:wehere_client/presentation/providers/nostalgia_editor_provider.dart';
 import 'package:wehere_client/presentation/providers/nostalgia_map_provider.dart';
@@ -47,6 +50,8 @@ Future<void> initializeDependencies() async {
   injector.registerSingleton(UpdateNostalgiaUseCase(injector()));
   injector.registerSingleton(DeleteNostalgiaUseCase(injector()));
   injector.registerSingleton(ResignUseCase(injector()));
+  injector.registerSingleton(GetOtherProfileUseCase(injector()));
+  injector.registerSingleton(UpdateMemberUseCase(injector()));
 
   // provider
   injector.registerFactory(() =>
@@ -57,4 +62,6 @@ Future<void> initializeDependencies() async {
       NostalgiaEditorProvider(injector(), injector(), injector(), injector()));
   injector.registerFactory(() => NostalgiaProvider(injector(), injector()));
   injector.registerFactory(() => NostalgiaMapProvider(injector()));
+  injector.registerFactory(
+      () => MemberProvider(injector(), injector(), injector(), injector()));
 }
