@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:wehere_client/presentation/providers/nostalgia_editor_provider.dart';
 import 'package:wehere_client/presentation/widgets/image_selector.dart';
 
 class UploadButton extends StatelessWidget {
@@ -6,10 +8,17 @@ class UploadButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final provider = context.read<NostalgiaEditorProvider>();
     return InkWell(
       onTap: () {
         showModalBottomSheet(
-            context: context, builder: (context) => ImageSelector());
+            context: context,
+            builder: (context) => ImageSelector(
+                  canSelectMultipleImage: true,
+                  onImageSelected: (images) {
+                    provider.addImages(images);
+                  },
+                ));
       },
       child: Container(
         height: 40,

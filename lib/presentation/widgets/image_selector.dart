@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:provider/provider.dart';
 import 'package:wehere_client/core/resources/constant.dart';
 import 'package:wehere_client/presentation/image.dart';
-import 'package:wehere_client/presentation/providers/nostalgia_editor_provider.dart';
 import 'package:wehere_client/presentation/widgets/text.dart';
 
 class ImageSelector extends StatefulWidget {
-  const ImageSelector({super.key});
+  final Function(List<IImageSource>) onImageSelected;
+  final bool canSelectMultipleImage;
+
+  const ImageSelector(
+      {super.key,
+      required this.onImageSelected,
+      this.canSelectMultipleImage = true});
 
   @override
   _ImageSelectorState createState() => _ImageSelectorState();
@@ -18,17 +22,20 @@ class _ImageSelectorState extends State<ImageSelector> {
 
   Future<void> _pickImage(ImageSource source) async {
     final List<XFile> files = [];
-    final provider = context.read<NostalgiaEditorProvider>();
     if (source == ImageSource.camera) {
       final XFile? image = await _picker.pickImage(source: source);
       if (image != null) {
         files.add(image);
       }
     } else {
-      final List<XFile> images = await _picker.pickMultiImage();
-      files.addAll(images);
+      if (widget.canSelectMultipleImage) {
+        files.addAll(await _picker.pickMultiImage());
+      } else {
+        final image = await _picker.pickImage(source: source);
+        if (image != null) files.add(image);
+      }
     }
-    provider.addImages(
+    widget.onImageSelected(
         files.map((e) => IImageSource(e.path, ImageType.file)).toList());
   }
 
