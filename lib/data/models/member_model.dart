@@ -5,6 +5,8 @@ class MemberModel extends Member {
       {required super.id,
       required super.nickname,
       super.profileImageUrl,
+      super.backgroundImageUrl,
+      super.description,
       required super.email,
       required super.platformType,
       required super.grade,
@@ -12,10 +14,12 @@ class MemberModel extends Member {
 
   factory MemberModel.fromJson(dynamic json) {
     return MemberModel(
-        id: json['id'] as String,
-        nickname: json['nickname'] as String,
-        profileImageUrl: json['profileImageUrl'] as String?,
-        email: json['email'] as String,
+        id: json['id'],
+        nickname: json['nickname'],
+        profileImageUrl: json['profileImageUrl'],
+        backgroundImageUrl: json['backgroundImageUrl'],
+        description: json['description'],
+        email: json['email'],
         platformType: toPlatformType(json['platformType']),
         grade: toGrade(json['grade']),
         createdAt: DateTime.parse(json['createdAt']));
