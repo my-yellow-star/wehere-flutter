@@ -51,35 +51,41 @@ class _MyPageScreenState extends State<MyPageScreen> {
         physics: RangeMaintainingScrollPhysics(),
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
           return <Widget>[
-            SliverAppBar(
-                automaticallyImplyLeading: false,
-                backgroundColor: ColorTheme.primary,
-                expandedHeight: size.height * .5 - kToolbarHeight,
-                floating: false,
-                pinned: true,
-                title: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    RoundButton(
-                      icon: Icons.add_circle,
-                      iconSize: 24,
-                      color: Colors.white,
-                      shadowOpacity: 0,
-                      onPress: _createNostalgia,
+            SliverOverlapAbsorber(
+              handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+              sliver: SliverSafeArea(
+                top: false,
+                sliver: SliverAppBar(
+                    automaticallyImplyLeading: false,
+                    backgroundColor: ColorTheme.primary,
+                    expandedHeight: size.height * .5 - kToolbarHeight,
+                    floating: false,
+                    pinned: true,
+                    title: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        RoundButton(
+                          icon: Icons.add_circle,
+                          iconSize: 24,
+                          color: Colors.white,
+                          shadowOpacity: 0,
+                          onPress: _createNostalgia,
+                        ),
+                        RoundButton(
+                          icon: Icons.settings,
+                          iconSize: 24,
+                          color: Colors.white,
+                          shadowOpacity: 0,
+                          onPress: _onTapSettingButton,
+                        )
+                      ],
                     ),
-                    RoundButton(
-                      icon: Icons.settings,
-                      iconSize: 24,
-                      color: Colors.white,
-                      shadowOpacity: 0,
-                      onPress: _onTapSettingButton,
-                    )
-                  ],
-                ),
-                flexibleSpace: FlexibleSpaceBar(
-                    background: ProfileBackground(
-                  member: member,
-                ))),
+                    flexibleSpace: FlexibleSpaceBar(
+                        background: ProfileBackground(
+                      member: member,
+                    ))),
+              ),
+            ),
           ];
         },
         body: ProfileTabBar(
