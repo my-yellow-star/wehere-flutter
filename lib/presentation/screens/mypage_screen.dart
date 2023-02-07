@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wehere_client/core/resources/constant.dart';
 import 'package:wehere_client/presentation/providers/authentication_provider.dart';
+import 'package:wehere_client/presentation/providers/member_provider.dart';
 import 'package:wehere_client/presentation/screens/components/profile_background.dart';
 import 'package:wehere_client/presentation/screens/components/profile_tap.dart';
 import 'package:wehere_client/presentation/screens/components/setting_options.dart';
@@ -17,6 +18,20 @@ class MyPageScreen extends StatefulWidget {
 }
 
 class _MyPageScreenState extends State<MyPageScreen> {
+  @override
+  void initState() {
+    super.initState();
+    Future.microtask(() {
+      final args = ModalRoute.of(context)?.settings.arguments;
+      if (args != null) {
+        // other member's my page
+        context.read<MemberProvider>().loadUser(id: (args as String));
+      } else {
+        context.read<MemberProvider>().loadUser();
+      }
+    });
+  }
+
   void _createNostalgia() {
     Navigator.push(
         context,
@@ -34,10 +49,10 @@ class _MyPageScreenState extends State<MyPageScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final member =
-        context.watch<AuthenticationProvider>().authentication?.member;
+    final auth = context.watch<AuthenticationProvider>().authentication;
+    final member = context.watch<MemberProvider>().member;
 
-    if (member == null) {
+    if (auth == null) {
       Future.microtask(() {
         Navigator.pushNamedAndRemoveUntil(context, 'login', (route) => false);
       });
@@ -61,25 +76,27 @@ class _MyPageScreenState extends State<MyPageScreen> {
                     expandedHeight: size.height * .5 - kToolbarHeight,
                     floating: false,
                     pinned: true,
-                    title: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        RoundButton(
-                          icon: Icons.add_circle,
-                          iconSize: 24,
-                          color: Colors.white,
-                          shadowOpacity: 0,
-                          onPress: _createNostalgia,
-                        ),
-                        RoundButton(
-                          icon: Icons.settings,
-                          iconSize: 24,
-                          color: Colors.white,
-                          shadowOpacity: 0,
-                          onPress: _onTapSettingButton,
-                        )
-                      ],
-                    ),
+                    title: auth.member.id == member?.id
+                        ? Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              RoundButton(
+                                icon: Icons.add_circle,
+                                iconSize: 24,
+                                color: Colors.white,
+                                shadowOpacity: 0,
+                                onPress: _createNostalgia,
+                              ),
+                              RoundButton(
+                                icon: Icons.settings,
+                                iconSize: 24,
+                                color: Colors.white,
+                                shadowOpacity: 0,
+                                onPress: _onTapSettingButton,
+                              )
+                            ],
+                          )
+                        : Container(),
                     flexibleSpace: FlexibleSpaceBar(
                         background: ProfileBackground(
                       member: member,

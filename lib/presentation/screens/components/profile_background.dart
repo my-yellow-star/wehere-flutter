@@ -6,13 +6,13 @@ import 'package:wehere_client/presentation/widgets/profile_image.dart';
 import 'package:wehere_client/presentation/widgets/text.dart';
 
 class ProfileBackground extends StatelessWidget {
-  final Member member;
+  final Member? member;
 
   const ProfileBackground({super.key, required this.member});
 
   ImageProvider get _backgroundImage {
-    if (member.backgroundImageUrl != null) {
-      return CachedNetworkImageProvider(member.backgroundImageUrl!);
+    if (member?.backgroundImageUrl != null) {
+      return CachedNetworkImageProvider(member!.backgroundImageUrl!);
     } else {
       return AssetImage(Constant.defaultImageAsset);
     }
@@ -30,17 +30,17 @@ class ProfileBackground extends StatelessWidget {
         padding: EdgeInsets.only(top: kToolbarHeight + 80, left: 16, right: 16),
         child: Column(
           children: [
-            ProfileImage(size: 80, url: member.profileImageUrl),
+            ProfileImage(size: 80, url: member?.profileImageUrl),
             Container(height: 16),
             IText(
-              member.nickname,
+              member?.nickname ?? '',
               color: Colors.white,
             ),
             Container(
               height: 24,
             ),
             IText(
-              member.description ?? '...',
+              member?.description ?? '...',
               color: Colors.white,
               weight: FontWeight.w100,
               maxLines: 3,

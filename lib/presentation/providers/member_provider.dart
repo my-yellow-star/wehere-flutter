@@ -14,7 +14,7 @@ class MemberProvider extends ApiProvider {
   final GetOtherProfileUseCase _getOtherProfileUseCase;
   final UpdateMemberUseCase _updateMemberUseCase;
   final UploadFileUseCase _uploadFileUseCase;
-  late Member member;
+  Member? member;
   String nickname = '';
   String? description = '';
   IImageSource? profileImage;
@@ -35,17 +35,18 @@ class MemberProvider extends ApiProvider {
         : await _getOtherProfileUseCase(id);
     if (response is DataSuccess) {
       member = response.data!;
-      nickname = member.nickname;
-      description = member.description;
-      profileImage = member.profileImageUrl != null
-          ? IImageSource(member.profileImageUrl!, ImageType.network)
+      nickname = member!.nickname;
+      description = member!.description;
+      profileImage = member!.profileImageUrl != null
+          ? IImageSource(member!.profileImageUrl!, ImageType.network)
           : null;
-      backgroundImage = member.backgroundImageUrl != null
-          ? IImageSource(member.backgroundImageUrl!, ImageType.network)
+      backgroundImage = member!.backgroundImageUrl != null
+          ? IImageSource(member!.backgroundImageUrl!, ImageType.network)
           : null;
     } else {
       error = response.error;
     }
+    notifyListeners();
   }
 
   Future<void> update() async {

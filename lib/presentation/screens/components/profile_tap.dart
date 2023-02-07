@@ -6,7 +6,7 @@ import 'package:wehere_client/presentation/screens/components/my_nostalgia_list_
 import 'package:wehere_client/presentation/screens/components/my_nostalgia_map_view.dart';
 
 class ProfileTabBar extends StatefulWidget {
-  final Member member;
+  final Member? member;
 
   const ProfileTabBar({super.key, required this.member});
 
@@ -55,15 +55,17 @@ class _ProfileTabBarState extends State<ProfileTabBar>
             unselectedLabelColor: Colors.grey,
           ),
         ),
-        Expanded(
-          child: TabBarView(controller: _tabController, children: [
-            MyNostalgiaListView(),
-            MyNostalgiaMapView(
-              member: widget.member,
-            ),
-            MyBookmarkView()
-          ]),
-        ),
+        widget.member != null
+            ? Expanded(
+                child: TabBarView(controller: _tabController, children: [
+                  MyNostalgiaListView(),
+                  MyNostalgiaMapView(
+                    member: widget.member!,
+                  ),
+                  MyBookmarkView()
+                ]),
+              )
+            : Center(child: CircularProgressIndicator()),
       ],
     );
   }
