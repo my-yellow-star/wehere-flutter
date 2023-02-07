@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import '../../core/resources/constant.dart';
@@ -19,8 +20,8 @@ class BackgroundImage extends StatelessWidget {
                 height: MediaQuery.of(context).size.height,
                 fit: BoxFit.cover,
               )
-            : Image.network(
-                url!,
+            : CachedNetworkImage(
+                imageUrl: url!,
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.height,
                 fit: BoxFit.cover,
