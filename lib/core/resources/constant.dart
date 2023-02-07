@@ -11,6 +11,21 @@ class Constant {
   static const defaultMarker36 = 'asset/image/pin-black-36.png';
   static const image = 'asset/image';
   static const fontFamily = 'Pretendard';
+  static const fontFamilyCallback = [
+    '-apple-system',
+    'BlinkMacSystemFont',
+    'system-ui',
+    'Roboto',
+    'Helvetica Neue',
+    'Segoe UI',
+    'Apple SD Gothic Neo',
+    'Noto Sans KR',
+    'Malgun Gothic',
+    'Apple Color Emoji',
+    'Segoe UI Emoji',
+    'Segoe UI Symbol',
+    'sans-serif'
+  ];
 }
 
 class FontSize {

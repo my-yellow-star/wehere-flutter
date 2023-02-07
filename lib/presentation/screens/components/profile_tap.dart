@@ -65,7 +65,7 @@ class _ProfileTabBarState extends State<ProfileTabBar>
                   MyBookmarkView()
                 ]),
               )
-            : Center(child: CircularProgressIndicator()),
+            : Container(),
       ],
     );
   }

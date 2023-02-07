@@ -49,6 +49,18 @@ class MemberProvider extends ApiProvider {
     notifyListeners();
   }
 
+  void cancelUpdate() {
+    nickname = member?.nickname ?? '';
+    description = member?.description;
+    profileImage = member?.profileImageUrl != null
+        ? IImageSource(member!.profileImageUrl!, ImageType.network)
+        : null;
+    backgroundImage = member?.backgroundImageUrl != null
+        ? IImageSource(member!.backgroundImageUrl!, ImageType.network)
+        : null;
+    notifyListeners();
+  }
+
   Future<void> update() async {
     isLoading = true;
     notifyListeners();

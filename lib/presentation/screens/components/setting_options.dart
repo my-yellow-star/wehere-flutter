@@ -6,16 +6,15 @@ import 'package:wehere_client/presentation/widgets/bottom_sheet.dart';
 
 class SettingOptions {
   final BuildContext context;
+  final Function() onTapEditProfile;
 
-  SettingOptions(this.context);
+  SettingOptions(this.context, this.onTapEditProfile);
 
   List<BottomSheetItem> get options => [
-        BottomSheetItem(title: '프로필 편집', onPress: _editProfile),
+        BottomSheetItem(title: '프로필 편집', onPress: onTapEditProfile),
         BottomSheetItem(title: '로그아웃', onPress: _logout),
         BottomSheetItem(title: '회원탈퇴', color: Colors.red, onPress: _resign),
       ];
-
-  void _editProfile() {}
 
   Future<void> _logout() async {
     await context.read<AuthenticationProvider>().logout();

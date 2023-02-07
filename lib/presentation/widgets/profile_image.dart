@@ -1,11 +1,24 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:wehere_client/presentation/image.dart';
 
 class ProfileImage extends StatelessWidget {
   final double size;
   final String? url;
+  final ImageType type;
 
-  const ProfileImage({super.key, required this.size, this.url});
+  const ProfileImage(
+      {super.key, required this.size, this.url, this.type = ImageType.network});
+
+  ImageProvider get _provider {
+    if (type == ImageType.network) {
+      return CachedNetworkImageProvider(url!);
+    } else {
+      return FileImage(File(url!));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +31,7 @@ class ProfileImage extends StatelessWidget {
       child: url != null
           ? CircleAvatar(
               radius: size / 2,
-              backgroundImage: CachedNetworkImageProvider(url!),
+              backgroundImage: _provider,
             )
           : Icon(Icons.account_circle, size: size, color: Colors.grey),
     );
