@@ -16,4 +16,14 @@ class MemberRepositoryImpl extends MemberRepository {
       return DataFailed(e);
     }
   }
+
+  @override
+  Future<DataState<dynamic>> resign() async {
+    try {
+      await _memberService.resign();
+      return DataSuccess(null);
+    } on DioError catch (error) {
+      return DataFailed(error);
+    }
+  }
 }

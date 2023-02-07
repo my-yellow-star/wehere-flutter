@@ -7,8 +7,10 @@ import 'package:wehere_client/presentation/providers/authentication_provider.dar
 import 'package:wehere_client/presentation/providers/location_provider.dart';
 import 'package:wehere_client/presentation/providers/nostalgia_list_provider.dart';
 import 'package:wehere_client/presentation/providers/statistic_provider.dart';
+import 'package:wehere_client/presentation/screens/components/setting_options.dart';
 import 'package:wehere_client/presentation/screens/nostalgia_editor_screen.dart';
 import 'package:wehere_client/presentation/widgets/background_image.dart';
+import 'package:wehere_client/presentation/widgets/bottom_sheet.dart';
 import 'package:wehere_client/presentation/widgets/mixin.dart';
 import 'package:wehere_client/presentation/widgets/nostalgia_list_grid.dart';
 import 'package:wehere_client/presentation/widgets/profile_map_view.dart';
@@ -68,12 +70,24 @@ class _MyPageScreenState extends State<MyPageScreen> with AfterLayoutMixin {
         ));
   }
 
-  void _onTapSettingButton() {}
+  void _onTapSettingButton() {
+    showModalBottomSheet(
+        context: context,
+        builder: (context) =>
+            IBottomSheet(items: SettingOptions(context).options));
+  }
 
   @override
   Widget build(BuildContext context) {
     final member =
-        context.watch<AuthenticationProvider>().authentication!.member;
+        context.watch<AuthenticationProvider>().authentication?.member;
+
+    if (member == null) {
+      Future.microtask(() {
+        Navigator.pushNamedAndRemoveUntil(context, 'login', (route) => false);
+      });
+      return Container();
+    }
 
     final summary = context.watch<StatisticProvider>().summary;
     final items = context.watch<NostalgiaListProvider>().items;

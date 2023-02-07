@@ -3,4 +3,6 @@ import 'package:wehere_client/domain/entities/member.dart';
 
 abstract class MemberRepository {
   Future<DataState<Member>> getMyProfile();
+
+  Future<DataState<dynamic>> resign();
 }

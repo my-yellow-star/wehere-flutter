@@ -15,4 +15,8 @@ class MemberService {
 
     return MemberModel.fromJson(response.data);
   }
+
+  Future<void> resign() async {
+    await Api().dio.delete('$_endpoint/me');
+  }
 }

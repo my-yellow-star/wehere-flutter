@@ -3,14 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wehere_client/core/resources/constant.dart';
 import 'package:wehere_client/injector.dart';
+import 'package:wehere_client/presentation/providers/authentication_provider.dart';
 import 'package:wehere_client/presentation/providers/location_provider.dart';
 import 'package:wehere_client/presentation/providers/nostalgia_list_provider.dart';
 import 'package:wehere_client/presentation/providers/statistic_provider.dart';
-import 'package:wehere_client/presentation/screens/nostalgia_editor_screen.dart';
 import 'package:wehere_client/presentation/screens/home_screen.dart';
 import 'package:wehere_client/presentation/screens/map_screen.dart';
 import 'package:wehere_client/presentation/screens/mypage_screen.dart';
+import 'package:wehere_client/presentation/screens/nostalgia_editor_screen.dart';
 import 'package:wehere_client/presentation/screens/permission_screen.dart';
+import 'package:wehere_client/presentation/widgets/mixin.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -19,8 +21,19 @@ class MainScreen extends StatefulWidget {
   MainScreenState createState() => MainScreenState();
 }
 
-class MainScreenState extends State<MainScreen> {
+class MainScreenState extends State<MainScreen> with AfterLayoutMixin {
   int _selectedIndex = 0;
+
+  @override
+  void afterFirstLayout(BuildContext context) {
+    final member =
+        context.read<AuthenticationProvider>().authentication?.member;
+
+    if (member == null) {
+      Navigator.pushNamedAndRemoveUntil(context, 'login', (route) => false);
+    }
+  }
+
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static final List<Widget> _widgetOptions = <Widget>[

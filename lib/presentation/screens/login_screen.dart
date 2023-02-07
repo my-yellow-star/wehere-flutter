@@ -37,7 +37,7 @@ class LoginScreen extends StatelessWidget {
             ),
             Container(height: 18),
             IText('PINPLE'),
-            IText('이순간을 기억할 때', weight: FontWeight.w100)
+            IText('이순간을 영원하게', weight: FontWeight.w100)
           ]),
           SafeArea(
             child: Row(children: [

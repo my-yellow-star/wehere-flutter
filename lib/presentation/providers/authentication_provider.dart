@@ -4,15 +4,17 @@ import 'package:wehere_client/domain/entities/authentication.dart';
 import 'package:wehere_client/domain/usecases/get_profile_usecase.dart';
 import 'package:wehere_client/domain/usecases/logout_usecase.dart';
 import 'package:wehere_client/domain/usecases/oauth2_login_usecase.dart';
+import 'package:wehere_client/domain/usecases/resign_usecase.dart';
 import 'package:wehere_client/presentation/providers/api_provider.dart';
 
 class AuthenticationProvider extends ApiProvider {
   final OAuth2LoginUseCase _oAuth2LoginUseCase;
   final LogoutUseCase _logoutUseCase;
   final GetProfileUseCase _getProfileUseCase;
+  final ResignUseCase _resignUseCase;
 
-  AuthenticationProvider(
-      this._oAuth2LoginUseCase, this._logoutUseCase, this._getProfileUseCase);
+  AuthenticationProvider(this._oAuth2LoginUseCase, this._logoutUseCase,
+      this._getProfileUseCase, this._resignUseCase);
 
   Authentication? _authentication;
 
@@ -45,6 +47,16 @@ class AuthenticationProvider extends ApiProvider {
   Future<void> logout() async {
     await _logoutUseCase();
     _authentication = null;
+    notifyListeners();
+  }
+
+  Future<void> resign() async {
+    final response = await _resignUseCase();
+    if (response is DataSuccess) {
+      _authentication = null;
+    } else {
+      error = response.error;
+    }
     notifyListeners();
   }
 }
