@@ -7,6 +7,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:wehere_client/core/params/get_nostalgia.dart';
 import 'package:wehere_client/core/resources/constant.dart';
 import 'package:wehere_client/domain/entities/location.dart';
 import 'package:wehere_client/domain/entities/member.dart';
@@ -56,7 +57,8 @@ class _MyNostalgiaMapViewState extends State<MyNostalgiaMapView>
         .loadList(
             size: 30,
             latitude: _location.latitude,
-            longitude: _location.longitude)
+            longitude: _location.longitude,
+            condition: NostalgiaCondition.member)
         .then((_) {
       _addMarkers(nostalgia.items);
     });
