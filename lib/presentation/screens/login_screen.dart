@@ -31,9 +31,9 @@ class LoginScreen extends StatelessWidget {
           Column(children: [
             Container(height: MediaQuery.of(context).size.height / 3),
             Image.asset(
-              '${Constant.image}/logo-white.png',
+              Constant.defaultMarker,
               height: 48,
-              width: 48,
+              fit: BoxFit.fitHeight,
             ),
             Container(height: 18),
             IText('PINPLE'),

@@ -5,6 +5,7 @@ import 'package:custom_info_window/custom_info_window.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:wehere_client/core/params/get_nostalgia.dart';
@@ -12,6 +13,7 @@ import 'package:wehere_client/core/resources/constant.dart';
 import 'package:wehere_client/domain/entities/location.dart';
 import 'package:wehere_client/domain/entities/member.dart';
 import 'package:wehere_client/domain/entities/nostalgia_summary.dart';
+import 'package:wehere_client/presentation/image.dart';
 import 'package:wehere_client/presentation/providers/location_provider.dart';
 import 'package:wehere_client/presentation/providers/my_nostalgia_map_provider.dart';
 import 'package:wehere_client/presentation/providers/statistic_provider.dart';
@@ -76,8 +78,13 @@ class _MyNostalgiaMapViewState extends State<MyNostalgiaMapView>
       LatLng(location.latitude, location.longitude);
 
   void _addMarkers(List<NostalgiaSummary> items) async {
-    final icon = await BitmapDescriptor.fromAssetImage(
-        ImageConfiguration(), Constant.defaultMarker24);
+    final byte = ImageUtil.resizeImage(
+        (await rootBundle.load(Constant.defaultMarker)).buffer.asUint8List(),
+        80,
+        90);
+
+    final icon = BitmapDescriptor.fromBytes(byte!);
+
     final markers = items.map((item) => Marker(
           consumeTapEvents: true,
           markerId: MarkerId(item.id),
@@ -204,7 +211,7 @@ class _MyNostalgiaMapViewState extends State<MyNostalgiaMapView>
                   controller: _customInfoWindowController,
                   height: size.height * .1,
                   width: size.width * .5,
-                  offset: 30,
+                  offset: 40,
                 ),
               ],
             ),

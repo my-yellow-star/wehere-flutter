@@ -61,7 +61,7 @@ class MainScreenState extends State<MainScreen> with AfterLayoutMixin {
         ),
         bottomNavigationBar: ConvexAppBar(
           backgroundColor: ColorTheme.primary,
-          items: const [
+          items: [
             TabItem(
                 icon: Icon(Icons.home_outlined, color: Colors.white),
                 activeIcon: Icon(
@@ -69,10 +69,23 @@ class MainScreenState extends State<MainScreen> with AfterLayoutMixin {
                   color: Colors.white,
                 )),
             TabItem(
-              icon: Icon(Icons.place_rounded,
-                  color: ColorTheme.primary, size: 36),
+              // icon: Icon(Icons.place_rounded,
+              //     color: ColorTheme.primary, size: 36),
+              icon: Center(
+                child: Image.asset(
+                  Constant.defaultMarker,
+                  height: 36,
+                  width: 32,
+                ),
+              ),
               activeIcon:
-                  Icon(Icons.add_circle, color: ColorTheme.primary, size: 36),
+                  Center(
+                    child: Image.asset(
+                      Constant.plusButton,
+                      height: 36,
+                      width: 36,
+                    ),
+                  ),
             ),
             TabItem(
               icon: Icon(Icons.account_circle_outlined, color: Colors.white),

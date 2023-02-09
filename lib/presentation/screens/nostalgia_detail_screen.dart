@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:wehere_client/core/extensions.dart';
@@ -97,8 +98,12 @@ class _NostalgiaDetailScreenState extends State<NostalgiaDetailScreen>
 
   void _addMarker() async {
     final item = context.read<NostalgiaProvider>().nostalgia;
-    final icon = await BitmapDescriptor.fromAssetImage(
-        ImageConfiguration(), Constant.defaultMarker36);
+    final byte = ImageUtil.resizeImage(
+        (await rootBundle.load(Constant.defaultMarker)).buffer.asUint8List(),
+        88,
+        99);
+
+    final icon = BitmapDescriptor.fromBytes(byte!);
     setState(() {
       _marker.add(Marker(
           markerId: MarkerId(item!.id),
