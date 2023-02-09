@@ -61,14 +61,14 @@ class MyPageHeader extends StatelessWidget {
                     icon: Icons.add_circle,
                     iconSize: 24,
                     color: Colors.white,
-                    shadowOpacity: 0,
+                    backgroundOpacity: 0,
                     onPress: createNostalgia,
                   ),
                   RoundButton(
                     icon: Icons.settings,
                     iconSize: 24,
                     color: Colors.white,
-                    shadowOpacity: 0,
+                    backgroundOpacity: 0,
                     onPress: onTapSettingButton,
                   )
                 ],

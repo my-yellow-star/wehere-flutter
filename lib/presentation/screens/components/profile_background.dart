@@ -103,7 +103,7 @@ class _ProfileBackgroundState extends State<ProfileBackground> {
                               },
                               child: RoundButton(
                                 icon: Icons.create,
-                                shadowOpacity: 1,
+                                backgroundOpacity: 1,
                               ),
                             ))
                       ],
