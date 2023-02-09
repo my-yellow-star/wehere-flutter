@@ -3,6 +3,8 @@ import 'package:wehere_client/core/resources/constant.dart';
 import 'package:wehere_client/domain/entities/nostalgia_summary.dart';
 import 'package:wehere_client/presentation/widgets/profile_image.dart';
 
+import 'clipper.dart';
+
 class IMarker extends StatelessWidget {
   final NostalgiaSummary item;
   static const double circleSize = 50;
@@ -40,18 +42,4 @@ class IMarker extends StatelessWidget {
       ],
     );
   }
-}
-
-class TriangleClipper extends CustomClipper<Path> {
-  @override
-  Path getClip(Size size) {
-    final path = Path();
-    path.lineTo(size.width, 0.0);
-    path.lineTo(size.width / 2, size.height);
-    path.close();
-    return path;
-  }
-
-  @override
-  bool shouldReclip(TriangleClipper oldClipper) => false;
 }
