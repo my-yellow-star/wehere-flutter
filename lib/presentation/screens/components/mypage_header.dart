@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:wehere_client/domain/entities/authentication.dart';
 import 'package:wehere_client/domain/entities/member.dart';
+import 'package:wehere_client/presentation/widgets/back_button.dart';
 
 import '../../widgets/button.dart';
 import '../../widgets/text.dart';
@@ -73,6 +74,8 @@ class MyPageHeader extends StatelessWidget {
                   )
                 ],
               )
-        : Container();
+        : Row(
+            children: const [RoundBackButton()],
+          );
   }
 }

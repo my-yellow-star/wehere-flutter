@@ -13,7 +13,7 @@ import 'package:wehere_client/domain/entities/location.dart';
 import 'package:wehere_client/domain/entities/member.dart';
 import 'package:wehere_client/domain/entities/nostalgia_summary.dart';
 import 'package:wehere_client/presentation/providers/location_provider.dart';
-import 'package:wehere_client/presentation/providers/nostalgia_map_provider.dart';
+import 'package:wehere_client/presentation/providers/my_nostalgia_map_provider.dart';
 import 'package:wehere_client/presentation/providers/statistic_provider.dart';
 import 'package:wehere_client/presentation/widgets/mixin.dart';
 import 'package:wehere_client/presentation/widgets/text.dart';
@@ -42,7 +42,7 @@ class _MyNostalgiaMapViewState extends State<MyNostalgiaMapView>
   @override
   void initState() {
     super.initState();
-    context.read<NostalgiaMapProvider>().initialize();
+    context.read<MyNostalgiaMapProvider>().initialize();
     context.read<StatisticProvider>().initialize();
     _location = context.read<LocationProvider>().location!;
   }
@@ -54,12 +54,13 @@ class _MyNostalgiaMapViewState extends State<MyNostalgiaMapView>
   }
 
   void _loadList() {
-    final nostalgia = context.read<NostalgiaMapProvider>();
+    final nostalgia = context.read<MyNostalgiaMapProvider>();
     nostalgia
         .loadList(
             size: 30,
             latitude: _location.latitude,
             longitude: _location.longitude,
+            memberId: widget.member.id,
             condition: NostalgiaCondition.member)
         .then((_) {
       _addMarkers(nostalgia.items);

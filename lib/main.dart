@@ -6,9 +6,10 @@ import 'package:wehere_client/injector.dart';
 import 'package:wehere_client/presentation/providers/authentication_provider.dart';
 import 'package:wehere_client/presentation/providers/location_provider.dart';
 import 'package:wehere_client/presentation/providers/member_provider.dart';
+import 'package:wehere_client/presentation/providers/my_nostalgia_grid_provider.dart';
 import 'package:wehere_client/presentation/providers/nostalgia_editor_provider.dart';
 import 'package:wehere_client/presentation/providers/nostalgia_list_provider.dart';
-import 'package:wehere_client/presentation/providers/nostalgia_map_provider.dart';
+import 'package:wehere_client/presentation/providers/my_nostalgia_map_provider.dart';
 import 'package:wehere_client/presentation/providers/nostalgia_provider.dart';
 import 'package:wehere_client/presentation/providers/statistic_provider.dart';
 import 'package:wehere_client/presentation/routes.dart';
@@ -47,7 +48,10 @@ Future<void> main() async {
         ChangeNotifierProvider(create: (_) => injector<MemberProvider>()),
         ChangeNotifierProvider(
             create: (_) => injector<NostalgiaListProvider>()),
-        ChangeNotifierProvider(create: (_) => injector<NostalgiaMapProvider>()),
+        ChangeNotifierProvider(
+            create: (_) => injector<MyNostalgiaMapProvider>()),
+        ChangeNotifierProvider(
+            create: (_) => injector<MyNostalgiaGridProvider>()),
         ChangeNotifierProvider(create: (_) => injector<StatisticProvider>())
       ],
       child: MaterialApp(

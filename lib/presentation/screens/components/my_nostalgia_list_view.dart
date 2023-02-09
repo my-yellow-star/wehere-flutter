@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wehere_client/core/params/get_nostalgia.dart';
+import 'package:wehere_client/domain/entities/member.dart';
 import 'package:wehere_client/presentation/providers/location_provider.dart';
-import 'package:wehere_client/presentation/providers/nostalgia_list_provider.dart';
+import 'package:wehere_client/presentation/providers/my_nostalgia_grid_provider.dart';
 import 'package:wehere_client/presentation/widgets/mixin.dart';
 import 'package:wehere_client/presentation/widgets/nostalgia_list_grid.dart';
 import 'package:wehere_client/presentation/widgets/text.dart';
 
 class MyNostalgiaListView extends StatefulWidget {
   final bool scrollEnabled;
+  final Member member;
 
-  const MyNostalgiaListView({super.key, required this.scrollEnabled});
+  const MyNostalgiaListView(
+      {super.key, required this.scrollEnabled, required this.member});
 
   @override
   State<MyNostalgiaListView> createState() => _MyNostalgiaListViewState();
@@ -21,7 +24,7 @@ class _MyNostalgiaListViewState extends State<MyNostalgiaListView>
   @override
   void initState() {
     super.initState();
-    context.read<NostalgiaListProvider>().initialize();
+    context.read<MyNostalgiaGridProvider>().initialize();
   }
 
   @override
@@ -31,17 +34,18 @@ class _MyNostalgiaListViewState extends State<MyNostalgiaListView>
 
   void _loadList() {
     final location = context.read<LocationProvider>().location!;
-    final nostalgia = context.read<NostalgiaListProvider>();
+    final nostalgia = context.read<MyNostalgiaGridProvider>();
     nostalgia.loadList(
         size: 12,
         condition: NostalgiaCondition.member,
+        memberId: widget.member.id,
         latitude: location.latitude,
         longitude: location.longitude);
   }
 
   @override
   Widget build(BuildContext context) {
-    final items = context.watch<NostalgiaListProvider>().items;
+    final items = context.watch<MyNostalgiaGridProvider>().items;
 
     if (items.isEmpty) {
       return Stack(

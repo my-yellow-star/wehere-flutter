@@ -38,6 +38,7 @@ class _MyPageTabViewState extends State<MyPageTabView>
             ? Expanded(
                 child: TabBarView(controller: _tabController, children: [
                   MyNostalgiaListView(
+                    member: widget.member!,
                     scrollEnabled: widget.scrollEnabled,
                   ),
                   MyNostalgiaMapView(
