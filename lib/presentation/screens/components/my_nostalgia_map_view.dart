@@ -20,8 +20,10 @@ import 'package:wehere_client/presentation/widgets/text.dart';
 
 class MyNostalgiaMapView extends StatefulWidget {
   final Member member;
+  final bool scrollEnabled;
 
-  const MyNostalgiaMapView({super.key, required this.member});
+  const MyNostalgiaMapView(
+      {super.key, required this.member, required this.scrollEnabled});
 
   @override
   State<MyNostalgiaMapView> createState() => _MyNostalgiaMapViewState();
@@ -121,6 +123,7 @@ class _MyNostalgiaMapViewState extends State<MyNostalgiaMapView>
     final statistic = context.watch<StatisticProvider>().summary;
     final size = MediaQuery.of(context).size;
     return SingleChildScrollView(
+      physics: NeverScrollableScrollPhysics(),
       child: Column(
         children: [
           Container(
@@ -181,10 +184,12 @@ class _MyNostalgiaMapViewState extends State<MyNostalgiaMapView>
                     onCameraIdle: () {
                       _loadList();
                     },
-                    gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>{
-                      Factory<OneSequenceGestureRecognizer>(
-                          () => EagerGestureRecognizer())
-                    },
+                    gestureRecognizers: widget.scrollEnabled
+                        ? <Factory<OneSequenceGestureRecognizer>>{
+                            Factory<OneSequenceGestureRecognizer>(
+                                () => EagerGestureRecognizer())
+                          }
+                        : {},
                     myLocationButtonEnabled: false,
                     onMapCreated: (controller) {
                       _customInfoWindowController.googleMapController =

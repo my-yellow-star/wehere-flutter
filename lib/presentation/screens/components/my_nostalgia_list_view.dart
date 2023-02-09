@@ -8,7 +8,9 @@ import 'package:wehere_client/presentation/widgets/nostalgia_list_grid.dart';
 import 'package:wehere_client/presentation/widgets/text.dart';
 
 class MyNostalgiaListView extends StatefulWidget {
-  const MyNostalgiaListView({super.key});
+  final bool scrollEnabled;
+
+  const MyNostalgiaListView({super.key, required this.scrollEnabled});
 
   @override
   State<MyNostalgiaListView> createState() => _MyNostalgiaListViewState();
@@ -63,7 +65,8 @@ class _MyNostalgiaListViewState extends State<MyNostalgiaListView>
         return false;
       },
       child: CustomScrollView(
-        physics: RangeMaintainingScrollPhysics(),
+        primary: widget.scrollEnabled,
+        physics: NeverScrollableScrollPhysics(),
         slivers: [NostalgiaListGrid(items: items)],
       ),
     );

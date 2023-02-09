@@ -4,8 +4,8 @@ import 'package:wehere_client/core/resources/constant.dart';
 import 'package:wehere_client/presentation/providers/authentication_provider.dart';
 import 'package:wehere_client/presentation/providers/member_provider.dart';
 import 'package:wehere_client/presentation/screens/components/mypage_header.dart';
-import 'package:wehere_client/presentation/screens/components/profile_background.dart';
 import 'package:wehere_client/presentation/screens/components/mypage_tabview.dart';
+import 'package:wehere_client/presentation/screens/components/profile_background.dart';
 import 'package:wehere_client/presentation/screens/components/setting_options.dart';
 import 'package:wehere_client/presentation/screens/nostalgia_editor_screen.dart';
 import 'package:wehere_client/presentation/widgets/alert.dart';
@@ -21,6 +21,8 @@ class MyPageScreen extends StatefulWidget {
 
 class _MyPageScreenState extends State<MyPageScreen> {
   bool _editMode = false;
+  bool _innerScrollEnabled = false;
+  final _scrollController = ScrollController();
 
   @override
   void initState() {
@@ -124,40 +126,61 @@ class _MyPageScreenState extends State<MyPageScreen> {
       backgroundColor: ColorTheme.primary,
       body: Stack(
         children: [
-          NestedScrollView(
-            physics: RangeMaintainingScrollPhysics(),
-            headerSliverBuilder:
-                (BuildContext context, bool innerBoxIsScrolled) {
-              return <Widget>[
-                SliverOverlapAbsorber(
-                  handle:
-                      NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-                  sliver: SliverSafeArea(
-                    top: false,
-                    sliver: SliverAppBar(
-                        automaticallyImplyLeading: false,
-                        backgroundColor: ColorTheme.primary,
-                        expandedHeight: size.height * .5 - kToolbarHeight,
-                        floating: false,
-                        pinned: true,
-                        title: MyPageHeader(
-                            auth: auth,
-                            member: member,
-                            onTapEditBackground: _onTapEditBackground,
-                            onTapEditCancel: _onTapEditCancel,
-                            onTapEditSave: _onTapEditSave,
-                            createNostalgia: _createNostalgia,
-                            onTapSettingButton: _onTapSettingButton),
-                        flexibleSpace: FlexibleSpaceBar(
-                            background: ProfileBackground(
-                          editMode: _editMode,
-                        ))),
-                  ),
-                ),
-              ];
+          NotificationListener<ScrollNotification>(
+            onNotification: (notification) {
+              if (notification is ScrollEndNotification &&
+                  notification.depth == 0) {
+                if (notification.metrics.maxScrollExtent -
+                        notification.metrics.pixels <
+                    10) {
+                  setState(() {
+                    _innerScrollEnabled = true;
+                  });
+                } else {
+                  setState(() {
+                    _innerScrollEnabled = false;
+                  });
+                }
+              }
+              return false;
             },
-            body: MyPageTabView(
-              member: member,
+            child: NestedScrollView(
+              controller: _scrollController,
+              physics: NeverScrollableScrollPhysics(),
+              headerSliverBuilder:
+                  (BuildContext context, bool innerBoxIsScrolled) {
+                return <Widget>[
+                  SliverOverlapAbsorber(
+                    handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
+                        context),
+                    sliver: SliverSafeArea(
+                      top: false,
+                      sliver: SliverAppBar(
+                          automaticallyImplyLeading: false,
+                          backgroundColor: ColorTheme.primary,
+                          expandedHeight: size.height * .5 - kToolbarHeight,
+                          floating: false,
+                          pinned: true,
+                          title: MyPageHeader(
+                              auth: auth,
+                              member: member,
+                              onTapEditBackground: _onTapEditBackground,
+                              onTapEditCancel: _onTapEditCancel,
+                              onTapEditSave: _onTapEditSave,
+                              createNostalgia: _createNostalgia,
+                              onTapSettingButton: _onTapSettingButton),
+                          flexibleSpace: FlexibleSpaceBar(
+                              background: ProfileBackground(
+                            editMode: _editMode,
+                          ))),
+                    ),
+                  ),
+                ];
+              },
+              body: MyPageTabView(
+                member: member,
+                scrollEnabled: _innerScrollEnabled,
+              ),
             ),
           ),
           provider.isLoading
