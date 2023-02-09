@@ -164,6 +164,7 @@ class _MyPageScreenState extends State<MyPageScreen> {
                           title: MyPageHeader(
                               auth: auth,
                               member: member,
+                              editMode: _editMode,
                               onTapEditBackground: _onTapEditBackground,
                               onTapEditCancel: _onTapEditCancel,
                               onTapEditSave: _onTapEditSave,
