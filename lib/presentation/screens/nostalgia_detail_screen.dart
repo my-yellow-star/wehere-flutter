@@ -54,7 +54,13 @@ class _NostalgiaDetailScreenState extends State<NostalgiaDetailScreen>
     });
   }
 
-  void _onTapProfile() {}
+  void _onTapProfile(String memberId) {
+    if (context.read<AuthenticationProvider>().authentication?.member.id ==
+        memberId) {
+      return;
+    }
+    Navigator.pushNamed(context, 'my-page', arguments: memberId);
+  }
 
   void _onTapSetting() {
     final provider = context.read<NostalgiaProvider>();
@@ -181,7 +187,9 @@ class _NostalgiaDetailScreenState extends State<NostalgiaDetailScreen>
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               InkWell(
-                                onTap: _onTapProfile,
+                                onTap: () {
+                                  _onTapProfile(item.member.id);
+                                },
                                 child: SizedBox(
                                   height: kToolbarHeight,
                                   child: Row(

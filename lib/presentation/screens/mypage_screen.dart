@@ -27,6 +27,7 @@ class _MyPageScreenState extends State<MyPageScreen> {
   @override
   void initState() {
     super.initState();
+    context.read<MemberProvider>().initialize();
     Future.microtask(() {
       final args = ModalRoute.of(context)?.settings.arguments;
       if (args != null) {

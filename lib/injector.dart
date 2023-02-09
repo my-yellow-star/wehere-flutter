@@ -22,9 +22,10 @@ import 'package:wehere_client/domain/usecases/update_nostalgia_usecase.dart';
 import 'package:wehere_client/domain/usecases/upload_file_usecase.dart';
 import 'package:wehere_client/presentation/providers/authentication_provider.dart';
 import 'package:wehere_client/presentation/providers/member_provider.dart';
+import 'package:wehere_client/presentation/providers/my_nostalgia_grid_provider.dart';
 import 'package:wehere_client/presentation/providers/nostalgia_list_provider.dart';
 import 'package:wehere_client/presentation/providers/nostalgia_editor_provider.dart';
-import 'package:wehere_client/presentation/providers/nostalgia_map_provider.dart';
+import 'package:wehere_client/presentation/providers/my_nostalgia_map_provider.dart';
 import 'package:wehere_client/presentation/providers/nostalgia_provider.dart';
 import 'package:wehere_client/presentation/providers/statistic_provider.dart';
 
@@ -61,7 +62,8 @@ Future<void> initializeDependencies() async {
   injector.registerFactory(() =>
       NostalgiaEditorProvider(injector(), injector(), injector(), injector()));
   injector.registerFactory(() => NostalgiaProvider(injector(), injector()));
-  injector.registerFactory(() => NostalgiaMapProvider(injector()));
+  injector.registerFactory(() => MyNostalgiaMapProvider(injector()));
+  injector.registerFactory(() => MyNostalgiaGridProvider(injector()));
   injector.registerFactory(
       () => MemberProvider(injector(), injector(), injector(), injector()));
 }

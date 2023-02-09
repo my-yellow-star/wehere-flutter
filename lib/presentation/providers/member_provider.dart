@@ -27,6 +27,7 @@ class MemberProvider extends ApiProvider {
   void initialize() {
     isLoading = false;
     error = null;
+    member = null;
   }
 
   Future<void> loadUser({String? id}) async {

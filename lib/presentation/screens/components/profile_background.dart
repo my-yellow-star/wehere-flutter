@@ -22,11 +22,11 @@ class ProfileBackground extends StatefulWidget {
 class _ProfileBackgroundState extends State<ProfileBackground> {
   final TextEditingController _nicknameController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
-  static final _nicknameKey =
-      GlobalKey<EditableTextState>(debugLabel: 'nickname key');
+  final _nicknameKey = GlobalKey<EditableTextState>(
+      debugLabel: 'nickname key - ${DateTime.now().millisecondsSinceEpoch}');
 
-  static final _descriptionKey =
-      GlobalKey<EditableTextState>(debugLabel: 'description key');
+  final _descriptionKey = GlobalKey<EditableTextState>(
+      debugLabel: 'description key - ${DateTime.now().millisecondsSinceEpoch}');
 
   ImageProvider _backgroundImage(IImageSource? image) {
     if (image == null) {
