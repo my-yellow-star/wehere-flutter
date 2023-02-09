@@ -39,6 +39,7 @@ class _MapScreenState extends State<MapScreen> with AfterLayoutMixin {
   @override
   void initState() {
     super.initState();
+    context.read<NostalgiaListProvider>().initialize();
     final locationProvider = context.read<LocationProvider>();
     locationProvider.getLocation();
     _location = context.read<LocationProvider>().location!;
@@ -160,11 +161,6 @@ class _MapScreenState extends State<MapScreen> with AfterLayoutMixin {
             circles: _circles,
           ),
         ),
-        _tappedItem == null
-            ? Container()
-            : Align(
-                alignment: Alignment.bottomCenter,
-                child: NostalgiaMapCard(item: _tappedItem!)),
         SafeArea(
             child: Row(
           mainAxisSize: MainAxisSize.min,
@@ -208,7 +204,12 @@ class _MapScreenState extends State<MapScreen> with AfterLayoutMixin {
                   )
           ],
         )),
-        CreateNostalgiaBubble()
+        CreateNostalgiaBubble(),
+        _tappedItem == null
+            ? Container()
+            : Align(
+                alignment: Alignment.bottomCenter,
+                child: NostalgiaMapCard(item: _tappedItem!))
       ],
     );
   }
