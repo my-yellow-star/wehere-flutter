@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:wehere_client/core/extensions.dart';
+import 'package:wehere_client/core/params/nostalgia_visibility.dart';
 import 'package:wehere_client/core/resources/constant.dart';
 import 'package:wehere_client/domain/entities/location.dart';
 import 'package:wehere_client/presentation/image.dart';
@@ -207,7 +208,18 @@ class _NostalgiaDetailScreenState extends State<NostalgiaDetailScreen>
                                             color: textColor.withOpacity(0.8),
                                             size: FontSize.small,
                                             weight: FontWeight.bold,
-                                          )
+                                          ),
+                                          Container(width: 8),
+                                          item.visibility !=
+                                                  NostalgiaVisibility.all
+                                              ? Icon(
+                                                  Icons.lock_outline,
+                                                  color: Colors.grey,
+                                                  size: 18,
+                                                )
+                                              : Container(
+                                                  height: 0,
+                                                )
                                         ],
                                       ),
                                       IText(
