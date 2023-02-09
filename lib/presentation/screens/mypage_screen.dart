@@ -3,15 +3,14 @@ import 'package:provider/provider.dart';
 import 'package:wehere_client/core/resources/constant.dart';
 import 'package:wehere_client/presentation/providers/authentication_provider.dart';
 import 'package:wehere_client/presentation/providers/member_provider.dart';
+import 'package:wehere_client/presentation/screens/components/mypage_header.dart';
 import 'package:wehere_client/presentation/screens/components/profile_background.dart';
-import 'package:wehere_client/presentation/screens/components/profile_tap.dart';
+import 'package:wehere_client/presentation/screens/components/mypage_tabview.dart';
 import 'package:wehere_client/presentation/screens/components/setting_options.dart';
 import 'package:wehere_client/presentation/screens/nostalgia_editor_screen.dart';
 import 'package:wehere_client/presentation/widgets/alert.dart';
 import 'package:wehere_client/presentation/widgets/bottom_sheet.dart';
-import 'package:wehere_client/presentation/widgets/button.dart';
 import 'package:wehere_client/presentation/widgets/image_selector.dart';
-import 'package:wehere_client/presentation/widgets/text.dart';
 
 class MyPageScreen extends StatefulWidget {
   const MyPageScreen({super.key});
@@ -107,7 +106,6 @@ class _MyPageScreenState extends State<MyPageScreen> {
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
     final auth = context.watch<AuthenticationProvider>().authentication;
@@ -142,51 +140,14 @@ class _MyPageScreenState extends State<MyPageScreen> {
                         expandedHeight: size.height * .5 - kToolbarHeight,
                         floating: false,
                         pinned: true,
-                        title: auth.member.id == member?.id
-                            ? _editMode
-                                ? Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      InkWell(
-                                        onTap: _onTapEditBackground,
-                                        child: IText('배경 편집'),
-                                      ),
-                                      Row(
-                                        children: [
-                                          InkWell(
-                                            onTap: _onTapEditCancel,
-                                            child: IText('취소'),
-                                          ),
-                                          Container(width: 12),
-                                          InkWell(
-                                            onTap: _onTapEditSave,
-                                            child: IText('저장'),
-                                          ),
-                                        ],
-                                      )
-                                    ],
-                                  )
-                                : Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      RoundButton(
-                                        icon: Icons.add_circle,
-                                        iconSize: 24,
-                                        color: Colors.white,
-                                        shadowOpacity: 0,
-                                        onPress: _createNostalgia,
-                                      ),
-                                      RoundButton(
-                                        icon: Icons.settings,
-                                        iconSize: 24,
-                                        color: Colors.white,
-                                        shadowOpacity: 0,
-                                        onPress: _onTapSettingButton,
-                                      )
-                                    ],
-                                  )
-                            : Container(),
+                        title: MyPageHeader(
+                            auth: auth,
+                            member: member,
+                            onTapEditBackground: _onTapEditBackground,
+                            onTapEditCancel: _onTapEditCancel,
+                            onTapEditSave: _onTapEditSave,
+                            createNostalgia: _createNostalgia,
+                            onTapSettingButton: _onTapSettingButton),
                         flexibleSpace: FlexibleSpaceBar(
                             background: ProfileBackground(
                           editMode: _editMode,
@@ -195,7 +156,7 @@ class _MyPageScreenState extends State<MyPageScreen> {
                 ),
               ];
             },
-            body: ProfileTabBar(
+            body: MyPageTabView(
               member: member,
             ),
           ),
