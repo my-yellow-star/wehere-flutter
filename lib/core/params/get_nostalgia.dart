@@ -5,6 +5,7 @@ class GetNostalgiaParams extends PaginationParams {
   final double? maxDistance;
   final double? latitude;
   final double? longitude;
+  final String? memberId;
 
   GetNostalgiaParams({
     required page,
@@ -12,6 +13,7 @@ class GetNostalgiaParams extends PaginationParams {
     this.maxDistance,
     this.latitude,
     this.longitude,
+    this.memberId,
     required NostalgiaCondition condition,
   }) : super(page, size) {
     this.condition = condition.name.toUpperCase();

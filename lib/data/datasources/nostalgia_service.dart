@@ -24,7 +24,8 @@ class NostalgiaService {
       'condition': params.condition,
       'latitude': params.latitude,
       'longitude': params.longitude,
-      'maxDistance': params.maxDistance
+      'maxDistance': params.maxDistance,
+      'memberId': params.memberId,
     };
     final dio = Api().dio;
     final response = await dio.get(_endpoint, queryParameters: queryParameters);

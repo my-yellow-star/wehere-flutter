@@ -30,6 +30,7 @@ class NostalgiaListProvider extends ApiProvider {
     double? latitude,
     double? longitude,
     int? size,
+    String? memberId,
     required NostalgiaCondition condition,
   }) async {
     if (_end) {
@@ -38,6 +39,7 @@ class NostalgiaListProvider extends ApiProvider {
     final params = GetNostalgiaParams(
         page: _page,
         size: size ?? _size,
+        memberId: memberId,
         maxDistance: maxDistance,
         condition: condition,
         latitude: latitude,
