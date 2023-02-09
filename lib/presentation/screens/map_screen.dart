@@ -11,6 +11,7 @@ import 'package:wehere_client/domain/entities/location.dart';
 import 'package:wehere_client/domain/entities/nostalgia_summary.dart';
 import 'package:wehere_client/presentation/providers/location_provider.dart';
 import 'package:wehere_client/presentation/providers/nostalgia_list_provider.dart';
+import 'package:wehere_client/presentation/screens/components/create_nostalgia_bubble.dart';
 import 'package:wehere_client/presentation/widgets/button.dart';
 import 'package:wehere_client/presentation/widgets/marker.dart';
 import 'package:wehere_client/presentation/widgets/marker_generator.dart';
@@ -206,7 +207,8 @@ class _MapScreenState extends State<MapScreen> with AfterLayoutMixin {
                     height: 0,
                   )
           ],
-        ))
+        )),
+        CreateNostalgiaBubble()
       ],
     );
   }
