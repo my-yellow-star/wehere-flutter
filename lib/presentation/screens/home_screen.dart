@@ -112,50 +112,55 @@ class _HomeScreenState extends State<HomeScreen>
           ),
           Positioned(
             bottom: 0,
-            child: UnconstrainedBox(
-              child: Container(
-                width: size.width,
-                height: size.height * .2,
-                color: Colors.black.withOpacity(0.5),
-                padding: EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        IText(item.title, weight: FontWeight.bold),
-                        Container(height: 8),
-                        IText(
-                          item.description,
-                          maxLines: 3,
-                          weight: FontWeight.w100,
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Icon(Icons.place_outlined,
-                                color: Colors.white, size: 16),
-                            Container(width: 2),
-                            IText(
-                              item.distance?.parseDistance() ?? '???',
-                              size: FontSize.small,
-                            )
-                          ],
-                        ),
-                        IText(
-                          item.createdAt.parseDate(),
-                          size: FontSize.small,
-                        )
-                      ],
-                    )
-                  ],
+            child: InkWell(
+              onTap: () {
+                Navigator.pushNamed(context, 'nostalgia-detail', arguments: item.id);
+              },
+              child: UnconstrainedBox(
+                child: Container(
+                  width: size.width,
+                  height: size.height * .2,
+                  color: Colors.black.withOpacity(0.5),
+                  padding: EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          IText(item.title, weight: FontWeight.bold),
+                          Container(height: 8),
+                          IText(
+                            item.description,
+                            maxLines: 3,
+                            weight: FontWeight.w100,
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Icon(Icons.place_outlined,
+                                  color: Colors.white, size: 16),
+                              Container(width: 2),
+                              IText(
+                                item.distance?.parseDistance() ?? '???',
+                                size: FontSize.small,
+                              )
+                            ],
+                          ),
+                          IText(
+                            item.createdAt.parseDate(),
+                            size: FontSize.small,
+                          )
+                        ],
+                      )
+                    ],
+                  ),
                 ),
               ),
             ),
