@@ -103,14 +103,14 @@ class _NostalgiaDetailScreenState extends State<NostalgiaDetailScreen>
   void _addMarker() async {
     final item = context.read<NostalgiaProvider>().nostalgia;
     final byte = ImageUtil.resizeImage(
-        (await rootBundle.load(Constant.defaultMarker)).buffer.asUint8List(),
+        (await rootBundle.load(item!.markerColor.filename)).buffer.asUint8List(),
         88,
         99);
 
     final icon = BitmapDescriptor.fromBytes(byte!);
     setState(() {
       _marker.add(Marker(
-          markerId: MarkerId(item!.id),
+          markerId: MarkerId(item.id),
           position: LatLng(item.location.latitude, item.location.longitude),
           icon: icon));
     });
