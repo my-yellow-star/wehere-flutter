@@ -115,7 +115,7 @@ class _ProfileBackgroundState extends State<ProfileBackground> {
                 child: TextField(
                   textAlign: TextAlign.center,
                   key: _nicknameKey,
-                  maxLength: 10,
+                  maxLength: 12,
                   controller: _nicknameController,
                   onChanged: provider.updateNickname,
                   decoration: InputDecoration(
