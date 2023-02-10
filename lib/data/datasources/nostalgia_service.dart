@@ -58,7 +58,8 @@ class NostalgiaService {
       'visibility': params.visibility.name.toUpperCase(),
       'latitude': params.latitude,
       'longitude': params.longitude,
-      'images': params.images
+      'images': params.images,
+      'markerColor': params.markerColor.value
     };
     dio.options.contentType = 'application/json';
     final response = await dio.post(_endpoint, data: requestBody);
@@ -71,7 +72,8 @@ class NostalgiaService {
       'title': params.title,
       'description': params.description,
       'visibility': params.visibility?.name.toUpperCase(),
-      'images': params.images
+      'images': params.images,
+      'markerColor': params.markerColor?.value
     };
     dio.options.contentType = 'application/json';
     await dio.patch('$_endpoint/${params.id}', data: requestBody);

@@ -1,8 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:wehere_client/core/params/create_nostalgia.dart';
 import 'package:wehere_client/core/params/get_nostalgia.dart';
+import 'package:wehere_client/core/params/marker_color.dart';
 import 'package:wehere_client/core/params/nostalgia_visibility.dart';
 import 'package:wehere_client/core/params/update_nostalgia.dart';
+import 'package:wehere_client/core/resources/constant.dart';
 import 'package:wehere_client/core/resources/data_state.dart';
 import 'package:wehere_client/domain/entities/location.dart';
 import 'package:wehere_client/domain/usecases/create_nostalgia_usecase.dart';
@@ -23,6 +25,7 @@ class NostalgiaEditorProvider extends ApiProvider {
   String description = '';
   NostalgiaVisibility visibility = NostalgiaVisibility.all;
   List<IImageSource> images = [];
+  MarkerColor markerColor = Constant.markerColors.first;
 
   NostalgiaEditorProvider(this._createNostalgiaUseCase, this._uploadFileUseCase,
       this._updateNostalgiaUseCase, this._getNostalgiaUseCase);
@@ -32,6 +35,7 @@ class NostalgiaEditorProvider extends ApiProvider {
     title = '';
     description = '';
     visibility = NostalgiaVisibility.all;
+    markerColor = Constant.markerColors.first;
     images = [];
     isLoading = false;
     error = null;
@@ -60,13 +64,13 @@ class NostalgiaEditorProvider extends ApiProvider {
     notifyListeners();
 
     final response = await _createNostalgiaUseCase(CreateNostalgiaParams(
-      title: title,
-      description: description,
-      visibility: visibility,
-      images: await _uploadImages(images),
-      latitude: location.latitude,
-      longitude: location.longitude,
-    ));
+        title: title,
+        description: description,
+        visibility: visibility,
+        images: await _uploadImages(images),
+        latitude: location.latitude,
+        longitude: location.longitude,
+        markerColor: markerColor));
     if (response is DataSuccess) {
       id = response.data!;
     } else {
@@ -85,6 +89,7 @@ class NostalgiaEditorProvider extends ApiProvider {
         title: title.isNotEmpty ? title : null,
         description: description.isNotEmpty ? description : null,
         visibility: visibility,
+        markerColor: markerColor,
         images: await _uploadImages(images)));
     if (response is DataFailed) {
       error = response.error;
@@ -103,6 +108,11 @@ class NostalgiaEditorProvider extends ApiProvider {
 
   void updateVisibility(NostalgiaVisibility value) {
     visibility = value;
+    notifyListeners();
+  }
+
+  void updateMarkerColor(MarkerColor value) {
+    markerColor = value;
     notifyListeners();
   }
 

@@ -1,4 +1,6 @@
 import 'package:equatable/equatable.dart';
+import 'package:wehere_client/core/params/marker_color.dart';
+import 'package:wehere_client/core/params/nostalgia_visibility.dart';
 import 'package:wehere_client/domain/entities/location.dart';
 import 'package:wehere_client/domain/entities/member_summary.dart';
 
@@ -11,6 +13,8 @@ class NostalgiaSummary extends Equatable {
   final int? distance;
   final String? thumbnail;
   final DateTime createdAt;
+  final NostalgiaVisibility visibility;
+  final MarkerColor markerColor;
 
   const NostalgiaSummary(
       {required this.id,
@@ -20,7 +24,9 @@ class NostalgiaSummary extends Equatable {
       required this.location,
       this.distance,
       this.thumbnail,
-      required this.createdAt});
+      required this.createdAt,
+      required this.visibility,
+      required this.markerColor});
 
   @override
   List<Object?> get props =>

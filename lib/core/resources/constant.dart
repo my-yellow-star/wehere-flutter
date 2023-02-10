@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wehere_client/core/params/marker_color.dart';
 
 class Constant {
   static const defaultImage =
@@ -22,6 +23,13 @@ class Constant {
     'Segoe UI Emoji',
     'Segoe UI Symbol',
     'sans-serif'
+  ];
+  static List<MarkerColor> markerColors = [
+    MarkerColor('BLUE_GREEN', 'pin-blue-green.png'),
+    MarkerColor('GREEN_YELLOW', 'pin-green-yellow.png'),
+    MarkerColor('PINK_ORANGE', 'pin-pink-orange.png'),
+    MarkerColor('RED_YELLOW', 'pin-red-yellow.png'),
+    MarkerColor('PURPLE_BLUE', 'pin-purple-blue.png'),
   ];
 }
 
