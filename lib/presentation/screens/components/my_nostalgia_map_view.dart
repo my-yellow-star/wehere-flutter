@@ -16,6 +16,7 @@ import 'package:wehere_client/domain/entities/nostalgia_summary.dart';
 import 'package:wehere_client/presentation/image.dart';
 import 'package:wehere_client/presentation/providers/location_provider.dart';
 import 'package:wehere_client/presentation/providers/my_nostalgia_map_provider.dart';
+import 'package:wehere_client/presentation/providers/refresh_propagator.dart';
 import 'package:wehere_client/presentation/providers/statistic_provider.dart';
 import 'package:wehere_client/presentation/widgets/mixin.dart';
 import 'package:wehere_client/presentation/widgets/text.dart';
@@ -51,6 +52,13 @@ class _MyNostalgiaMapViewState extends State<MyNostalgiaMapView>
 
   @override
   void afterFirstLayout(BuildContext context) {
+    context.read<StatisticProvider>().getSummary(widget.member.id);
+    _loadList();
+  }
+
+  void _refresh() {
+    context.read<MyNostalgiaMapProvider>().initialize();
+    context.read<StatisticProvider>().initialize();
     context.read<StatisticProvider>().getSummary(widget.member.id);
     _loadList();
   }
@@ -128,6 +136,12 @@ class _MyNostalgiaMapViewState extends State<MyNostalgiaMapView>
 
   @override
   Widget build(BuildContext context) {
+    final shouldRefresh =
+        context.watch<RefreshPropagator>().consume('nostalgia-list');
+    if (shouldRefresh) {
+      _refresh();
+    }
+
     final statistic = context.watch<StatisticProvider>().summary;
     final size = MediaQuery.of(context).size;
     return SingleChildScrollView(

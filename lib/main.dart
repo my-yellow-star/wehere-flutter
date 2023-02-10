@@ -11,6 +11,7 @@ import 'package:wehere_client/presentation/providers/nostalgia_editor_provider.d
 import 'package:wehere_client/presentation/providers/nostalgia_list_provider.dart';
 import 'package:wehere_client/presentation/providers/my_nostalgia_map_provider.dart';
 import 'package:wehere_client/presentation/providers/nostalgia_provider.dart';
+import 'package:wehere_client/presentation/providers/refresh_propagator.dart';
 import 'package:wehere_client/presentation/providers/statistic_provider.dart';
 import 'package:wehere_client/presentation/routes.dart';
 import 'package:wehere_client/presentation/screens/login_screen.dart';
@@ -52,7 +53,8 @@ Future<void> main() async {
             create: (_) => injector<MyNostalgiaMapProvider>()),
         ChangeNotifierProvider(
             create: (_) => injector<MyNostalgiaGridProvider>()),
-        ChangeNotifierProvider(create: (_) => injector<StatisticProvider>())
+        ChangeNotifierProvider(create: (_) => injector<StatisticProvider>()),
+        ChangeNotifierProvider(create: (_) => RefreshPropagator()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

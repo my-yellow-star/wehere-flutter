@@ -14,6 +14,7 @@ import 'package:wehere_client/presentation/image.dart';
 import 'package:wehere_client/presentation/providers/authentication_provider.dart';
 import 'package:wehere_client/presentation/providers/location_provider.dart';
 import 'package:wehere_client/presentation/providers/nostalgia_provider.dart';
+import 'package:wehere_client/presentation/providers/refresh_propagator.dart';
 import 'package:wehere_client/presentation/widgets/alert.dart';
 import 'package:wehere_client/presentation/widgets/back_button.dart';
 import 'package:wehere_client/presentation/widgets/bottom_sheet.dart';
@@ -93,7 +94,10 @@ class _NostalgiaDetailScreenState extends State<NostalgiaDetailScreen>
   Future<void> _delete() async {
     final provider = context.read<NostalgiaProvider>();
     await provider.delete();
-    if (mounted) Navigator.pop(context);
+    if (mounted) {
+      context.read<RefreshPropagator>().propagate('nostalgia-list');
+      Navigator.pop(context);
+    }
   }
 
   void _addMarker() async {

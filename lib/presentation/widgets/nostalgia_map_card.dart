@@ -21,7 +21,10 @@ class NostalgiaMapCard extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
             image: DecorationImage(
-                fit: BoxFit.cover, image: NetworkImage(item.thumbnail!))),
+                fit: BoxFit.cover,
+                image: item.thumbnail != null
+                    ? NetworkImage(item.thumbnail!)
+                    : AssetImage(Constant.defaultImageAsset) as ImageProvider)),
         height: size.height * .2,
         child: Container(
           padding: EdgeInsets.fromLTRB(16, 16, 16, paddingBottom),

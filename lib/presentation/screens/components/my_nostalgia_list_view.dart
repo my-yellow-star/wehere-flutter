@@ -4,6 +4,7 @@ import 'package:wehere_client/core/params/get_nostalgia.dart';
 import 'package:wehere_client/domain/entities/member.dart';
 import 'package:wehere_client/presentation/providers/location_provider.dart';
 import 'package:wehere_client/presentation/providers/my_nostalgia_grid_provider.dart';
+import 'package:wehere_client/presentation/providers/refresh_propagator.dart';
 import 'package:wehere_client/presentation/widgets/mixin.dart';
 import 'package:wehere_client/presentation/widgets/nostalgia_list_grid.dart';
 import 'package:wehere_client/presentation/widgets/text.dart';
@@ -32,6 +33,11 @@ class _MyNostalgiaListViewState extends State<MyNostalgiaListView>
     _loadList();
   }
 
+  void _refresh() {
+    context.read<MyNostalgiaGridProvider>().initialize();
+    _loadList();
+  }
+
   void _loadList() {
     final location = context.read<LocationProvider>().location!;
     final nostalgia = context.read<MyNostalgiaGridProvider>();
@@ -45,6 +51,12 @@ class _MyNostalgiaListViewState extends State<MyNostalgiaListView>
 
   @override
   Widget build(BuildContext context) {
+    final shouldRefresh =
+        context.watch<RefreshPropagator>().consume('nostalgia-list');
+    if (shouldRefresh) {
+      _refresh();
+    }
+
     final items = context.watch<MyNostalgiaGridProvider>().items;
 
     if (items.isEmpty) {

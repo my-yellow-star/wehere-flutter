@@ -8,6 +8,7 @@ import 'package:wehere_client/core/params/get_nostalgia.dart';
 import 'package:wehere_client/core/resources/constant.dart';
 import 'package:wehere_client/presentation/providers/location_provider.dart';
 import 'package:wehere_client/presentation/providers/nostalgia_list_provider.dart';
+import 'package:wehere_client/presentation/providers/refresh_propagator.dart';
 import 'package:wehere_client/presentation/screens/nostalgia_editor_screen.dart';
 import 'package:wehere_client/presentation/widgets/background_image.dart';
 import 'package:wehere_client/presentation/widgets/nostalgia_summary_card.dart';
@@ -44,6 +45,11 @@ class _HomeScreenState extends State<HomeScreen>
         );
   }
 
+  void _refresh() {
+    context.read<NostalgiaListProvider>().initialize();
+    _loadItems();
+  }
+
   @override
   void dispose() {
     _backgroundPageController.dispose();
@@ -61,6 +67,11 @@ class _HomeScreenState extends State<HomeScreen>
 
   @override
   Widget build(BuildContext context) {
+    final shouldRefresh =
+        context.watch<RefreshPropagator>().consume('nostalgia-list');
+    if (shouldRefresh) {
+      _refresh();
+    }
     final size = MediaQuery.of(context).size;
     final nostalgia = context.watch<NostalgiaListProvider>();
     if (nostalgia.isLoading) {
@@ -114,7 +125,8 @@ class _HomeScreenState extends State<HomeScreen>
             bottom: 0,
             child: InkWell(
               onTap: () {
-                Navigator.pushNamed(context, 'nostalgia-detail', arguments: item.id);
+                Navigator.pushNamed(context, 'nostalgia-detail',
+                    arguments: item.id);
               },
               child: UnconstrainedBox(
                 child: Container(

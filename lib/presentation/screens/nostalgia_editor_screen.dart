@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:wehere_client/core/resources/constant.dart';
 import 'package:wehere_client/presentation/providers/location_provider.dart';
 import 'package:wehere_client/presentation/providers/nostalgia_editor_provider.dart';
+import 'package:wehere_client/presentation/providers/refresh_propagator.dart';
 import 'package:wehere_client/presentation/widgets/alert.dart';
 import 'package:wehere_client/presentation/widgets/back_button.dart';
 import 'package:wehere_client/presentation/widgets/gallery.dart';
@@ -65,8 +66,9 @@ class _NostalgiaEditorScreenState extends State<NostalgiaEditorScreen>
       await nostalgia.create(context.read<LocationProvider>().location!);
     }
     if (nostalgia.error == null && mounted) {
-      Navigator.pushNamedAndRemoveUntil(context, 'nostalgia-detail',
-          ModalRoute.withName('main'),
+      context.read<RefreshPropagator>().propagate('nostalgia-list');
+      Navigator.pushNamedAndRemoveUntil(
+          context, 'nostalgia-detail', ModalRoute.withName('main'),
           arguments: nostalgia.id);
     }
   }

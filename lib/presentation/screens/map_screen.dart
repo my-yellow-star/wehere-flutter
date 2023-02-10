@@ -11,6 +11,7 @@ import 'package:wehere_client/domain/entities/location.dart';
 import 'package:wehere_client/domain/entities/nostalgia_summary.dart';
 import 'package:wehere_client/presentation/providers/location_provider.dart';
 import 'package:wehere_client/presentation/providers/nostalgia_list_provider.dart';
+import 'package:wehere_client/presentation/providers/refresh_propagator.dart';
 import 'package:wehere_client/presentation/screens/components/create_nostalgia_bubble.dart';
 import 'package:wehere_client/presentation/widgets/button.dart';
 import 'package:wehere_client/presentation/widgets/marker.dart';
@@ -47,6 +48,11 @@ class _MapScreenState extends State<MapScreen> with AfterLayoutMixin {
 
   @override
   void afterFirstLayout(BuildContext context) {
+    _generateMarker();
+  }
+
+  void _refresh() {
+    context.read<NostalgiaListProvider>().initialize();
     _generateMarker();
   }
 
@@ -133,6 +139,12 @@ class _MapScreenState extends State<MapScreen> with AfterLayoutMixin {
 
   @override
   Widget build(BuildContext context) {
+    final shouldRefresh =
+        context.watch<RefreshPropagator>().consume('nostalgia-list');
+    if (shouldRefresh) {
+      _refresh();
+    }
+
     final nostalgia = context.watch<NostalgiaListProvider>();
     if (nostalgia.isLoading) {
       return Center(child: CircularProgressIndicator());
