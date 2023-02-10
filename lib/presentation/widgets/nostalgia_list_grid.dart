@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:wehere_client/core/params/nostalgia_visibility.dart';
 import 'package:wehere_client/core/resources/constant.dart';
 import 'package:wehere_client/domain/entities/nostalgia_summary.dart';
 
@@ -23,11 +24,22 @@ class NostalgiaListGrid extends StatelessWidget {
                   Navigator.pushNamed(context, 'nostalgia-detail',
                       arguments: items[index].id);
                 },
-                child: CachedNetworkImage(
-                  imageUrl: items[index].thumbnail ?? Constant.defaultImage,
-                  width: size.width / 3,
-                  height: size.width / 3,
-                  fit: BoxFit.cover,
+                child: Stack(
+                  children: [
+                    CachedNetworkImage(
+                      imageUrl: items[index].thumbnail ?? Constant.defaultImage,
+                      width: size.width / 3,
+                      height: size.width / 3,
+                      fit: BoxFit.cover,
+                    ),
+                    Positioned(
+                        top: 4,
+                        right: 4,
+                        child:
+                            items[index].visibility != NostalgiaVisibility.all
+                                ? Icon(Icons.lock, size: 18)
+                                : SizedBox(width: 0, height: 0))
+                  ],
                 ),
               ),
           childCount: items.length),
