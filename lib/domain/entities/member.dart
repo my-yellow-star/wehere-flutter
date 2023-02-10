@@ -37,6 +37,6 @@ class Member extends Equatable {
       ];
 }
 
-enum PlatformType { google }
+enum PlatformType { google, apple, kakao }
 
 enum Grade { freeTier }

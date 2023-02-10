@@ -1,5 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:wehere_client/core/resources/constant.dart';
+import 'package:wehere_client/presentation/providers/authentication_provider.dart';
 import 'package:wehere_client/presentation/routes.dart';
 import 'package:wehere_client/presentation/screens/main_screen.dart';
 import 'package:wehere_client/presentation/widgets/alert.dart';
@@ -24,6 +28,8 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isLoading = context.watch<AuthenticationProvider>().isLoading;
+
     return Scaffold(
       body: Stack(
         children: [
@@ -56,10 +62,22 @@ class LoginScreen extends StatelessWidget {
                             ),
                             Container(
                               margin: EdgeInsets.only(top: 12),
-                              child: GoogleLoginButton.build(
-                                  context,
-                                  () => _onLoginSucceed(context),
-                                  () => _onLoginFailed(context)),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  GoogleLoginButton.build(
+                                      context,
+                                      () => _onLoginSucceed(context),
+                                      () => _onLoginFailed(context)),
+                                  Container(width: 8),
+                                  Platform.isIOS
+                                      ? AppleLoginButton.build(
+                                          context,
+                                          () => _onLoginSucceed(context),
+                                          () => _onLoginFailed(context))
+                                      : SizedBox(width: 0, height: 0),
+                                ],
+                              ),
                             )
                           ],
                         ))
@@ -68,6 +86,7 @@ class LoginScreen extends StatelessWidget {
               ),
             ]),
           ),
+          isLoading ? Center(child: CircularProgressIndicator()) : Container()
         ],
       ),
     );

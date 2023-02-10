@@ -27,11 +27,8 @@ class MemberModel extends Member {
 }
 
 PlatformType toPlatformType(String raw) {
-  if (raw == 'GOOGLE') {
-    return PlatformType.google;
-  } else {
-    throw Error();
-  }
+  return PlatformType.values
+      .singleWhere((value) => value.name.toUpperCase() == raw);
 }
 
 Grade toGrade(String raw) {
