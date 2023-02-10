@@ -33,7 +33,7 @@ class ProfileImage extends StatelessWidget {
               radius: size / 2,
               backgroundImage: _provider,
             )
-          : Icon(Icons.account_circle, size: size, color: Colors.grey),
+          : Icon(Icons.account_circle, size: size, color: Colors.white),
     );
   }
 }
