@@ -4,6 +4,7 @@ import 'package:wehere_client/core/resources/constant.dart';
 import 'package:wehere_client/presentation/providers/location_provider.dart';
 import 'package:wehere_client/presentation/providers/nostalgia_editor_provider.dart';
 import 'package:wehere_client/presentation/providers/refresh_propagator.dart';
+import 'package:wehere_client/presentation/screens/components/marker_color_selector.dart';
 import 'package:wehere_client/presentation/widgets/alert.dart';
 import 'package:wehere_client/presentation/widgets/back_button.dart';
 import 'package:wehere_client/presentation/widgets/gallery.dart';
@@ -119,12 +120,22 @@ class _NostalgiaEditorScreenState extends State<NostalgiaEditorScreen>
                       padding: EdgeInsets.only(left: 16, right: 16),
                       child: Column(
                         children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              VisibilityDropdown(
-                                  selectedVisibility: nostalgia.visibility)
-                            ],
+                          Container(
+                            padding: EdgeInsets.only(top: 8, bottom: 8),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                MarkerColorSelector(
+                                  selected: nostalgia.markerColor,
+                                  onSelected: (value) {
+                                    nostalgia.updateMarkerColor(value);
+                                  },
+                                ),
+                                VisibilityDropdown(
+                                    selectedVisibility: nostalgia.visibility)
+                              ],
+                            ),
                           ),
                           TextField(
                             autofocus: true,
