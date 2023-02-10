@@ -5,7 +5,6 @@ import 'package:custom_info_window/custom_info_window.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:wehere_client/core/params/get_nostalgia.dart';
@@ -13,11 +12,11 @@ import 'package:wehere_client/core/resources/constant.dart';
 import 'package:wehere_client/domain/entities/location.dart';
 import 'package:wehere_client/domain/entities/member.dart';
 import 'package:wehere_client/domain/entities/nostalgia_summary.dart';
-import 'package:wehere_client/presentation/image.dart';
 import 'package:wehere_client/presentation/providers/location_provider.dart';
 import 'package:wehere_client/presentation/providers/my_nostalgia_map_provider.dart';
 import 'package:wehere_client/presentation/providers/refresh_propagator.dart';
 import 'package:wehere_client/presentation/providers/statistic_provider.dart';
+import 'package:wehere_client/presentation/screens/components/marker_icon_provider.dart';
 import 'package:wehere_client/presentation/widgets/mixin.dart';
 import 'package:wehere_client/presentation/widgets/text.dart';
 
@@ -86,12 +85,7 @@ class _MyNostalgiaMapViewState extends State<MyNostalgiaMapView>
       LatLng(location.latitude, location.longitude);
 
   void _addMarkers(List<NostalgiaSummary> items) async {
-    final byte = ImageUtil.resizeImage(
-        (await rootBundle.load(Constant.defaultMarker)).buffer.asUint8List(),
-        80,
-        90);
-
-    final icon = BitmapDescriptor.fromBytes(byte!);
+    final iconMap = await MarkerIconProvider.getIcons();
 
     final markers = items.map((item) => Marker(
           consumeTapEvents: true,
@@ -127,7 +121,7 @@ class _MyNostalgiaMapViewState extends State<MyNostalgiaMapView>
               _toLatLng(item.location),
             );
           },
-          icon: icon,
+          icon: iconMap[item.markerColor.value]!,
         ));
     setState(() {
       _markers.addAll(markers);

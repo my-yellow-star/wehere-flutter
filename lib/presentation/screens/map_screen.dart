@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:wehere_client/core/params/get_nostalgia.dart';
@@ -11,13 +10,13 @@ import 'package:wehere_client/core/resources/constant.dart';
 import 'package:wehere_client/core/resources/logger.dart';
 import 'package:wehere_client/domain/entities/location.dart';
 import 'package:wehere_client/domain/entities/nostalgia_summary.dart';
-import 'package:wehere_client/presentation/image.dart';
 import 'package:wehere_client/presentation/providers/authentication_provider.dart';
 import 'package:wehere_client/presentation/providers/location_provider.dart';
 import 'package:wehere_client/presentation/providers/nostalgia_list_provider.dart';
 import 'package:wehere_client/presentation/providers/refresh_propagator.dart';
 import 'package:wehere_client/presentation/screens/components/create_nostalgia_bubble.dart';
 import 'package:wehere_client/presentation/screens/components/map_visibility_switch.dart';
+import 'package:wehere_client/presentation/screens/components/marker_icon_provider.dart';
 import 'package:wehere_client/presentation/widgets/mixin.dart';
 import 'package:wehere_client/presentation/widgets/nostalgia_map_card.dart';
 import 'package:wehere_client/presentation/widgets/text.dart';
@@ -39,7 +38,6 @@ class _MapScreenState extends State<MapScreen> with AfterLayoutMixin {
   double _zoom = 12;
   NostalgiaVisibility _visibility = NostalgiaVisibility.all;
   late Location _location;
-  final Map<String, BitmapDescriptor> _iconMap = {};
 
   @override
   void initState() {
@@ -93,7 +91,7 @@ class _MapScreenState extends State<MapScreen> with AfterLayoutMixin {
       156543.03392 * cos(_location.latitude * pi / 180) / pow(2, _zoom);
 
   void _addMarkers(List<NostalgiaSummary> items) async {
-    final iconMap = await getIcons();
+    final iconMap = await MarkerIconProvider.getIcons();
     final filtered = items.where((item) =>
         _markers.where((marker) => marker.markerId.value == item.id).isEmpty);
     final markers = filtered
@@ -117,20 +115,6 @@ class _MapScreenState extends State<MapScreen> with AfterLayoutMixin {
       _markers = total;
       apiLogger.d(_markers.length);
     });
-  }
-
-  Future<Map<String, BitmapDescriptor>> getIcons() async {
-    if (_iconMap.isEmpty) {
-      for (var markerColor in Constant.markerColors) {
-        final byte = ImageUtil.resizeImage(
-            (await rootBundle.load(markerColor.filename)).buffer.asUint8List(),
-            112,
-            126);
-        final icon = BitmapDescriptor.fromBytes(byte!);
-        _iconMap[markerColor.value] = icon;
-      }
-    }
-    return _iconMap;
   }
 
   CameraPosition _currentPosition(BuildContext context) {
