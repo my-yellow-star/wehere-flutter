@@ -71,7 +71,7 @@ class _MyNostalgiaMapViewState extends State<MyNostalgiaMapView>
             latitude: _location.latitude,
             longitude: _location.longitude,
             memberId: widget.member.id,
-            condition: NostalgiaCondition.member)
+            condition: NostalgiaCondition.around)
         .then((_) {
       _addMarkers(nostalgia.items);
     });

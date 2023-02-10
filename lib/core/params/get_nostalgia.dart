@@ -28,4 +28,4 @@ class GetNostalgiaDetailParams {
   GetNostalgiaDetailParams(this.nostalgiaId, this.latitude, this.longitude);
 }
 
-enum NostalgiaCondition { around, member, recent }
+enum NostalgiaCondition { around, recent }

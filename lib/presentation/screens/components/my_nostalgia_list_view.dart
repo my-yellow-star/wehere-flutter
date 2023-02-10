@@ -43,7 +43,7 @@ class _MyNostalgiaListViewState extends State<MyNostalgiaListView>
     final nostalgia = context.read<MyNostalgiaGridProvider>();
     nostalgia.loadList(
         size: 12,
-        condition: NostalgiaCondition.member,
+        condition: NostalgiaCondition.recent,
         memberId: widget.member.id,
         latitude: location.latitude,
         longitude: location.longitude);

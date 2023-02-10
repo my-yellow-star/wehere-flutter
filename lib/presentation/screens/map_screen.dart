@@ -1,21 +1,23 @@
 import 'dart:async';
 import 'dart:math';
-import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:wehere_client/core/params/get_nostalgia.dart';
+import 'package:wehere_client/core/params/nostalgia_visibility.dart';
 import 'package:wehere_client/core/resources/constant.dart';
+import 'package:wehere_client/core/resources/logger.dart';
 import 'package:wehere_client/domain/entities/location.dart';
 import 'package:wehere_client/domain/entities/nostalgia_summary.dart';
+import 'package:wehere_client/presentation/image.dart';
+import 'package:wehere_client/presentation/providers/authentication_provider.dart';
 import 'package:wehere_client/presentation/providers/location_provider.dart';
 import 'package:wehere_client/presentation/providers/nostalgia_list_provider.dart';
 import 'package:wehere_client/presentation/providers/refresh_propagator.dart';
 import 'package:wehere_client/presentation/screens/components/create_nostalgia_bubble.dart';
-import 'package:wehere_client/presentation/widgets/button.dart';
-import 'package:wehere_client/presentation/widgets/marker.dart';
-import 'package:wehere_client/presentation/widgets/marker_generator.dart';
+import 'package:wehere_client/presentation/screens/components/map_visibility_switch.dart';
 import 'package:wehere_client/presentation/widgets/mixin.dart';
 import 'package:wehere_client/presentation/widgets/nostalgia_map_card.dart';
 import 'package:wehere_client/presentation/widgets/text.dart';
@@ -28,14 +30,16 @@ class MapScreen extends StatefulWidget {
 }
 
 class _MapScreenState extends State<MapScreen> with AfterLayoutMixin {
+  static const maxMarkersSize = 500;
   final Completer<GoogleMapController> _controller =
       Completer<GoogleMapController>();
   Set<Marker> _markers = {};
   NostalgiaSummary? _tappedItem;
   Set<Circle> _circles = {};
   double _zoom = 12;
+  NostalgiaVisibility _visibility = NostalgiaVisibility.all;
   late Location _location;
-  bool _shouldRefresh = false;
+  final Map<String, BitmapDescriptor> _iconMap = {};
 
   @override
   void initState() {
@@ -52,6 +56,11 @@ class _MapScreenState extends State<MapScreen> with AfterLayoutMixin {
   }
 
   void _refresh() {
+    setState(() {
+      _markers = {};
+      _tappedItem = null;
+      _circles = {};
+    });
     context.read<NostalgiaListProvider>().initialize();
     _generateMarker();
   }
@@ -64,12 +73,16 @@ class _MapScreenState extends State<MapScreen> with AfterLayoutMixin {
             condition: NostalgiaCondition.around,
             latitude: _location.latitude,
             longitude: _location.longitude,
+            memberId: _visibility == NostalgiaVisibility.owner
+                ? context
+                    .read<AuthenticationProvider>()
+                    .authentication!
+                    .member
+                    .id
+                : null,
             maxDistance: _maxDistance(context))
         .then((_) {
-      MarkerGenerator(nostalgia.items.map((e) => IMarker(item: e)).toList(),
-          (bitmaps) {
-        _mapBitmapsToMarkers(bitmaps, nostalgia.items);
-      }).addOverlay(context);
+      _addMarkers(nostalgia.items);
     });
   }
 
@@ -79,26 +92,45 @@ class _MapScreenState extends State<MapScreen> with AfterLayoutMixin {
   _metersPerPx() =>
       156543.03392 * cos(_location.latitude * pi / 180) / pow(2, _zoom);
 
-  _mapBitmapsToMarkers(List<Uint8List> bitmaps, List<NostalgiaSummary> items) {
-    if (items.isEmpty) return;
+  void _addMarkers(List<NostalgiaSummary> items) async {
+    final iconMap = await getIcons();
+    final filtered = items.where((item) =>
+        _markers.where((marker) => marker.markerId.value == item.id).isEmpty);
+    final markers = filtered
+        .map((item) => Marker(
+            consumeTapEvents: true,
+            markerId: MarkerId(item.id),
+            position: _getPosition(item),
+            onTap: () {
+              setState(() {
+                _tappedItem = item;
+                _circles = {_circle(item)};
+              });
+            },
+            icon: iconMap[item.markerColor.value]!))
+        .toSet();
     setState(() {
-      _shouldRefresh = false;
-      _markers = bitmaps
-          .asMap()
-          .entries
-          .map((entry) => Marker(
-              consumeTapEvents: true,
-              markerId: MarkerId(items[entry.key].id),
-              position: _getPosition(items[entry.key]),
-              onTap: () {
-                setState(() {
-                  _tappedItem = items[entry.key];
-                  _circles = {_circle(items[entry.key])};
-                });
-              },
-              icon: BitmapDescriptor.fromBytes(entry.value)))
-          .toSet();
+      var total = {..._markers, ...markers};
+      if (total.length > maxMarkersSize) {
+        total = total.skip(total.length - maxMarkersSize).toSet();
+      }
+      _markers = total;
+      apiLogger.d(_markers.length);
     });
+  }
+
+  Future<Map<String, BitmapDescriptor>> getIcons() async {
+    if (_iconMap.isEmpty) {
+      for (var markerColor in Constant.markerColors) {
+        final byte = ImageUtil.resizeImage(
+            (await rootBundle.load(markerColor.filename)).buffer.asUint8List(),
+            112,
+            126);
+        final icon = BitmapDescriptor.fromBytes(byte!);
+        _iconMap[markerColor.value] = icon;
+      }
+    }
+    return _iconMap;
   }
 
   CameraPosition _currentPosition(BuildContext context) {
@@ -109,13 +141,14 @@ class _MapScreenState extends State<MapScreen> with AfterLayoutMixin {
   LatLng _getPosition(NostalgiaSummary item) =>
       LatLng(item.location.latitude, item.location.longitude);
 
-  void _onCameraIdle(BuildContext context) {}
+  void _onCameraIdle(BuildContext context) {
+    _generateMarker();
+  }
 
   void _onCameraMove(CameraPosition position) {
     setState(() {
       _location = Location(position.target.latitude, position.target.longitude);
       _zoom = position.zoom;
-      _shouldRefresh = true;
     });
     _metersPerPx();
   }
@@ -130,12 +163,21 @@ class _MapScreenState extends State<MapScreen> with AfterLayoutMixin {
     });
   }
 
+  void _onTapVisibilitySwitch() {
+    setState(() {
+      _visibility = _visibility == NostalgiaVisibility.all
+          ? NostalgiaVisibility.owner
+          : NostalgiaVisibility.all;
+    });
+    _refresh();
+  }
+
   Circle _circle(NostalgiaSummary item) => Circle(
       circleId: CircleId('center'),
       center: LatLng(item.location.latitude, item.location.longitude),
       strokeWidth: 0,
-      radius: _metersPerPx() * 12,
-      fillColor: Colors.blue.withOpacity(0.7));
+      radius: 100,
+      fillColor: Colors.blue.withOpacity(0.5));
 
   @override
   Widget build(BuildContext context) {
@@ -175,7 +217,7 @@ class _MapScreenState extends State<MapScreen> with AfterLayoutMixin {
         ),
         SafeArea(
             child: Row(
-          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Container(
@@ -202,18 +244,10 @@ class _MapScreenState extends State<MapScreen> with AfterLayoutMixin {
                 ],
               ),
             ),
-            _shouldRefresh
-                ? RoundButton(
-                    icon: Icons.refresh,
-                    onPress: _generateMarker,
-                    backgroundOpacity: 1,
-                    backgroundColor: Colors.white,
-                    color: Colors.blue,
-                    shadowColor: Colors.blue,
-                  )
-                : Container(
-                    height: 0,
-                  )
+            MapVisibilitySwitch(
+                onTap: _onTapVisibilitySwitch,
+                visibility: _visibility,
+                highlight: _visibility != NostalgiaVisibility.all)
           ],
         )),
         CreateNostalgiaBubble(),

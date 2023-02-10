@@ -25,11 +25,11 @@ class Constant {
     'sans-serif'
   ];
   static List<MarkerColor> markerColors = [
-    MarkerColor('BLUE_GREEN', 'pin-blue-green.png'),
-    MarkerColor('GREEN_YELLOW', 'pin-green-yellow.png'),
-    MarkerColor('PINK_ORANGE', 'pin-pink-orange.png'),
-    MarkerColor('RED_YELLOW', 'pin-red-yellow.png'),
-    MarkerColor('PURPLE_BLUE', 'pin-purple-blue.png'),
+    MarkerColor('BLUE_GREEN', 'asset/image/pin-blue-green.png'),
+    MarkerColor('GREEN_YELLOW', 'asset/image/pin-green-yellow.png'),
+    MarkerColor('PINK_ORANGE', 'asset/image/pin-pink-orange.png'),
+    MarkerColor('RED_YELLOW', 'asset/image/pin-red-yellow.png'),
+    MarkerColor('PURPLE_BLUE', 'asset/image/pin-purple-blue.png'),
   ];
 }
 

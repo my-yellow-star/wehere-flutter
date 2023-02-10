@@ -11,7 +11,7 @@ class MyNostalgiaMapProvider extends NostalgiaListProvider {
       double? longitude,
       int? size,
       String? memberId,
-      NostalgiaCondition condition = NostalgiaCondition.member}) {
+      NostalgiaCondition condition = NostalgiaCondition.around}) {
     return super.loadList(
         maxDistance: maxDistance,
         latitude: latitude,
