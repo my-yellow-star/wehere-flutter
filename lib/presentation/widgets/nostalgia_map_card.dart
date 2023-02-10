@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:wehere_client/core/extensions.dart';
 import 'package:wehere_client/core/resources/constant.dart';
 import 'package:wehere_client/domain/entities/nostalgia_summary.dart';
+import 'package:wehere_client/presentation/widgets/profile_image.dart';
 import 'package:wehere_client/presentation/widgets/text.dart';
 
 class NostalgiaMapCard extends StatelessWidget {
@@ -37,12 +38,24 @@ class NostalgiaMapCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
+                    Row(
+                      children: [
+                        ProfileImage(
+                            size: 24, url: item.member.profileImageUrl),
+                        Container(width: 8),
+                        IText(
+                          item.member.nickname,
+                          size: FontSize.small,
+                        )
+                      ],
+                    ),
+                    Container(height: 4),
                     IText(item.title, weight: FontWeight.bold),
                     Container(height: 4),
                     IText(
                       item.description,
                       size: FontSize.small,
-                      maxLines: 4,
+                      maxLines: 3,
                     ),
                     Expanded(
                       child: Row(
