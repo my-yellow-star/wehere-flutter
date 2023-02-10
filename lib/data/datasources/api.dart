@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:jwt_decode/jwt_decode.dart';
-import 'package:wehere_client/core/resources/constant.dart';
 import 'package:wehere_client/core/resources/logger.dart';
+import 'package:wehere_client/core/resources/secret.dart';
 import 'package:wehere_client/data/datasources/credential_service.dart';
 import 'package:wehere_client/data/datasources/storage_service.dart';
 
@@ -16,7 +16,7 @@ class Api {
 
   static Dio createDio() {
     var dio = Dio(BaseOptions(
-      baseUrl: Constant.apiHost,
+      baseUrl: Secret.apiHost,
       receiveTimeout: 15000,
       connectTimeout: 15000,
       sendTimeout: 15000,
@@ -75,8 +75,7 @@ class RefreshSessionInterceptor extends QueuedInterceptor {
 class LoggingInterceptor extends Interceptor {
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
-    apiLogger
-        .i('request: [${options.method}] ${options.uri}');
+    apiLogger.i('request: [${options.method}] ${options.uri}');
     super.onRequest(options, handler);
   }
 
