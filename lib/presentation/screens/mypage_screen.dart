@@ -64,7 +64,9 @@ class _MyPageScreenState extends State<MyPageScreen> {
     final provider = context.read<MemberProvider>();
     showModalBottomSheet(
         context: context,
-        builder: (_) => ImageSelector(onImageSelected: (images) {
+        builder: (_) => ImageSelector(
+            canSelectMultipleImage: false,
+            onImageSelected: (images) {
               provider.updateBackgroundImage(images[0]);
             }));
   }
