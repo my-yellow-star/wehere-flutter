@@ -33,11 +33,11 @@
 			</dict>
 		</array>
 		<key>NSLocationWhenInUseUsageDescription</key>
-		<string>The app needs location permission</string>
+		<string>Pinple requires location permission to show you posts nearby, and to tell you where you wrote the post.</string>
 		<key>NSPhotoLibraryUsageDescription</key>
-		<string>The app needs photo library permission to upload image</string>
+		<string>Allow access to photos to upload photos from your library</string>
 		<key>NSCameraUsageDescription</key>
-		<string>The app needs camera permission to upload picture</string>
+		<string>Allow access to camera to upload the pictures you took</string>
 		<key>LSRequiresIPhoneOS</key>
 		<true/>
 		<key>UILaunchStoryboardName</key>
