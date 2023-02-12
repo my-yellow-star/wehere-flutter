@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:wehere_client/presentation/widgets/text.dart';
 
 import 'package:wehere_client/core/resources/constant.dart';
@@ -19,8 +20,12 @@ class _IBottomSheetState extends State<IBottomSheet> {
       bottom: true,
       top: false,
       child: Container(
-        height: widget.items.length * 40 + 32,
-        padding: EdgeInsets.all(16),
+        height: widget.items.length * 40 + 32.h,
+        padding: EdgeInsets.only(
+            left: PaddingHorizontal.normal,
+            right: PaddingHorizontal.normal,
+            top: PaddingVertical.normal,
+            bottom: PaddingVertical.normal),
         child: Column(
           children: widget.items
               .map((e) => InkWell(
@@ -29,7 +34,10 @@ class _IBottomSheetState extends State<IBottomSheet> {
                       e.onPress();
                     },
                     child: Container(
-                      padding: EdgeInsets.only(top: 8, bottom: 8),
+                      padding: EdgeInsets.only(
+                          top: PaddingVertical.small,
+                          bottom: PaddingVertical.small,
+                      ),
                       child: IText(e.title, color: e.color),
                     ),
                   ))

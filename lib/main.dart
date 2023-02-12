@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:wehere_client/core/resources/constant.dart';
 import 'package:wehere_client/injector.dart';
@@ -20,6 +22,7 @@ import 'package:wehere_client/presentation/screens/main_screen.dart';
 Future<void> main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   await initializeDependencies();
 
   final authenticationProvider = injector<AuthenticationProvider>();
@@ -56,11 +59,17 @@ Future<void> main() async {
         ChangeNotifierProvider(create: (_) => injector<StatisticProvider>()),
         ChangeNotifierProvider(create: (_) => RefreshPropagator()),
       ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(fontFamily: Constant.fontFamily),
-        home: resolveScreen(),
-        routes: Routes.map,
-        initialRoute: 'main',
+      child: ScreenUtilInit(
+        designSize: Size(390, 844),
+        minTextAdapt: true,
+        builder: (context, child) {
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            theme: ThemeData(fontFamily: Constant.fontFamily),
+            home: resolveScreen(),
+            routes: Routes.map,
+            initialRoute: 'main',
+          );
+        },
       )));
 }

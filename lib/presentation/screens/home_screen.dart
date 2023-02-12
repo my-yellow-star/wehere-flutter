@@ -133,7 +133,12 @@ class _HomeScreenState extends State<HomeScreen>
                   width: size.width,
                   height: size.height * .2,
                   color: Colors.black.withOpacity(0.5),
-                  padding: EdgeInsets.all(16),
+                  padding: EdgeInsets.fromLTRB(
+                    PaddingHorizontal.normal,
+                    PaddingVertical.normal,
+                    PaddingHorizontal.normal,
+                    PaddingVertical.normal,
+                  ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -142,7 +147,7 @@ class _HomeScreenState extends State<HomeScreen>
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           IText(item.title, weight: FontWeight.bold),
-                          Container(height: 8),
+                          Container(height: PaddingVertical.small),
                           IText(
                             item.description,
                             maxLines: 3,
@@ -156,9 +161,12 @@ class _HomeScreenState extends State<HomeScreen>
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Icon(Icons.place_outlined,
-                                  color: Colors.white, size: 16),
-                              Container(width: 2),
+                              Icon(
+                                Icons.place_outlined,
+                                color: Colors.white,
+                                size: IconSize.small,
+                              ),
+                              Container(width: PaddingHorizontal.tiny),
                               IText(
                                 item.distance?.parseDistance() ?? '???',
                                 size: FontSize.small,

@@ -11,8 +11,8 @@ class MarkerIconProvider {
       for (var markerColor in Constant.markerColors) {
         final byte = ImageUtil.resizeImage(
             (await rootBundle.load(markerColor.filename)).buffer.asUint8List(),
-            112,
-            126);
+            MarkerSize.large['width'],
+            MarkerSize.large['height']);
         final icon = BitmapDescriptor.fromBytes(byte!);
         _iconMap[markerColor.value] = icon;
       }

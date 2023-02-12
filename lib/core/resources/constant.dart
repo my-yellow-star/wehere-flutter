@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:wehere_client/core/params/marker_color.dart';
 
 class Constant {
@@ -34,11 +35,43 @@ class Constant {
 }
 
 class FontSize {
-  static const double tiny = 10;
-  static const double small = 13;
-  static const double regular = 17;
-  static const double big = 28;
-  static const double huge = 34;
+  static double tiny = 10.sp;
+  static double small = 13.sp;
+  static double regular = 17.sp;
+  static double big = 28.sp;
+  static double huge = 34.sp;
+}
+
+class PaddingHorizontal {
+  static double tiny = 4.w;
+  static double small = 8.w;
+  static double normal = 16.w;
+  static double big = 24.w;
+}
+
+class PaddingVertical {
+  static double small = 8.h;
+  static double normal = 16.h;
+  static double big = 24.h;
+}
+
+class IconSize {
+  static double small = 16;
+  static double normal = 24;
+  static double big = 36;
+}
+
+class ProfileSize {
+  static double tiny = 16.h;
+  static double small = 24.h;
+  static double normal = 36.h;
+  static double big = 48.h;
+  static double huge = 60.h;
+  static double title = 80.h;
+}
+
+class MarkerSize {
+  static Map<String, int> large = {'width': 88, 'height': 99};
 }
 
 class ColorTheme {

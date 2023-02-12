@@ -103,9 +103,11 @@ class _NostalgiaDetailScreenState extends State<NostalgiaDetailScreen>
   void _addMarker() async {
     final item = context.read<NostalgiaProvider>().nostalgia;
     final byte = ImageUtil.resizeImage(
-        (await rootBundle.load(item!.markerColor.filename)).buffer.asUint8List(),
-        88,
-        99);
+        (await rootBundle.load(item!.markerColor.filename))
+            .buffer
+            .asUint8List(),
+        MarkerSize.large['width'],
+        MarkerSize.large['height']);
 
     final icon = BitmapDescriptor.fromBytes(byte!);
     setState(() {
@@ -137,6 +139,7 @@ class _NostalgiaDetailScreenState extends State<NostalgiaDetailScreen>
     final provider = context.watch<NostalgiaProvider>();
     final item = provider.nostalgia;
     final size = MediaQuery.of(context).size;
+    final imageHeight = size.height * .4;
     final isMine =
         context.read<AuthenticationProvider>().authentication?.member.id ==
             item?.member.id;
@@ -157,7 +160,7 @@ class _NostalgiaDetailScreenState extends State<NostalgiaDetailScreen>
                         SliverAppBar(
                             automaticallyImplyLeading: false,
                             backgroundColor: ColorTheme.primary,
-                            expandedHeight: size.height * .3 - kToolbarHeight,
+                            expandedHeight: imageHeight - kToolbarHeight,
                             floating: false,
                             pinned: true,
                             title: Row(
@@ -175,7 +178,7 @@ class _NostalgiaDetailScreenState extends State<NostalgiaDetailScreen>
                             flexibleSpace: FlexibleSpaceBar(
                               background: item.images.isNotEmpty
                                   ? Gallery(
-                                      height: size.height * .3,
+                                      height: imageHeight,
                                       width: size.width,
                                       images: item.images
                                           .map((url) => IImageSource(
@@ -183,7 +186,7 @@ class _NostalgiaDetailScreenState extends State<NostalgiaDetailScreen>
                                           .toList())
                                   : Image.asset(
                                       Constant.defaultImageAsset,
-                                      height: size.height * .3,
+                                      height: imageHeight,
                                       width: size.width,
                                       fit: BoxFit.cover,
                                     ),
@@ -192,7 +195,10 @@ class _NostalgiaDetailScreenState extends State<NostalgiaDetailScreen>
                     },
                     body: SingleChildScrollView(
                       child: Container(
-                          padding: EdgeInsets.only(left: 16, right: 16),
+                          padding: EdgeInsets.only(
+                            left: PaddingHorizontal.normal,
+                            right: PaddingHorizontal.normal,
+                          ),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -209,22 +215,24 @@ class _NostalgiaDetailScreenState extends State<NostalgiaDetailScreen>
                                       Row(
                                         children: [
                                           ProfileImage(
-                                              size: 18,
+                                              size: ProfileSize.small,
                                               url: item.member.profileImageUrl),
-                                          Container(width: 8),
+                                          Container(
+                                              width: PaddingHorizontal.small),
                                           IText(
                                             item.member.nickname,
                                             color: textColor.withOpacity(0.8),
                                             size: FontSize.small,
                                             weight: FontWeight.bold,
                                           ),
-                                          Container(width: 8),
+                                          Container(
+                                              width: PaddingHorizontal.small),
                                           item.visibility !=
                                                   NostalgiaVisibility.all
                                               ? Icon(
                                                   Icons.lock_outline,
                                                   color: Colors.grey,
-                                                  size: 18,
+                                                  size: IconSize.small,
                                                 )
                                               : Container(
                                                   height: 0,
@@ -247,7 +255,8 @@ class _NostalgiaDetailScreenState extends State<NostalgiaDetailScreen>
                               ),
                               item.description.isNotEmpty
                                   ? Container(
-                                      padding: EdgeInsets.only(top: 8),
+                                      padding: EdgeInsets.only(
+                                          top: PaddingVertical.small),
                                       child: IText(
                                         item.description,
                                         color: textColor,
@@ -257,7 +266,10 @@ class _NostalgiaDetailScreenState extends State<NostalgiaDetailScreen>
                                     )
                                   : Container(),
                               Container(
-                                padding: EdgeInsets.only(top: 24, bottom: 24),
+                                padding: EdgeInsets.only(
+                                  top: PaddingVertical.big,
+                                  bottom: PaddingVertical.big,
+                                ),
                                 height: size.height * .3,
                                 child: _mapView(item.location),
                               ),

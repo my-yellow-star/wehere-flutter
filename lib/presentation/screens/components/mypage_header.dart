@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wehere_client/core/resources/constant.dart';
 import 'package:wehere_client/domain/entities/authentication.dart';
 import 'package:wehere_client/domain/entities/member.dart';
 import 'package:wehere_client/presentation/widgets/back_button.dart';
@@ -46,7 +47,7 @@ class MyPageHeader extends StatelessWidget {
                         onTap: onTapEditCancel,
                         child: IText('취소'),
                       ),
-                      Container(width: 12),
+                      Container(width: PaddingHorizontal.normal),
                       InkWell(
                         onTap: onTapEditSave,
                         child: IText('저장'),
@@ -60,14 +61,14 @@ class MyPageHeader extends StatelessWidget {
                 children: [
                   RoundButton(
                     icon: Icons.add_circle,
-                    iconSize: 24,
+                    iconSize: IconSize.normal,
                     color: Colors.white,
                     backgroundOpacity: 0,
                     onPress: createNostalgia,
                   ),
                   RoundButton(
                     icon: Icons.settings,
-                    iconSize: 24,
+                    iconSize: IconSize.normal,
                     color: Colors.white,
                     backgroundOpacity: 0,
                     onPress: onTapSettingButton,

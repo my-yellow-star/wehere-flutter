@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:wehere_client/core/resources/constant.dart';
 import 'package:wehere_client/presentation/providers/location_provider.dart';
@@ -94,34 +95,47 @@ class _NostalgiaEditorScreenState extends State<NostalgiaEditorScreen>
                   children: [
                     nostalgia.images.isNotEmpty
                         ? Gallery(
-                            height: size.height * .3,
+                            height: size.height * .4,
                             width: size.width,
                             images: nostalgia.images,
                             onDeleteItem: nostalgia.deleteImage,
                           )
                         : Container(
-                            height: size.height * .3,
+                            height: size.height * .4,
                             width: size.width,
                             color: Colors.black,
                             child: Center(
                                 child: IText('그곳의 사진을 올려보세요',
                                     weight: FontWeight.w100)),
                           ),
-                    Positioned(bottom: 16, right: 16, child: UploadButton()),
+                    Positioned(
+                      bottom: PaddingVertical.normal,
+                      right: PaddingHorizontal.normal,
+                      child: UploadButton(),
+                    ),
                     SafeArea(
                         child: Container(
-                            margin: EdgeInsets.only(top: 16, left: 16),
+                            margin: EdgeInsets.only(
+                              top: PaddingVertical.normal,
+                              left: PaddingHorizontal.normal,
+                            ),
                             child: RoundBackButton()))
                   ],
                 ),
                 Expanded(
                   child: SingleChildScrollView(
                     child: Container(
-                      padding: EdgeInsets.only(left: 16, right: 16),
+                      padding: EdgeInsets.only(
+                        left: PaddingHorizontal.normal,
+                        right: PaddingHorizontal.normal,
+                      ),
                       child: Column(
                         children: [
                           Container(
-                            padding: EdgeInsets.only(top: 8, bottom: 8),
+                            padding: EdgeInsets.only(
+                              top: PaddingVertical.small,
+                              bottom: PaddingVertical.small,
+                            ),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               crossAxisAlignment: CrossAxisAlignment.center,
@@ -178,7 +192,7 @@ class _NostalgiaEditorScreenState extends State<NostalgiaEditorScreen>
                 ),
                 Container(
                   color: Colors.black,
-                  height: 100,
+                  height: 100.h,
                   child: SafeArea(
                     top: false,
                     child: InkWell(

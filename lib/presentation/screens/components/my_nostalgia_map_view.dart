@@ -78,7 +78,7 @@ class _MyNostalgiaMapViewState extends State<MyNostalgiaMapView>
 
   CameraPosition _initialCameraPosition() {
     final location = context.read<LocationProvider>().location!;
-    return CameraPosition(target: _toLatLng(location), zoom: 4);
+    return CameraPosition(target: _toLatLng(location), zoom: 2);
   }
 
   LatLng _toLatLng(Location location) =>
@@ -99,7 +99,10 @@ class _MyNostalgiaMapViewState extends State<MyNostalgiaMapView>
                       arguments: item.id);
                 },
                 child: Container(
-                  padding: EdgeInsets.only(left: 8, right: 8),
+                  padding: EdgeInsets.only(
+                    left: PaddingHorizontal.small,
+                    right: PaddingHorizontal.small,
+                  ),
                   decoration: BoxDecoration(
                       color: Colors.black,
                       borderRadius: BorderRadius.circular(4),
@@ -143,7 +146,12 @@ class _MyNostalgiaMapViewState extends State<MyNostalgiaMapView>
       child: Column(
         children: [
           Container(
-            padding: EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
+            padding: EdgeInsets.only(
+              left: PaddingHorizontal.normal,
+              right: PaddingHorizontal.normal,
+              top: PaddingVertical.small,
+              bottom: PaddingVertical.small,
+            ),
             child: Column(
               children: [
                 Row(
@@ -152,7 +160,7 @@ class _MyNostalgiaMapViewState extends State<MyNostalgiaMapView>
                       '추억',
                       size: FontSize.small,
                     ),
-                    Container(width: 4),
+                    Container(width: PaddingHorizontal.tiny),
                     IText(
                       '${statistic?.totalCount ?? 0}',
                       weight: FontWeight.bold,
@@ -165,7 +173,7 @@ class _MyNostalgiaMapViewState extends State<MyNostalgiaMapView>
                       '여행',
                       size: FontSize.small,
                     ),
-                    Container(width: 4),
+                    Container(width: PaddingHorizontal.tiny),
                     IText(
                       ((statistic?.accumulatedDistance ?? 0) / 1000)
                           .round()
