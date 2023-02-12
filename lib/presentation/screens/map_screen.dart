@@ -108,7 +108,10 @@ class _MapScreenState extends State<MapScreen> with AfterLayoutMixin {
             icon: iconMap[item.markerColor.value]!))
         .toSet();
     setState(() {
-      var total = {..._markers, ...markers};
+      var total = {
+        ...markers,
+        ..._markers,
+      };
       if (total.length > maxMarkersSize) {
         total = total.skip(total.length - maxMarkersSize).toSet();
       }
@@ -172,9 +175,7 @@ class _MapScreenState extends State<MapScreen> with AfterLayoutMixin {
     }
 
     final nostalgia = context.watch<NostalgiaListProvider>();
-    if (nostalgia.isLoading) {
-      return Center(child: CircularProgressIndicator());
-    }
+
     return Stack(
       children: [
         SizedBox(

@@ -50,6 +50,7 @@ class PaddingHorizontal {
 }
 
 class PaddingVertical {
+  static double tiny = 4.h;
   static double small = 8.h;
   static double normal = 16.h;
   static double big = 24.h;

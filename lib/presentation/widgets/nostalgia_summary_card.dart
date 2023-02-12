@@ -23,7 +23,10 @@ class NostalgiaSummaryCard extends StatelessWidget {
           imageUrl: item.thumbnail ?? Constant.defaultImage,
           imageBuilder: (context, imageProvider) => Container(
             height: size.height / 2,
-            margin: EdgeInsets.only(right: 24, left: 24),
+            margin: EdgeInsets.only(
+              right: PaddingHorizontal.big,
+              left: PaddingHorizontal.big,
+            ),
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12),
                 boxShadow: const [
@@ -36,13 +39,20 @@ class NostalgiaSummaryCard extends StatelessWidget {
                 image:
                     DecorationImage(fit: BoxFit.cover, image: imageProvider)),
             child: Container(
-              padding: EdgeInsets.all(16),
+              padding: EdgeInsets.fromLTRB(
+                PaddingHorizontal.normal,
+                PaddingVertical.normal,
+                PaddingHorizontal.normal,
+                PaddingVertical.normal,
+              ),
               child: Column(
                 children: [
                   Row(
                     children: [
-                      ProfileImage(size: 18, url: item.member.profileImageUrl),
-                      Container(width: 8),
+                      ProfileImage(
+                          size: ProfileSize.small,
+                          url: item.member.profileImageUrl),
+                      Container(width: PaddingHorizontal.small),
                       IText(
                         item.member.nickname,
                         size: FontSize.small,

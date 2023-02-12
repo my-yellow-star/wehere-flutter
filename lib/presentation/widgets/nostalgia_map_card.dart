@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:wehere_client/core/extensions.dart';
 import 'package:wehere_client/core/resources/constant.dart';
 import 'package:wehere_client/domain/entities/nostalgia_summary.dart';
@@ -7,7 +8,7 @@ import 'package:wehere_client/presentation/widgets/text.dart';
 
 class NostalgiaMapCard extends StatelessWidget {
   final NostalgiaSummary item;
-  static const double paddingBottom = 20;
+  static double paddingBottom = 20.h;
 
   const NostalgiaMapCard({super.key, required this.item});
 
@@ -28,7 +29,12 @@ class NostalgiaMapCard extends StatelessWidget {
                     : AssetImage(Constant.defaultImageAsset) as ImageProvider)),
         height: size.height * .2,
         child: Container(
-          padding: EdgeInsets.fromLTRB(16, 16, 16, paddingBottom),
+          padding: EdgeInsets.fromLTRB(
+            PaddingHorizontal.normal,
+            PaddingVertical.normal,
+            PaddingHorizontal.normal,
+            paddingBottom,
+          ),
           color: Colors.black.withOpacity(0.5),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -41,17 +47,19 @@ class NostalgiaMapCard extends StatelessWidget {
                     Row(
                       children: [
                         ProfileImage(
-                            size: 24, url: item.member.profileImageUrl),
-                        Container(width: 8),
+                          size: ProfileSize.small,
+                          url: item.member.profileImageUrl,
+                        ),
+                        Container(width: PaddingHorizontal.small),
                         IText(
                           item.member.nickname,
                           size: FontSize.small,
                         )
                       ],
                     ),
-                    Container(height: 4),
+                    Container(height: PaddingVertical.tiny),
                     IText(item.title, weight: FontWeight.bold),
-                    Container(height: 4),
+                    Container(height: PaddingVertical.tiny),
                     IText(
                       item.description,
                       size: FontSize.small,
@@ -65,7 +73,7 @@ class NostalgiaMapCard extends StatelessWidget {
                           Row(
                             children: [
                               Icon(Icons.place_outlined,
-                                  color: Colors.white, size: 16),
+                                  color: Colors.white, size: IconSize.small),
                               IText(item.distance?.parseDistance() ?? '???',
                                   size: FontSize.small),
                             ],

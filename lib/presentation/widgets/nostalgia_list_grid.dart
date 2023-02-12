@@ -37,7 +37,7 @@ class NostalgiaListGrid extends StatelessWidget {
                         right: 4,
                         child:
                             items[index].visibility != NostalgiaVisibility.all
-                                ? Icon(Icons.lock, size: 18)
+                                ? Icon(Icons.lock, size: IconSize.small)
                                 : SizedBox(width: 0, height: 0))
                   ],
                 ),
