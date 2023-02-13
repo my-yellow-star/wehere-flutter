@@ -15,8 +15,10 @@ import 'package:wehere_client/presentation/providers/location_provider.dart';
 import 'package:wehere_client/presentation/providers/nostalgia_list_provider.dart';
 import 'package:wehere_client/presentation/providers/refresh_propagator.dart';
 import 'package:wehere_client/presentation/screens/components/create_nostalgia_bubble.dart';
+import 'package:wehere_client/presentation/screens/components/location_search_modal.dart';
 import 'package:wehere_client/presentation/screens/components/map_visibility_switch.dart';
 import 'package:wehere_client/presentation/screens/components/marker_icon_provider.dart';
+import 'package:wehere_client/presentation/widgets/button.dart';
 import 'package:wehere_client/presentation/widgets/mixin.dart';
 import 'package:wehere_client/presentation/widgets/nostalgia_map_card.dart';
 import 'package:wehere_client/presentation/widgets/text.dart';
@@ -168,6 +170,23 @@ class _MapScreenState extends State<MapScreen> with AfterLayoutMixin {
       radius: 100,
       fillColor: Colors.blue.withOpacity(0.5));
 
+  void _onTapSearchButton() async {
+    showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        builder: (context) {
+          return LocationSearchModal(
+            onItemPressed: _updatePosition,
+          );
+        });
+  }
+
+  void _updatePosition(Location location) async {
+    (await _controller.future).moveCamera(CameraUpdate.newCameraPosition(
+        CameraPosition(
+            target: LatLng(location.latitude, location.longitude), zoom: 16)));
+  }
+
   @override
   Widget build(BuildContext context) {
     final shouldRefresh =
@@ -203,39 +222,69 @@ class _MapScreenState extends State<MapScreen> with AfterLayoutMixin {
           ),
         ),
         SafeArea(
-            child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Container(
-              margin: EdgeInsets.all(16),
-              padding: EdgeInsets.fromLTRB(24, 6, 24, 6),
-              decoration: BoxDecoration(
-                  color: Colors.black,
-                  borderRadius: BorderRadius.circular(100),
-                  boxShadow: [
-                    BoxShadow(
-                        color: Colors.black.withOpacity(0.5), blurRadius: 8)
-                  ]),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
+            child: Container(
+          padding: EdgeInsets.only(top: PaddingVertical.normal),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Row(
                 children: [
-                  IText(
-                    '근처 추억 ',
-                    size: FontSize.small,
+                  Container(
+                    margin: EdgeInsets.only(left: PaddingHorizontal.normal),
+                    padding: EdgeInsets.fromLTRB(
+                      PaddingHorizontal.normal,
+                      PaddingVertical.small,
+                      PaddingHorizontal.normal,
+                      PaddingVertical.small,
+                    ),
+                    decoration: BoxDecoration(
+                        color: Colors.black,
+                        borderRadius: BorderRadius.circular(100),
+                        boxShadow: [
+                          BoxShadow(
+                              color: Colors.black.withOpacity(0.5),
+                              blurRadius: 8)
+                        ]),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        IText(
+                          '근처 추억 ',
+                          size: FontSize.small,
+                        ),
+                        IText(
+                          '${nostalgia.total}',
+                          weight: FontWeight.bold,
+                          size: FontSize.small,
+                        ),
+                      ],
+                    ),
                   ),
-                  IText(
-                    '${nostalgia.total}',
-                    weight: FontWeight.bold,
+                  SizedBox(
+                    width: PaddingHorizontal.small,
+                    height: 0,
                   ),
+                  MapVisibilitySwitch(
+                      onTap: _onTapVisibilitySwitch,
+                      visibility: _visibility,
+                      highlight: _visibility != NostalgiaVisibility.all)
                 ],
               ),
-            ),
-            MapVisibilitySwitch(
-                onTap: _onTapVisibilitySwitch,
-                visibility: _visibility,
-                highlight: _visibility != NostalgiaVisibility.all)
-          ],
+              Container(
+                padding: EdgeInsets.only(right: PaddingHorizontal.normal),
+                child: RoundButton(
+                  onPress: _onTapSearchButton,
+                  icon: Icons.search_rounded,
+                  backgroundColor: Colors.black,
+                  shadowColor: Colors.black,
+                  backgroundOpacity: 1,
+                  color: Colors.white,
+                  size: IconSize.big,
+                ),
+              )
+            ],
+          ),
         )),
         CreateNostalgiaBubble(),
         _tappedItem == null

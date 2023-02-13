@@ -21,8 +21,12 @@ class MapVisibilitySwitch extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Container(
-        margin: EdgeInsets.all(16),
-        padding: EdgeInsets.fromLTRB(24, 7, 24, 7),
+        padding: EdgeInsets.fromLTRB(
+          PaddingHorizontal.normal,
+          PaddingVertical.small,
+          PaddingHorizontal.normal,
+          PaddingVertical.small,
+        ),
         decoration: BoxDecoration(
             color: highlight ? Colors.blue : Colors.white,
             borderRadius: BorderRadius.circular(100),

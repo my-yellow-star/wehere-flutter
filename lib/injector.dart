@@ -3,10 +3,12 @@ import 'package:wehere_client/data/repositories/authentication_repository_impl.d
 import 'package:wehere_client/data/repositories/file_repository_impl.dart';
 import 'package:wehere_client/data/repositories/member_repository_impl.dart';
 import 'package:wehere_client/data/repositories/nostalgia_repository_impl.dart';
+import 'package:wehere_client/data/repositories/search_repository_impl.dart';
 import 'package:wehere_client/domain/repositories/authentication_repository.dart';
 import 'package:wehere_client/domain/repositories/file_repository.dart';
 import 'package:wehere_client/domain/repositories/member_repository.dart';
 import 'package:wehere_client/domain/repositories/nostalgia_repository.dart';
+import 'package:wehere_client/domain/repositories/search_repository.dart';
 import 'package:wehere_client/domain/usecases/create_nostalgia_usecase.dart';
 import 'package:wehere_client/domain/usecases/delete_nostalgia_usecase.dart';
 import 'package:wehere_client/domain/usecases/get_nostalgia_list_usecase.dart';
@@ -17,6 +19,7 @@ import 'package:wehere_client/domain/usecases/get_statistic_summary_usecase.dart
 import 'package:wehere_client/domain/usecases/logout_usecase.dart';
 import 'package:wehere_client/domain/usecases/oauth2_login_usecase.dart';
 import 'package:wehere_client/domain/usecases/resign_usecase.dart';
+import 'package:wehere_client/domain/usecases/search_location_usecase.dart';
 import 'package:wehere_client/domain/usecases/update_member_usecase.dart';
 import 'package:wehere_client/domain/usecases/update_nostalgia_usecase.dart';
 import 'package:wehere_client/domain/usecases/upload_file_usecase.dart';
@@ -27,6 +30,7 @@ import 'package:wehere_client/presentation/providers/nostalgia_list_provider.dar
 import 'package:wehere_client/presentation/providers/nostalgia_editor_provider.dart';
 import 'package:wehere_client/presentation/providers/my_nostalgia_map_provider.dart';
 import 'package:wehere_client/presentation/providers/nostalgia_provider.dart';
+import 'package:wehere_client/presentation/providers/search_location_provider.dart';
 import 'package:wehere_client/presentation/providers/statistic_provider.dart';
 
 final injector = GetIt.instance;
@@ -38,6 +42,7 @@ Future<void> initializeDependencies() async {
       AuthenticationRepositoryImpl());
   injector.registerSingleton<NostalgiaRepository>(NostalgiaRepositoryImpl());
   injector.registerSingleton<FileRepository>(FileRepositoryImpl());
+  injector.registerSingleton<SearchRepository>(SearchRepositoryImpl());
 
   // use case
   injector.registerSingleton(GetProfileUseCase(injector()));
@@ -53,6 +58,7 @@ Future<void> initializeDependencies() async {
   injector.registerSingleton(ResignUseCase(injector()));
   injector.registerSingleton(GetOtherProfileUseCase(injector()));
   injector.registerSingleton(UpdateMemberUseCase(injector()));
+  injector.registerSingleton(SearchLocationUseCase(injector()));
 
   // provider
   injector.registerFactory(() =>
@@ -66,4 +72,5 @@ Future<void> initializeDependencies() async {
   injector.registerFactory(() => MyNostalgiaGridProvider(injector()));
   injector.registerFactory(
       () => MemberProvider(injector(), injector(), injector(), injector()));
+  injector.registerFactory(() => SearchLocationProvider(injector()));
 }
