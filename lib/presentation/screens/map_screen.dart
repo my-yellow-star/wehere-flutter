@@ -65,12 +65,15 @@ class _MapScreenState extends State<MapScreen> with AfterLayoutMixin {
 
   void _generateMarker() {
     final nostalgia = context.read<NostalgiaListProvider>();
+    final current = context.read<LocationProvider>().location!;
     nostalgia.initialize();
+    nostalgia.updateTargetLatitude(_location.latitude);
+    nostalgia.updateTargetLongitude(_location.longitude);
     nostalgia
         .loadList(
             condition: NostalgiaCondition.around,
-            latitude: _location.latitude,
-            longitude: _location.longitude,
+            latitude: current.latitude,
+            longitude: current.longitude,
             memberId: _visibility == NostalgiaVisibility.owner
                 ? context
                     .read<AuthenticationProvider>()
@@ -137,7 +140,6 @@ class _MapScreenState extends State<MapScreen> with AfterLayoutMixin {
       _location = Location(position.target.latitude, position.target.longitude);
       _zoom = position.zoom;
     });
-    _metersPerPx();
   }
 
   void _onMapTapped(_) {

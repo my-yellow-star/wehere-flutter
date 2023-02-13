@@ -10,6 +10,8 @@ class NostalgiaListProvider extends ApiProvider {
   bool _end = false;
   int total = 0;
   List<NostalgiaSummary> items = [];
+  double? _targetLatitude;
+  double? _targetLongitude;
 
   bool get end => _end;
 
@@ -23,6 +25,8 @@ class NostalgiaListProvider extends ApiProvider {
     items = [];
     total = 0;
     error = null;
+    _targetLatitude = null;
+    _targetLongitude = null;
   }
 
   Future<void> loadList({
@@ -43,7 +47,9 @@ class NostalgiaListProvider extends ApiProvider {
         maxDistance: maxDistance,
         condition: condition,
         latitude: latitude,
-        longitude: longitude);
+        longitude: longitude,
+        targetLatitude: _targetLatitude,
+        targetLongitude: _targetLongitude);
     final response = await _getNostalgiaListUseCase(params);
     items = [...items, ...response.items];
     total = response.total;
@@ -54,5 +60,13 @@ class NostalgiaListProvider extends ApiProvider {
     _end = response.end;
 
     notifyListeners();
+  }
+
+  void updateTargetLatitude(double value) {
+    _targetLatitude = value;
+  }
+
+  void updateTargetLongitude(double value) {
+    _targetLongitude = value;
   }
 }

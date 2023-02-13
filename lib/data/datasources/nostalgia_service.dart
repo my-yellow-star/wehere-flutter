@@ -24,6 +24,8 @@ class NostalgiaService {
       'condition': params.condition,
       'latitude': params.latitude,
       'longitude': params.longitude,
+      'targetLatitude': params.targetLatitude,
+      'targetLongitude': params.targetLongitude,
       'maxDistance': params.maxDistance,
       'memberId': params.memberId,
     };

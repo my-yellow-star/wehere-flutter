@@ -81,11 +81,11 @@ class NostalgiaMapCard extends StatelessWidget {
                               SizedBox(
                                 width: size.width * .7,
                                 child: IText(
-                                  item.address,
+                                  '${item.address} • ${item.distance?.parseDistance()}',
                                   color: Colors.white,
                                   size: FontSize.small,
                                 ),
-                              )
+                              ),
                             ],
                           ),
                           IText(
