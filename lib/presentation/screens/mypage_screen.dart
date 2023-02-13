@@ -127,6 +127,7 @@ class _MyPageScreenState extends State<MyPageScreen> {
     final size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: ColorTheme.primary,
+      resizeToAvoidBottomInset: false,
       body: Stack(
         children: [
           NotificationListener<ScrollNotification>(

@@ -56,6 +56,7 @@ class MainScreenState extends State<MainScreen> with AfterLayoutMixin {
   Widget build(BuildContext context) {
     if (context.watch<LocationProvider>().permitted) {
       return Scaffold(
+        resizeToAvoidBottomInset: false,
         body: Center(
           child: _widgetOptions.elementAt(_selectedIndex),
         ),
