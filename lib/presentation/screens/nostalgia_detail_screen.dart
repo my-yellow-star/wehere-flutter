@@ -270,8 +270,32 @@ class _NostalgiaDetailScreenState extends State<NostalgiaDetailScreen>
                                   top: PaddingVertical.big,
                                   bottom: PaddingVertical.big,
                                 ),
-                                height: size.height * .3,
-                                child: _mapView(item.location),
+                                child: Column(
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Icon(
+                                          Icons.my_location_rounded,
+                                          size: IconSize.small,
+                                          color: Colors.grey,
+                                        ),
+                                        Container(
+                                            width: PaddingHorizontal.tiny),
+                                        IText(
+                                          item.address,
+                                          color: Colors.grey,
+                                          size: FontSize.small,
+                                        ),
+                                      ],
+                                    ),
+                                    Container(
+                                      height: PaddingVertical.tiny,
+                                    ),
+                                    SizedBox(
+                                        height: size.height * .3,
+                                        child: _mapView(item.location)),
+                                  ],
+                                ),
                               ),
                             ],
                           )),
