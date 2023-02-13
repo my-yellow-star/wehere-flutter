@@ -16,19 +16,22 @@ class Nostalgia extends Equatable {
   final List<String> images;
   final NostalgiaVisibility visibility;
   final MarkerColor markerColor;
+  final String address;
 
-  const Nostalgia(
-      {required this.id,
-      required this.member,
-      required this.title,
-      required this.description,
-      required this.location,
-      this.distance,
-      this.thumbnail,
-      required this.createdAt,
-      required this.images,
-      required this.visibility,
-      required this.markerColor});
+  const Nostalgia({
+    required this.id,
+    required this.member,
+    required this.title,
+    required this.description,
+    required this.location,
+    this.distance,
+    this.thumbnail,
+    required this.createdAt,
+    required this.images,
+    required this.visibility,
+    required this.markerColor,
+    required this.address,
+  });
 
   @override
   List<Object?> get props => [

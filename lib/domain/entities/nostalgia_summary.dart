@@ -15,6 +15,7 @@ class NostalgiaSummary extends Equatable {
   final DateTime createdAt;
   final NostalgiaVisibility visibility;
   final MarkerColor markerColor;
+  final String address;
 
   const NostalgiaSummary(
       {required this.id,
@@ -26,7 +27,8 @@ class NostalgiaSummary extends Equatable {
       this.thumbnail,
       required this.createdAt,
       required this.visibility,
-      required this.markerColor});
+      required this.markerColor,
+      required this.address});
 
   @override
   List<Object?> get props =>

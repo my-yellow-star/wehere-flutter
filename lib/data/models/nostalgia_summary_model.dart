@@ -15,21 +15,22 @@ class NostalgiaSummaryModel extends NostalgiaSummary {
       super.thumbnail,
       required super.createdAt,
       required super.visibility,
-      required super.markerColor});
+      required super.markerColor,
+      required super.address});
 
   factory NostalgiaSummaryModel.fromJson(dynamic json) {
     return NostalgiaSummaryModel(
-      id: json['id'],
-      member: MemberSummaryModel.fromJson(json['member']),
-      title: json['title'],
-      description: json['description'],
-      location: LocationModel.fromJson(json['location']),
-      distance: json['distance'],
-      thumbnail: json['thumbnail'],
-      createdAt: DateTime.parse(json['createdAt']),
-      visibility: toNostalgiaVisibility(json['visibility']),
-      markerColor: Constant.markerColors
-          .singleWhere((e) => e.value == json['markerColor']),
-    );
+        id: json['id'],
+        member: MemberSummaryModel.fromJson(json['member']),
+        title: json['title'],
+        description: json['description'],
+        location: LocationModel.fromJson(json['location']),
+        distance: json['distance'],
+        thumbnail: json['thumbnail'],
+        createdAt: DateTime.parse(json['createdAt']),
+        visibility: toNostalgiaVisibility(json['visibility']),
+        markerColor: Constant.markerColors
+            .singleWhere((e) => e.value == json['markerColor']),
+        address: json['address'] ?? '');
   }
 }

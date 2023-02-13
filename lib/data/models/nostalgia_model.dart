@@ -16,23 +16,24 @@ class NostalgiaModel extends Nostalgia {
       required super.createdAt,
       required super.images,
       required super.visibility,
-      required super.markerColor});
+      required super.markerColor,
+      required super.address});
 
   factory NostalgiaModel.fromJson(dynamic json) {
     return NostalgiaModel(
-      id: json['id'],
-      member: MemberSummaryModel.fromJson(json['member']),
-      title: json['title'],
-      description: json['description'],
-      location: LocationModel.fromJson(json['location']),
-      distance: json['distance'],
-      thumbnail: json['thumbnail'],
-      createdAt: DateTime.parse(json['createdAt']),
-      images:
-          (json['images'] as List<dynamic>).map((e) => e.toString()).toList(),
-      visibility: toNostalgiaVisibility(json['visibility']),
-      markerColor: Constant.markerColors
-          .singleWhere((e) => e.value == json['markerColor']),
-    );
+        id: json['id'],
+        member: MemberSummaryModel.fromJson(json['member']),
+        title: json['title'],
+        description: json['description'],
+        location: LocationModel.fromJson(json['location']),
+        distance: json['distance'],
+        thumbnail: json['thumbnail'],
+        createdAt: DateTime.parse(json['createdAt']),
+        images:
+            (json['images'] as List<dynamic>).map((e) => e.toString()).toList(),
+        visibility: toNostalgiaVisibility(json['visibility']),
+        markerColor: Constant.markerColors
+            .singleWhere((e) => e.value == json['markerColor']),
+        address: json['address'] ?? '');
   }
 }
