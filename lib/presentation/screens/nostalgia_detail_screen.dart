@@ -282,7 +282,7 @@ class _NostalgiaDetailScreenState extends State<NostalgiaDetailScreen>
                                         Container(
                                             width: PaddingHorizontal.tiny),
                                         IText(
-                                          item.address,
+                                          '${item.address} • ${item.distance?.parseDistance()}',
                                           color: Colors.grey,
                                           size: FontSize.small,
                                         ),
