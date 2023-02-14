@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:wehere_client/core/params/email_password.dart';
 import 'package:wehere_client/core/params/oauth2_login.dart';
 import 'package:wehere_client/core/resources/data_state.dart';
 import 'package:wehere_client/data/datasources/credential_service.dart';
@@ -19,6 +20,27 @@ class AuthenticationRepositoryImpl extends AuthenticationRepository {
       await _credentialService.authorize(params);
       final member = await _memberService.getMyProfile();
       return DataSuccess(Authentication(member));
+    } on DioError catch (e) {
+      return DataFailed(e);
+    }
+  }
+
+  @override
+  Future<DataState<Authentication>> login(EmailPasswordParams params) async {
+    try {
+      await _credentialService.login(params);
+      final member = await _memberService.getMyProfile();
+      return DataSuccess(Authentication(member));
+    } on DioError catch (e) {
+      return DataFailed(e);
+    }
+  }
+
+  @override
+  Future<DataState> register(EmailPasswordParams params) async {
+    try {
+      await _credentialService.register(params);
+      return DataSuccess(null);
     } on DioError catch (e) {
       return DataFailed(e);
     }

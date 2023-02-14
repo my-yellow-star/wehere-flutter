@@ -16,8 +16,10 @@ import 'package:wehere_client/domain/usecases/get_nostalgia_usecase.dart';
 import 'package:wehere_client/domain/usecases/get_other_profile_usecase.dart';
 import 'package:wehere_client/domain/usecases/get_profile_usecase.dart';
 import 'package:wehere_client/domain/usecases/get_statistic_summary_usecase.dart';
+import 'package:wehere_client/domain/usecases/login_usecase.dart';
 import 'package:wehere_client/domain/usecases/logout_usecase.dart';
 import 'package:wehere_client/domain/usecases/oauth2_login_usecase.dart';
+import 'package:wehere_client/domain/usecases/register_usecase.dart';
 import 'package:wehere_client/domain/usecases/resign_usecase.dart';
 import 'package:wehere_client/domain/usecases/search_location_usecase.dart';
 import 'package:wehere_client/domain/usecases/update_member_usecase.dart';
@@ -59,10 +61,12 @@ Future<void> initializeDependencies() async {
   injector.registerSingleton(GetOtherProfileUseCase(injector()));
   injector.registerSingleton(UpdateMemberUseCase(injector()));
   injector.registerSingleton(SearchLocationUseCase(injector()));
+  injector.registerSingleton(RegisterUseCase(injector()));
+  injector.registerSingleton(LoginUseCase(injector()));
 
   // provider
-  injector.registerFactory(() =>
-      AuthenticationProvider(injector(), injector(), injector(), injector()));
+  injector.registerFactory(() => AuthenticationProvider(
+      injector(), injector(), injector(), injector(), injector()));
   injector.registerFactory(() => NostalgiaListProvider(injector()));
   injector.registerFactory(() => StatisticProvider(injector()));
   injector.registerFactory(() =>

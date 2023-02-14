@@ -1,7 +1,9 @@
+import 'package:wehere_client/core/params/email_password.dart';
 import 'package:wehere_client/core/params/oauth2_login.dart';
 import 'package:wehere_client/core/resources/data_state.dart';
 import 'package:wehere_client/domain/entities/authentication.dart';
 import 'package:wehere_client/domain/usecases/get_profile_usecase.dart';
+import 'package:wehere_client/domain/usecases/login_usecase.dart';
 import 'package:wehere_client/domain/usecases/logout_usecase.dart';
 import 'package:wehere_client/domain/usecases/oauth2_login_usecase.dart';
 import 'package:wehere_client/domain/usecases/resign_usecase.dart';
@@ -13,8 +15,10 @@ class AuthenticationProvider extends ApiProvider {
   final GetProfileUseCase _getProfileUseCase;
   final ResignUseCase _resignUseCase;
 
+  final LoginUseCase _loginUseCase;
+
   AuthenticationProvider(this._oAuth2LoginUseCase, this._logoutUseCase,
-      this._getProfileUseCase, this._resignUseCase);
+      this._getProfileUseCase, this._resignUseCase, this._loginUseCase);
 
   Authentication? _authentication;
 
@@ -35,6 +39,19 @@ class AuthenticationProvider extends ApiProvider {
     isLoading = true;
     notifyListeners();
     final response = await _oAuth2LoginUseCase(params);
+    if (response is DataSuccess) {
+      _authentication = response.data;
+    } else {
+      error = response.error;
+    }
+    isLoading = false;
+    notifyListeners();
+  }
+
+  Future<void> passwordLogin(EmailPasswordParams params) async {
+    isLoading = true;
+    notifyListeners();
+    final response = await _loginUseCase(params);
     if (response is DataSuccess) {
       _authentication = response.data;
     } else {

@@ -5,6 +5,7 @@ import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:wehere_client/core/params/oauth2_login.dart';
 import 'package:wehere_client/core/resources/constant.dart';
 import 'package:wehere_client/presentation/providers/authentication_provider.dart';
+import 'package:wehere_client/presentation/screens/components/password_login_modal.dart';
 
 class LoginButton {
   static Widget build(String path, VoidCallback onTap) {
@@ -91,6 +92,28 @@ class AppleLoginButton {
           Provider.of<AuthenticationProvider>(context, listen: false),
           onLoginSucceed,
           onLoginFailed),
+    );
+  }
+}
+
+class PasswordLoginButton {
+  static void _login(BuildContext context, VoidCallback onLoginSucceed,
+      VoidCallback onLoginFailed) async {
+    showModalBottomSheet(
+        isScrollControlled: true,
+        context: context,
+        builder: (context) {
+          return PasswordLoginModal(
+            onLoginSucceed: onLoginSucceed,
+          );
+        });
+  }
+
+  static Widget build(BuildContext context, VoidCallback onLoginSucceed,
+      VoidCallback onLoginFailed) {
+    return LoginButton.build(
+      'lock.png',
+      () => _login(context, onLoginSucceed, onLoginFailed),
     );
   }
 }

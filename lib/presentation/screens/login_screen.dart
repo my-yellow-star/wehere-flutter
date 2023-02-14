@@ -65,11 +65,17 @@ class LoginScreen extends StatelessWidget {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
+                                  PasswordLoginButton.build(
+                                    context,
+                                    () => _onLoginSucceed(context),
+                                    () => _onLoginFailed(context),
+                                  ),
+                                  Container(width: PaddingHorizontal.small),
                                   GoogleLoginButton.build(
                                       context,
                                       () => _onLoginSucceed(context),
                                       () => _onLoginFailed(context)),
-                                  Container(width: 8),
+                                  Container(width: PaddingHorizontal.small),
                                   Platform.isIOS
                                       ? AppleLoginButton.build(
                                           context,
