@@ -55,6 +55,9 @@ class _PasswordLoginModalState extends State<PasswordLoginModal> {
     _passwordController.text = '';
     _confirmedPasswordController.text = '';
     setState(() {
+      _email = '';
+      _password = '';
+      _confirmedPassword = '';
       _isRegisterMode = !_isRegisterMode;
       _loginFailed = false;
       _passwordIncorrect = false;
@@ -62,6 +65,11 @@ class _PasswordLoginModalState extends State<PasswordLoginModal> {
   }
 
   void _onSubmitted() {
+    if (_email.isEmpty) {
+      Alert.build(context,
+          title: '이메일을 확인해주세요', description: '이메일을 올바르게 입력해주세요.');
+      return;
+    }
     if (_isRegisterMode) {
       _register();
     } else {
