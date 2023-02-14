@@ -16,6 +16,7 @@ class NostalgiaNearbyModal extends StatelessWidget {
       height: size.height * .8,
       padding: EdgeInsets.only(),
       child: ListView(
+        physics: RangeMaintainingScrollPhysics(),
         children: items
             .map((item) => NostalgiaMapCard(
                   item: item,
