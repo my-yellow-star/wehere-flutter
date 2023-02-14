@@ -31,6 +31,7 @@ class LoginScreen extends StatelessWidget {
     final isLoading = context.watch<AuthenticationProvider>().isLoading;
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Stack(
         children: [
           BackgroundImage(),

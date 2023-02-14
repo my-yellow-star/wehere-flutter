@@ -134,7 +134,7 @@ class _PasswordLoginModalState extends State<PasswordLoginModal> {
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Container(
         color: Colors.black,
-        height: size.height * .8,
+        height: size.height * .9,
         width: size.width,
         padding: EdgeInsets.only(
             left: PaddingHorizontal.normal,
@@ -248,7 +248,7 @@ class _PasswordLoginModalState extends State<PasswordLoginModal> {
                         Center(child: IText(_isRegisterMode ? '회원가입' : '로그인')),
                   ),
                 ),
-                Container(height: PaddingVertical.big),
+                Container(height: PaddingVertical.big * 2),
                 InkWell(
                   onTap: _toggleRegisterMode,
                   child: Container(
