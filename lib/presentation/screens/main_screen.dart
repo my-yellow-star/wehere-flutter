@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:wehere_client/core/resources/constant.dart';
 import 'package:wehere_client/presentation/providers/authentication_provider.dart';
 import 'package:wehere_client/presentation/providers/location_provider.dart';
+import 'package:wehere_client/presentation/screens/components/app_version_manager.dart';
 import 'package:wehere_client/presentation/screens/home_screen.dart';
 import 'package:wehere_client/presentation/screens/map_screen.dart';
 import 'package:wehere_client/presentation/screens/mypage_screen.dart';
@@ -20,6 +21,12 @@ class MainScreen extends StatefulWidget {
 
 class MainScreenState extends State<MainScreen> with AfterLayoutMixin {
   int _selectedIndex = 0;
+
+  @override
+  void initState() {
+    AppVersionManager.manage(context);
+    super.initState();
+  }
 
   @override
   void afterFirstLayout(BuildContext context) {
@@ -79,14 +86,13 @@ class MainScreenState extends State<MainScreen> with AfterLayoutMixin {
                   width: 32,
                 ),
               ),
-              activeIcon:
-                  Center(
-                    child: Image.asset(
-                      Constant.plusButton,
-                      height: 36,
-                      width: 36,
-                    ),
-                  ),
+              activeIcon: Center(
+                child: Image.asset(
+                  Constant.plusButton,
+                  height: 36,
+                  width: 36,
+                ),
+              ),
             ),
             TabItem(
               icon: Icon(Icons.account_circle_outlined, color: Colors.white),
