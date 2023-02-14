@@ -17,33 +17,37 @@ class CredentialService {
   factory CredentialService() => _singleton;
 
   Future<CredentialModel> refreshSession(String sessionId) async {
-    _dio.options.headers['SessionId'] = sessionId;
-    final response = await _dio.post('/session/refresh');
+    final dio = _dio;
+    dio.options.headers['SessionId'] = sessionId;
+    final response = await dio.post('/session/refresh');
     final credential = CredentialModel.fromJson(response.data);
     _saveCredential(credential);
     return credential;
   }
 
   Future<CredentialModel> authorize(OAuth2LoginParams params) async {
-    _dio.options.headers['Authorization'] = 'Bearer ${params.token}';
-    _dio.options.headers['Provider'] = params.provider;
-    _dio.interceptors.add(LoggingInterceptor());
-    final response = await _dio.post('/oauth2/authorize');
+    final dio = _dio;
+    dio.options.headers['Authorization'] = 'Bearer ${params.token}';
+    dio.options.headers['Provider'] = params.provider;
+    dio.interceptors.add(LoggingInterceptor());
+    final response = await dio.post('/oauth2/authorize');
     final credential = CredentialModel.fromJson(response.data);
     _saveCredential(credential);
     return credential;
   }
 
   Future<void> register(EmailPasswordParams params) async {
-    _dio.options.contentType = 'application/json';
+    final dio = _dio;
+    dio.options.contentType = 'application/json';
     final requestBody = {'email': params.email, 'password': params.password};
-    await _dio.post('/auth/register', data: requestBody);
+    await dio.post('/auth/register', data: requestBody);
   }
 
   Future<CredentialModel> login(EmailPasswordParams params) async {
-    _dio.options.contentType = 'application/json';
+    final dio = _dio;
+    dio.options.contentType = 'application/json';
     final requestBody = {'email': params.email, 'password': params.password};
-    final response = await _dio.post('/auth/login', data: requestBody);
+    final response = await dio.post('/auth/login', data: requestBody);
     final credential = CredentialModel.fromJson(response.data);
     _saveCredential(credential);
     return credential;
