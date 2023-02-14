@@ -179,13 +179,11 @@ class _PasswordLoginModalState extends State<PasswordLoginModal> {
                       focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
                           borderSide: BorderSide(
-                              color: _passwordIncorrect
-                                  ? Colors.red
-                                  : Colors.blue)),
+                              color: _loginFailed ? Colors.red : Colors.blue)),
                       enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
                           borderSide: BorderSide(
-                              color: _passwordIncorrect
+                              color: _loginFailed
                                   ? Colors.red
                                   : Colors.grey.shade300)),
                       contentPadding: EdgeInsets.only(
