@@ -72,7 +72,8 @@ class ProfileSize {
 }
 
 class MarkerSize {
-  static Map<String, int> large = {'width': 88, 'height': 99};
+  static Map<String, int> normal = {'width': 88, 'height': 99};
+  static Map<String, int> large = {'width': 104, 'height': 117};
 }
 
 class ColorTheme {

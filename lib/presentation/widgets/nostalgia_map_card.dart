@@ -8,9 +8,13 @@ import 'package:wehere_client/presentation/widgets/text.dart';
 
 class NostalgiaMapCard extends StatelessWidget {
   final NostalgiaSummary item;
-  static double paddingBottom = 30.h;
+  final double? paddingBottom;
 
-  const NostalgiaMapCard({super.key, required this.item});
+  const NostalgiaMapCard({
+    super.key,
+    required this.item,
+    this.paddingBottom,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -27,13 +31,13 @@ class NostalgiaMapCard extends StatelessWidget {
                 image: item.thumbnail != null
                     ? NetworkImage(item.thumbnail!)
                     : AssetImage(Constant.defaultImageAsset) as ImageProvider)),
-        height: size.height * .2 + paddingBottom,
+        height: size.height * .2 + (paddingBottom ?? 30.h),
         child: Container(
           padding: EdgeInsets.fromLTRB(
             PaddingHorizontal.normal,
             PaddingVertical.normal,
             PaddingHorizontal.normal,
-            paddingBottom,
+            paddingBottom ?? 30.h,
           ),
           color: Colors.black.withOpacity(0.5),
           child: Row(

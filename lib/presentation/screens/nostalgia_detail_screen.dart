@@ -106,8 +106,8 @@ class _NostalgiaDetailScreenState extends State<NostalgiaDetailScreen>
         (await rootBundle.load(item!.markerColor.filename))
             .buffer
             .asUint8List(),
-        MarkerSize.large['width'],
-        MarkerSize.large['height']);
+        MarkerSize.normal['width'],
+        MarkerSize.normal['height']);
 
     final icon = BitmapDescriptor.fromBytes(byte!);
     setState(() {

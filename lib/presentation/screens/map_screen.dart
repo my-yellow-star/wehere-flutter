@@ -1,12 +1,13 @@
 import 'dart:async';
-import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:google_maps_cluster_manager/google_maps_cluster_manager.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:wehere_client/core/params/get_nostalgia.dart';
 import 'package:wehere_client/core/params/nostalgia_visibility.dart';
 import 'package:wehere_client/core/resources/constant.dart';
+import 'package:wehere_client/core/resources/location_util.dart';
 import 'package:wehere_client/core/resources/logger.dart';
 import 'package:wehere_client/domain/entities/location.dart';
 import 'package:wehere_client/domain/entities/nostalgia_summary.dart';
@@ -14,10 +15,12 @@ import 'package:wehere_client/presentation/providers/authentication_provider.dar
 import 'package:wehere_client/presentation/providers/location_provider.dart';
 import 'package:wehere_client/presentation/providers/nostalgia_list_provider.dart';
 import 'package:wehere_client/presentation/providers/refresh_propagator.dart';
+import 'package:wehere_client/presentation/screens/components/clustered_place.dart';
 import 'package:wehere_client/presentation/screens/components/create_nostalgia_bubble.dart';
 import 'package:wehere_client/presentation/screens/components/location_search_modal.dart';
 import 'package:wehere_client/presentation/screens/components/map_visibility_switch.dart';
-import 'package:wehere_client/presentation/screens/components/marker_icon_provider.dart';
+import 'package:wehere_client/presentation/screens/components/marker.dart';
+import 'package:wehere_client/presentation/screens/components/nostalgia_nearby_modal.dart';
 import 'package:wehere_client/presentation/widgets/button.dart';
 import 'package:wehere_client/presentation/widgets/mixin.dart';
 import 'package:wehere_client/presentation/widgets/nostalgia_map_card.dart';
@@ -31,7 +34,6 @@ class MapScreen extends StatefulWidget {
 }
 
 class _MapScreenState extends State<MapScreen> with AfterLayoutMixin {
-  static const maxMarkersSize = 500;
   final Completer<GoogleMapController> _controller =
       Completer<GoogleMapController>();
   Set<Marker> _markers = {};
@@ -40,6 +42,7 @@ class _MapScreenState extends State<MapScreen> with AfterLayoutMixin {
   double _zoom = 12;
   NostalgiaVisibility _visibility = NostalgiaVisibility.all;
   late Location _location;
+  late ClusterManager _clusterManager;
 
   @override
   void initState() {
@@ -48,6 +51,17 @@ class _MapScreenState extends State<MapScreen> with AfterLayoutMixin {
     final locationProvider = context.read<LocationProvider>();
     locationProvider.getLocation();
     _location = context.read<LocationProvider>().location!;
+    _clusterManager = ClusterManager<ClusteredPlace>(
+      [],
+      _updateMarkers,
+      markerBuilder: (cluster) async {
+        return await MarkerBuilder.build(
+            cluster: cluster,
+            onTapSingle: _onTapSingleMarker,
+            onTapMultiple: _showNostalgiaList);
+      },
+      levels: [1, 4.25, 6.75, 8.25, 11.5, 14.5, 16.0, 16.5, 20.0],
+    );
   }
 
   @override
@@ -76,6 +90,7 @@ class _MapScreenState extends State<MapScreen> with AfterLayoutMixin {
             condition: NostalgiaCondition.around,
             latitude: current.latitude,
             longitude: current.longitude,
+            size: 50,
             memberId: _visibility == NostalgiaVisibility.owner
                 ? context
                     .read<AuthenticationProvider>()
@@ -90,38 +105,27 @@ class _MapScreenState extends State<MapScreen> with AfterLayoutMixin {
   }
 
   _maxDistance(BuildContext context) =>
-      _metersPerPx() * MediaQuery.of(context).size.height / 2;
-
-  _metersPerPx() =>
-      156543.03392 * cos(_location.latitude * pi / 180) / pow(2, _zoom);
+      LocationUtil.metersPerPx(_location, _zoom) *
+      MediaQuery.of(context).size.height /
+      2;
 
   void _addMarkers(List<NostalgiaSummary> items) async {
-    final iconMap = await MarkerIconProvider.getIcons();
     final filtered = items.where((item) =>
         _markers.where((marker) => marker.markerId.value == item.id).isEmpty);
-    final markers = filtered
-        .map((item) => Marker(
-            consumeTapEvents: true,
-            markerId: MarkerId(item.id),
-            position: _getPosition(item),
-            onTap: () {
-              setState(() {
-                _tappedItem = item;
-                _circles = {_circle(item)};
-              });
-            },
-            icon: iconMap[item.markerColor.value]!))
-        .toSet();
+
+    _clusterManager.setItems(filtered.map((e) => ClusteredPlace(e)).toList());
+  }
+
+  void _onTapSingleMarker(NostalgiaSummary item) {
     setState(() {
-      var total = {
-        ...markers,
-        ..._markers,
-      };
-      if (total.length > maxMarkersSize) {
-        total = total.skip(total.length - maxMarkersSize).toSet();
-      }
-      _markers = total;
-      apiLogger.d(_markers.length);
+      _tappedItem = item;
+      _circles = {_circle(item)};
+    });
+  }
+
+  void _updateMarkers(Set<Marker> markers) {
+    setState(() {
+      _markers = markers;
     });
   }
 
@@ -130,11 +134,10 @@ class _MapScreenState extends State<MapScreen> with AfterLayoutMixin {
         target: LatLng(_location.latitude, _location.longitude), zoom: _zoom);
   }
 
-  LatLng _getPosition(NostalgiaSummary item) =>
-      LatLng(item.location.latitude, item.location.longitude);
-
   void _onCameraIdle(BuildContext context) {
     _generateMarker();
+    apiLogger.d(_zoom);
+    _clusterManager.updateMap();
   }
 
   void _onCameraMove(CameraPosition position) {
@@ -142,6 +145,7 @@ class _MapScreenState extends State<MapScreen> with AfterLayoutMixin {
       _location = Location(position.target.latitude, position.target.longitude);
       _zoom = position.zoom;
     });
+    _clusterManager.onCameraMove(position);
   }
 
   void _onMapTapped(_) {
@@ -187,6 +191,21 @@ class _MapScreenState extends State<MapScreen> with AfterLayoutMixin {
             target: LatLng(location.latitude, location.longitude), zoom: 16)));
   }
 
+  void _onTapNostalgiaNearby() {
+    _showNostalgiaList(context.read<NostalgiaListProvider>().items);
+  }
+
+  void _showNostalgiaList(List<NostalgiaSummary> items) {
+    showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        builder: (context) {
+          return NostalgiaNearbyModal(
+            items: items,
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     final shouldRefresh =
@@ -213,6 +232,7 @@ class _MapScreenState extends State<MapScreen> with AfterLayoutMixin {
               if (!_controller.isCompleted) {
                 _controller.complete(controller);
               }
+              _clusterManager.setMapId(controller.mapId);
             },
             onCameraIdle: () {
               _onCameraIdle(context);
@@ -241,24 +261,25 @@ class _MapScreenState extends State<MapScreen> with AfterLayoutMixin {
                     decoration: BoxDecoration(
                         color: Colors.black,
                         borderRadius: BorderRadius.circular(100),
-                        boxShadow: [
-                          BoxShadow(
-                              color: Colors.black.withOpacity(0.5),
-                              blurRadius: 8)
+                        boxShadow: const [
+                          BoxShadow(color: Colors.black, blurRadius: 8)
                         ]),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        IText(
-                          '근처 추억 ',
-                          size: FontSize.small,
-                        ),
-                        IText(
-                          '${nostalgia.total}',
-                          weight: FontWeight.bold,
-                          size: FontSize.small,
-                        ),
-                      ],
+                    child: InkWell(
+                      onTap: _onTapNostalgiaNearby,
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          IText(
+                            '근처 추억 ',
+                            size: FontSize.small,
+                          ),
+                          IText(
+                            '${nostalgia.total}',
+                            weight: FontWeight.bold,
+                            size: FontSize.small,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   SizedBox(
