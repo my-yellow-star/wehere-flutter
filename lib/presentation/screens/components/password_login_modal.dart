@@ -6,6 +6,7 @@ import 'package:wehere_client/core/resources/data_state.dart';
 import 'package:wehere_client/domain/usecases/register_usecase.dart';
 import 'package:wehere_client/injector.dart';
 import 'package:wehere_client/presentation/providers/authentication_provider.dart';
+import 'package:wehere_client/presentation/screens/components/term_bottom_sheet.dart';
 import 'package:wehere_client/presentation/widgets/alert.dart';
 import 'package:wehere_client/presentation/widgets/text.dart';
 
@@ -31,6 +32,11 @@ class _PasswordLoginModalState extends State<PasswordLoginModal> {
   bool _isRegisterMode = false;
   bool _loginFailed = false;
   bool _passwordIncorrect = false;
+  bool _agreedTerm = false;
+
+  bool get _canSubmit =>
+      (_email.isNotEmpty && _password.isNotEmpty) &&
+      (!_isRegisterMode || _agreedTerm);
 
   void _onEmailChanged(String value) {
     setState(() {
@@ -61,10 +67,22 @@ class _PasswordLoginModalState extends State<PasswordLoginModal> {
       _isRegisterMode = !_isRegisterMode;
       _loginFailed = false;
       _passwordIncorrect = false;
+      _agreedTerm = false;
     });
   }
 
+  void _toggleAgreedTerm() {
+    setState(() {
+      _agreedTerm = !_agreedTerm;
+    });
+  }
+
+  void _onTapTerm() {
+    TermBottomSheet.show(context);
+  }
+
   void _onSubmitted() {
+    if (!_canSubmit) return;
     if (_email.isEmpty) {
       Alert.build(context,
           title: '이메일을 확인해주세요', description: '이메일을 올바르게 입력해주세요.');
@@ -233,6 +251,45 @@ class _PasswordLoginModalState extends State<PasswordLoginModal> {
                         ))
                     : Container(),
                 Container(height: PaddingVertical.big),
+                _isRegisterMode
+                    ? Container(
+                        padding: EdgeInsets.only(bottom: PaddingVertical.big),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                InkWell(
+                                  onTap: _toggleAgreedTerm,
+                                  child: Icon(
+                                    _agreedTerm
+                                        ? Icons.check_circle
+                                        : Icons.check_circle_outline,
+                                    color:
+                                        _agreedTerm ? Colors.blue : Colors.grey,
+                                  ),
+                                ),
+                                Container(width: PaddingHorizontal.small),
+                                IText(
+                                  '핀플 서비스 이용 약관에 동의합니다.',
+                                  size: FontSize.small,
+                                )
+                              ],
+                            ),
+                            InkWell(
+                              onTap: _onTapTerm,
+                              child: Container(
+                                  decoration: BoxDecoration(
+                                      border: Border(
+                                          bottom: BorderSide(
+                                              color: Colors.white,
+                                              width: 0.8))),
+                                  child: IText('약관확인', size: FontSize.small)),
+                            )
+                          ],
+                        ),
+                      )
+                    : Container(),
                 InkWell(
                   onTap: _onSubmitted,
                   child: Container(
@@ -243,7 +300,7 @@ class _PasswordLoginModalState extends State<PasswordLoginModal> {
                     ),
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(12),
-                        color: Colors.blue),
+                        color: _canSubmit ? Colors.blue : Colors.grey),
                     child:
                         Center(child: IText(_isRegisterMode ? '회원가입' : '로그인')),
                   ),
