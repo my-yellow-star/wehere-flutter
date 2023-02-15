@@ -46,6 +46,9 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
   void _refresh() {
+    setState(() {
+      _selectedIndex = 0;
+    });
     context.read<NostalgiaListProvider>().initialize();
     _loadItems();
   }

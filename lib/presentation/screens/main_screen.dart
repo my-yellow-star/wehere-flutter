@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:wehere_client/core/resources/constant.dart';
 import 'package:wehere_client/presentation/providers/authentication_provider.dart';
 import 'package:wehere_client/presentation/providers/location_provider.dart';
+import 'package:wehere_client/presentation/providers/refresh_propagator.dart';
 import 'package:wehere_client/presentation/screens/components/app_version_manager.dart';
 import 'package:wehere_client/presentation/screens/home_screen.dart';
 import 'package:wehere_client/presentation/screens/map_screen.dart';
@@ -47,12 +48,18 @@ class MainScreenState extends State<MainScreen> with AfterLayoutMixin {
   ];
 
   void _onItemTapped(int index) {
+    if (_selectedIndex == index && index == 0) {
+      context.read<RefreshPropagator>().propagate('nostalgia-list');
+    }
     if (_selectedIndex == index && index == 1) {
       Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) => NostalgiaEditorScreen(),
           ));
+    }
+    if (_selectedIndex == index && index == 2) {
+      context.read<RefreshPropagator>().propagate('member');
     }
     setState(() {
       _selectedIndex = index;
