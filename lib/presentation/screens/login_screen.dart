@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wehere_client/core/resources/constant.dart';
 import 'package:wehere_client/presentation/providers/authentication_provider.dart';
-import 'package:wehere_client/presentation/routes.dart';
-import 'package:wehere_client/presentation/screens/main_screen.dart';
 import 'package:wehere_client/presentation/widgets/alert.dart';
 import 'package:wehere_client/presentation/widgets/background_image.dart';
 import 'package:wehere_client/presentation/widgets/login_button.dart';
@@ -15,7 +13,7 @@ class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
 
   void _onLoginSucceed(BuildContext context) {
-    Routes.replace(context, MainScreen());
+    Navigator.pushReplacementNamed(context, 'main');
   }
 
   Future<void> _onLoginFailed(BuildContext context) {

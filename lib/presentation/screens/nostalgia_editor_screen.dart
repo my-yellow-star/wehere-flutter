@@ -46,7 +46,8 @@ class _NostalgiaEditorScreenState extends State<NostalgiaEditorScreen>
     final args = ModalRoute.of(context)!.settings.arguments;
     if (args != null) {
       final provider = context.read<NostalgiaEditorProvider>();
-      provider.loadNostalgia(args as String).then((_) {
+      final location = context.read<LocationProvider>().location!;
+      provider.loadNostalgia(args as String, location).then((_) {
         _titleController.text = provider.title;
         _descriptionController.text = provider.description;
       });

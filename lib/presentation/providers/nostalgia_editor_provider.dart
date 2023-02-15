@@ -41,9 +41,9 @@ class NostalgiaEditorProvider extends ApiProvider {
     error = null;
   }
 
-  Future<void> loadNostalgia(String id) async {
-    final response =
-        await _getNostalgiaUseCase(GetNostalgiaDetailParams(id, null, null));
+  Future<void> loadNostalgia(String id, Location location) async {
+    final response = await _getNostalgiaUseCase(
+        GetNostalgiaDetailParams(id, location.latitude, location.longitude));
     if (response is DataSuccess) {
       final nostalgia = response.data!;
       this.id = nostalgia.id;
