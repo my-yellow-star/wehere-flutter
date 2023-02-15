@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:wehere_client/core/resources/constant.dart';
 import 'package:wehere_client/presentation/providers/authentication_provider.dart';
 import 'package:wehere_client/presentation/providers/member_provider.dart';
+import 'package:wehere_client/presentation/providers/refresh_propagator.dart';
 import 'package:wehere_client/presentation/screens/components/mypage_header.dart';
 import 'package:wehere_client/presentation/screens/components/mypage_tabview.dart';
 import 'package:wehere_client/presentation/screens/components/profile_background.dart';
@@ -11,6 +12,7 @@ import 'package:wehere_client/presentation/screens/nostalgia_editor_screen.dart'
 import 'package:wehere_client/presentation/widgets/alert.dart';
 import 'package:wehere_client/presentation/widgets/bottom_sheet.dart';
 import 'package:wehere_client/presentation/widgets/image_selector.dart';
+import 'package:wehere_client/presentation/widgets/text.dart';
 
 class MyPageScreen extends StatefulWidget {
   const MyPageScreen({super.key});
@@ -27,6 +29,10 @@ class _MyPageScreenState extends State<MyPageScreen> {
   @override
   void initState() {
     super.initState();
+    _refresh();
+  }
+
+  void _refresh() {
     context.read<MemberProvider>().initialize();
     Future.microtask(() {
       final args = ModalRoute.of(context)?.settings.arguments;
@@ -117,6 +123,11 @@ class _MyPageScreenState extends State<MyPageScreen> {
     final provider = context.watch<MemberProvider>();
     final member = provider.member;
 
+    final shouldRefresh = context.watch<RefreshPropagator>().consume('member');
+    if (shouldRefresh) {
+      _refresh();
+    }
+
     if (auth == null) {
       Future.microtask(() {
         Navigator.pushNamedAndRemoveUntil(context, 'login', (route) => false);
@@ -182,10 +193,12 @@ class _MyPageScreenState extends State<MyPageScreen> {
                   ),
                 ];
               },
-              body: MyPageTabView(
-                member: member,
-                scrollEnabled: _innerScrollEnabled,
-              ),
+              body: member?.blocked ?? false
+                  ? Center(child: IText('차단된 사용자'))
+                  : MyPageTabView(
+                      member: member,
+                      scrollEnabled: _innerScrollEnabled,
+                    ),
             ),
           ),
           provider.isLoading

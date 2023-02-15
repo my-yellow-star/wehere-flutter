@@ -10,6 +10,7 @@ class Member extends Equatable {
   final PlatformType platformType;
   final Grade grade;
   final DateTime createdAt;
+  final bool blocked;
 
   const Member({
     required this.id,
@@ -21,6 +22,7 @@ class Member extends Equatable {
     required this.createdAt,
     this.backgroundImageUrl,
     this.description,
+    required this.blocked,
   });
 
   @override

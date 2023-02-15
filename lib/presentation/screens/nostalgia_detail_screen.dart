@@ -15,6 +15,7 @@ import 'package:wehere_client/presentation/providers/authentication_provider.dar
 import 'package:wehere_client/presentation/providers/location_provider.dart';
 import 'package:wehere_client/presentation/providers/nostalgia_provider.dart';
 import 'package:wehere_client/presentation/providers/refresh_propagator.dart';
+import 'package:wehere_client/presentation/screens/components/report_manager.dart';
 import 'package:wehere_client/presentation/widgets/alert.dart';
 import 'package:wehere_client/presentation/widgets/back_button.dart';
 import 'package:wehere_client/presentation/widgets/bottom_sheet.dart';
@@ -22,6 +23,7 @@ import 'package:wehere_client/presentation/widgets/button.dart';
 import 'package:wehere_client/presentation/widgets/gallery.dart';
 import 'package:wehere_client/presentation/widgets/mixin.dart';
 import 'package:wehere_client/presentation/widgets/profile_image.dart';
+import 'package:wehere_client/presentation/widgets/report_modal.dart';
 import 'package:wehere_client/presentation/widgets/text.dart';
 
 import 'package:wehere_client/presentation/widgets/not_found_view.dart';
@@ -83,6 +85,27 @@ class _NostalgiaDetailScreenState extends State<NostalgiaDetailScreen>
             ]));
   }
 
+  void _onTapReport() {
+    showModalBottomSheet(
+        context: context,
+        builder: (_) => IBottomSheet(items: [
+              BottomSheetItem(
+                title: '게시글 신고',
+                onPress: () {
+                  showModalBottomSheet(
+                      context: context,
+                      builder: (context) => ReportModal(
+                            nostalgia: context.read<NostalgiaProvider>().nostalgia!,
+                          ));
+                },
+              ),
+              BottomSheetItem(
+                  title: '게시글 차단',
+                  onPress: _showBlacklistDialog,
+                  color: Colors.red)
+            ]));
+  }
+
   Future<void> _showDeleteDialog() async {
     Alert.build(context,
         title: '정말 삭제하시겠습니까?',
@@ -98,6 +121,31 @@ class _NostalgiaDetailScreenState extends State<NostalgiaDetailScreen>
       context.read<RefreshPropagator>().propagate('nostalgia-list');
       Navigator.pop(context);
     }
+  }
+
+  Future<void> _showBlacklistDialog() async {
+    Alert.build(context,
+        title: '게시글 차단',
+        description: '해당 게시글을 차단하시겠어요?',
+        showCancelButton: true,
+        confirmCallback: _blacklist);
+  }
+
+  Future<void> _blacklist() async {
+    ReportManager.blacklistNostalgia(
+        nostalgiaId: context.read<NostalgiaProvider>().nostalgia!.id,
+        successCallback: () {
+          if (mounted) {
+            context.read<RefreshPropagator>().propagate('nostalgia-list');
+            Navigator.pop(context);
+          }
+          Alert.build(context,
+              title: '게시글 차단 완료', description: '해당 게시글 차단을 완료했어요');
+        },
+        failedCallback: () {
+          Alert.build(context,
+              title: '게시글 차단 실패', description: '문제가 발생했어요. 잠시 후 다시 시도해주세요.');
+        });
   }
 
   void _addMarker() async {
@@ -172,7 +220,11 @@ class _NostalgiaDetailScreenState extends State<NostalgiaDetailScreen>
                                         icon: Icons.settings,
                                         onPress: _onTapSetting,
                                       )
-                                    : Container()
+                                    : RoundButton(
+                                        icon: Icons.report_problem_outlined,
+                                        color: Colors.red,
+                                        onPress: _onTapReport,
+                                      )
                               ],
                             ),
                             flexibleSpace: FlexibleSpaceBar(

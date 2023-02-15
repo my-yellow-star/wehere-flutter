@@ -10,7 +10,8 @@ class MemberModel extends Member {
       required super.email,
       required super.platformType,
       required super.grade,
-      required super.createdAt});
+      required super.createdAt,
+      required super.blocked});
 
   factory MemberModel.fromJson(dynamic json) {
     return MemberModel(
@@ -22,6 +23,7 @@ class MemberModel extends Member {
         email: json['email'],
         platformType: toPlatformType(json['platformType']),
         grade: toGrade(json['grade']),
+        blocked: json['blocked'],
         createdAt: DateTime.parse(json['createdAt']));
   }
 }
