@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:wehere_client/core/params/search_location.dart';
 import 'package:wehere_client/domain/entities/location.dart';
 import 'package:wehere_client/domain/entities/searched_location.dart';
@@ -12,6 +14,7 @@ class SearchLocationProvider extends ApiProvider {
   bool _end = false;
   String _keyword = "";
   Location? _location;
+  Timer? _debounce;
 
   SearchLocationCountry _country = SearchLocationCountry.korea;
 
@@ -26,7 +29,14 @@ class SearchLocationProvider extends ApiProvider {
   }
 
   Future<void> loadList() async {
-    if (_end || isLoading) return;
+    if (_end) return;
+
+    if (_keyword.isEmpty) {
+      items = [];
+      _end = false;
+      notifyListeners();
+      return;
+    }
 
     isLoading = true;
     final response = await _searchLocationUseCase(SearchLocationParams(
@@ -47,10 +57,13 @@ class SearchLocationProvider extends ApiProvider {
   }
 
   void updateKeyword(String keyword) {
-    _keyword = keyword;
-    initialize();
+    if (_debounce?.isActive ?? false) _debounce?.cancel();
 
-    loadList();
+    _debounce = Timer(const Duration(milliseconds: 300), () {
+      _keyword = keyword;
+      initialize();
+      loadList();
+    });
   }
 
   void updateCountry(SearchLocationCountry country) {
