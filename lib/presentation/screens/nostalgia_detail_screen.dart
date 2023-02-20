@@ -338,7 +338,7 @@ class _NostalgiaDetailScreenState extends State<NostalgiaDetailScreen>
                                         item.description,
                                         color: textColor,
                                         weight: FontWeight.w200,
-                                        maxLines: 20,
+                                        maxLines: 1000,
                                       ),
                                     )
                                   : Container(),
