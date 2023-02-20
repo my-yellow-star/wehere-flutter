@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:wehere_client/core/resources/constant.dart';
 import 'package:wehere_client/domain/entities/nostalgia.dart';
 import 'package:wehere_client/domain/entities/nostalgia_summary.dart';
@@ -15,6 +16,7 @@ class IBadge extends StatelessWidget {
   final bool Function(NostalgiaSummary) summaryCondition;
   final bool wrap;
   final String description;
+  final bool hidden;
 
   const IBadge({
     Key? key,
@@ -25,6 +27,7 @@ class IBadge extends StatelessWidget {
     required this.summaryCondition,
     required this.wrap,
     required this.description,
+    this.hidden = false,
   }) : super(key: key);
 
   static List<IBadge> items = [
@@ -113,7 +116,8 @@ class IBadge extends StatelessWidget {
       condition: (item) => item.bookmarkCount > 0,
       summaryCondition: (item) => item.bookmarkCount > 0,
       wrap: wrap,
-      description: '선한 영향력. 누군가 당신의 추억을 담아갔어요.',
+      description: '선한 영향력. 누군가 이 추억을 담아갔어요.',
+      hidden: true,
     );
   }
 
@@ -132,30 +136,39 @@ class IBadge extends StatelessWidget {
               size: IconSize.tiny,
             ),
           )
-        : Container(
-            height: height,
-            padding: EdgeInsets.only(
-              left: PaddingHorizontal.small,
-              right: PaddingHorizontal.tiny,
-            ),
-            decoration: BoxDecoration(
-              color: color,
-              borderRadius: BorderRadius.circular(100),
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                IText(
-                  label,
-                  size: FontSize.tiny,
-                ),
-                Container(width: PaddingHorizontal.tiny),
-                Icon(
-                  icon,
-                  color: Colors.white,
-                  size: IconSize.tiny,
-                ),
-              ],
+        : InkWell(
+            onTap: () {
+              Fluttertoast.showToast(
+                msg: description,
+                fontSize: FontSize.small,
+                toastLength: Toast.LENGTH_LONG
+              );
+            },
+            child: Container(
+              height: height,
+              padding: EdgeInsets.only(
+                left: PaddingHorizontal.small,
+                right: PaddingHorizontal.tiny,
+              ),
+              decoration: BoxDecoration(
+                color: color,
+                borderRadius: BorderRadius.circular(100),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  IText(
+                    label,
+                    size: FontSize.tiny,
+                  ),
+                  Container(width: PaddingHorizontal.tiny),
+                  Icon(
+                    icon,
+                    color: Colors.white,
+                    size: IconSize.tiny,
+                  ),
+                ],
+              ),
             ),
           );
   }

@@ -28,7 +28,7 @@ class NostalgiaBadgeQuestionModal extends StatelessWidget {
             maxLines: 2,
           ),
           Container(height: PaddingVertical.big),
-          ...IBadge.items.map((badge) => Container(
+          ...IBadge.items.where((badge) => !badge.hidden).map((badge) => Container(
                 padding: EdgeInsets.only(bottom: PaddingVertical.normal),
                 child: Row(
                   children: [
