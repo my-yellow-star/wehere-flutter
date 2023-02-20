@@ -1,1 +1,54 @@
-{"installed":{"client_id":"66529775241-2tcilsgt714f204642tpf8ap00k8en75.apps.googleusercontent.com","project_id":"wehere-370108","auth_uri":"https://accounts.google.com/o/oauth2/auth","token_uri":"https://oauth2.googleapis.com/token","auth_provider_x509_cert_url":"https://www.googleapis.com/oauth2/v1/certs"}}
+{
+  "project_info": {
+    "project_number": "66529775241",
+    "project_id": "wehere-370108",
+    "storage_bucket": "wehere-370108.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:66529775241:android:bfc2eeaca05b45d8a98058",
+        "android_client_info": {
+          "package_name": "com.chana.wehere_client"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "66529775241-qlc0efbektvrtp8tk4l8gje9r7ratmic.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.chana.wehere_client",
+            "certificate_hash": "b2f383fcf651d1a3e0659a61c7174f2f00b2e4f8"
+          }
+        },
+        {
+          "client_id": "66529775241-09su1jiljai3ldqblgae6i2tr8tai2op.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAiQl2JEs3lQJHdxeDNmMjKcu5TTv3pQ0k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "66529775241-09su1jiljai3ldqblgae6i2tr8tai2op.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "66529775241-qku4li7q5olme9ffq4vp5b55lpi32fcn.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.chana.wehereClient"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
