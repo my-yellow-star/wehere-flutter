@@ -132,7 +132,7 @@ class _NostalgiaEditorScreenState extends State<NostalgiaEditorScreen>
                   children: [
                     nostalgia.images.isNotEmpty
                         ? Gallery(
-                            height: size.height * .4,
+                            height: size.height * .3,
                             width: size.width,
                             images: nostalgia.images,
                             onDeleteItem: nostalgia.deleteImage,
@@ -165,6 +165,7 @@ class _NostalgiaEditorScreenState extends State<NostalgiaEditorScreen>
                       padding: EdgeInsets.only(
                         left: PaddingHorizontal.normal,
                         right: PaddingHorizontal.normal,
+                        bottom: size.height * .5,
                       ),
                       child: Column(
                         children: [
@@ -243,7 +244,6 @@ class _NostalgiaEditorScreenState extends State<NostalgiaEditorScreen>
                           ),
                           _underline(),
                           TextField(
-                            autofocus: true,
                             key: _titleKey,
                             controller: _titleController,
                             onChanged: nostalgia.updateTitle,

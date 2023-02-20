@@ -45,7 +45,7 @@ class SearchLocationProvider extends ApiProvider {
         country: _country,
         latitude: _location!.latitude,
         longitude: _location!.longitude));
-    items.addAll(response.items);
+    items = response.items;
     _end = response.end;
     _page = response.nextPage ?? 0;
     isLoading = false;

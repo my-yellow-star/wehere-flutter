@@ -79,8 +79,10 @@ class NostalgiaService {
       'visibility': params.visibility?.name.toUpperCase(),
       'images': params.images,
       'markerColor': params.markerColor?.value,
-      'latitude': params.latitude,
-      'longitude': params.longitude,
+      'location': {
+        'latitude': params.latitude,
+        'longitude': params.longitude,
+      },
       'memorizedAt': params.memorizedAt?.toUtc().toIso8601String(),
       'address': params.address,
       'isRealLocation': params.isRealLocation,

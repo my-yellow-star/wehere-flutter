@@ -62,6 +62,7 @@ class NostalgiaEditorProvider extends ApiProvider {
       memorizedAt = nostalgia.memorizedAt;
       description = nostalgia.description;
       visibility = nostalgia.visibility;
+      markerColor = nostalgia.markerColor;
       images = nostalgia.images
           .map((url) => IImageSource(url, ImageType.network))
           .toList();
