@@ -26,24 +26,28 @@ class _MyBookmarkViewState extends State<MyBookmarkView> with AfterLayoutMixin {
   void initState() {
     super.initState();
     context.read<MyNostalgiaBookmarkProvider>().initialize();
+    context.read<RefreshPropagator>().consume('nostalgia-bookmark');
   }
 
   @override
   void afterFirstLayout(BuildContext context) {
-    final bookmarkProvider = context.read<MyNostalgiaBookmarkProvider>();
-    bookmarkProvider
-        .initializeLocation(context.read<LocationProvider>().location!);
-    if (context.read<AuthenticationProvider>().authentication!.member.id !=
-        widget.member.id) {
-      bookmarkProvider.initializeMemberId(widget.member.id);
-    }
+    _initializeProvider();
     _loadList();
   }
 
   void _refresh() {
+    _initializeProvider();
+    _loadList();
+  }
+
+  void _initializeProvider() {
     final provider = context.read<MyNostalgiaBookmarkProvider>();
     provider.initialize();
-    provider.loadList();
+    provider.initializeLocation(context.read<LocationProvider>().location!);
+    if (context.read<AuthenticationProvider>().authentication!.member.id !=
+        widget.member.id) {
+      provider.initializeMemberId(widget.member.id);
+    }
   }
 
   void _loadList() {
