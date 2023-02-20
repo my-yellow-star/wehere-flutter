@@ -11,7 +11,7 @@
         android:label="PINPLE">
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyAi-0ApP6g-gkF1ChvvIW9xQEwB5Y4z0K4" />
+            android:value="AIzaSyAiQl2JEs3lQJHdxeDNmMjKcu5TTv3pQ0k" />
         <activity
             android:name=".MainActivity"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
