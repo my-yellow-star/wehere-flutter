@@ -35,6 +35,8 @@ class NostalgiaSummary extends Equatable {
     required this.isRealLocation,
   });
 
+  bool get isRealTime => createdAt.difference(memorizedAt).inMinutes.abs() < 1;
+
   @override
   List<Object?> get props =>
       [id, member, location, distance, thumbnail, createdAt];

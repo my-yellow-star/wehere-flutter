@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:wehere_client/core/resources/constant.dart';
 import 'package:wehere_client/domain/entities/nostalgia_summary.dart';
+import 'package:wehere_client/presentation/screens/components/nostalgia_badge_list.dart';
 import 'package:wehere_client/presentation/widgets/profile_image.dart';
 import 'package:wehere_client/presentation/widgets/text.dart';
 
@@ -46,6 +47,7 @@ class NostalgiaSummaryCard extends StatelessWidget {
                 PaddingVertical.normal,
               ),
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Row(
                     children: [
@@ -64,6 +66,7 @@ class NostalgiaSummaryCard extends StatelessWidget {
                       )
                     ],
                   ),
+                  NostalgiaBadgeList.buildFromSummary(context, item)
                 ],
               ),
             ),

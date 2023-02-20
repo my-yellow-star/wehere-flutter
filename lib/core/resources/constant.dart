@@ -57,6 +57,7 @@ class PaddingVertical {
 }
 
 class IconSize {
+  static double tiny = 12;
   static double small = 16;
   static double normal = 24;
   static double big = 36;

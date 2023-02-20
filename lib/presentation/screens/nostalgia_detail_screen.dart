@@ -15,6 +15,7 @@ import 'package:wehere_client/presentation/providers/authentication_provider.dar
 import 'package:wehere_client/presentation/providers/location_provider.dart';
 import 'package:wehere_client/presentation/providers/nostalgia_provider.dart';
 import 'package:wehere_client/presentation/providers/refresh_propagator.dart';
+import 'package:wehere_client/presentation/screens/components/nostalgia_detail_meta.dart';
 import 'package:wehere_client/presentation/screens/components/report_manager.dart';
 import 'package:wehere_client/presentation/widgets/alert.dart';
 import 'package:wehere_client/presentation/widgets/back_button.dart';
@@ -95,7 +96,8 @@ class _NostalgiaDetailScreenState extends State<NostalgiaDetailScreen>
                   showModalBottomSheet(
                       context: context,
                       builder: (context) => ReportModal(
-                            nostalgia: context.read<NostalgiaProvider>().nostalgia!,
+                            nostalgia:
+                                context.read<NostalgiaProvider>().nostalgia!,
                           ));
                 },
               ),
@@ -292,7 +294,7 @@ class _NostalgiaDetailScreenState extends State<NostalgiaDetailScreen>
                                         ],
                                       ),
                                       IText(
-                                        item.createdAt.parseString(),
+                                        item.createdAt.parseDate(),
                                         color: textColor.withOpacity(0.5),
                                         size: FontSize.small,
                                       )
@@ -324,22 +326,7 @@ class _NostalgiaDetailScreenState extends State<NostalgiaDetailScreen>
                                 ),
                                 child: Column(
                                   children: [
-                                    Row(
-                                      children: [
-                                        Icon(
-                                          Icons.my_location_rounded,
-                                          size: IconSize.small,
-                                          color: Colors.grey,
-                                        ),
-                                        Container(
-                                            width: PaddingHorizontal.tiny),
-                                        IText(
-                                          '${item.address} • ${item.distance?.parseDistance()}',
-                                          color: Colors.grey,
-                                          size: FontSize.small,
-                                        ),
-                                      ],
-                                    ),
+                                    NostalgiaDetailMeta(item: item),
                                     Container(
                                       height: PaddingVertical.tiny,
                                     ),
