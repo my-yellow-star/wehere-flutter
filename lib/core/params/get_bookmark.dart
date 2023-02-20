@@ -1,10 +1,8 @@
-import 'dart:ffi';
-
 import 'package:wehere_client/core/params/pagination.dart';
 
 class GetBookmarkParams extends PaginationParams {
-  final Double latitude;
-  final Double longitude;
+  final double latitude;
+  final double longitude;
   final String? memberId;
 
   GetBookmarkParams(
