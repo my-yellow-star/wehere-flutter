@@ -16,19 +16,24 @@ class NostalgiaSummary extends Equatable {
   final NostalgiaVisibility visibility;
   final MarkerColor markerColor;
   final String address;
+  final DateTime memorizedAt;
+  final bool isRealLocation;
 
-  const NostalgiaSummary(
-      {required this.id,
-      required this.member,
-      required this.title,
-      required this.description,
-      required this.location,
-      this.distance,
-      this.thumbnail,
-      required this.createdAt,
-      required this.visibility,
-      required this.markerColor,
-      required this.address});
+  const NostalgiaSummary({
+    required this.id,
+    required this.member,
+    required this.title,
+    required this.description,
+    required this.location,
+    this.distance,
+    this.thumbnail,
+    required this.createdAt,
+    required this.visibility,
+    required this.markerColor,
+    required this.address,
+    required this.memorizedAt,
+    required this.isRealLocation,
+  });
 
   @override
   List<Object?> get props =>

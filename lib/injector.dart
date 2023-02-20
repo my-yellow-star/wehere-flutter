@@ -11,12 +11,16 @@ import 'package:wehere_client/domain/repositories/member_repository.dart';
 import 'package:wehere_client/domain/repositories/nostalgia_repository.dart';
 import 'package:wehere_client/domain/repositories/report_repository.dart';
 import 'package:wehere_client/domain/repositories/search_repository.dart';
+import 'package:wehere_client/domain/usecases/bookmark_usecase.dart';
+import 'package:wehere_client/domain/usecases/cancel_bookmark_usecase.dart';
 import 'package:wehere_client/domain/usecases/create_blacklist_usecase.dart';
 import 'package:wehere_client/domain/usecases/create_nostalgia_usecase.dart';
 import 'package:wehere_client/domain/usecases/delete_blacklist.usecase.dart';
 import 'package:wehere_client/domain/usecases/delete_nostalgia_usecase.dart';
+import 'package:wehere_client/domain/usecases/get_bookmark.usecase.dart';
 import 'package:wehere_client/domain/usecases/get_nostalgia_list_usecase.dart';
 import 'package:wehere_client/domain/usecases/get_nostalgia_usecase.dart';
+import 'package:wehere_client/domain/usecases/get_other_bookmarks_usecase.dart';
 import 'package:wehere_client/domain/usecases/get_other_profile_usecase.dart';
 import 'package:wehere_client/domain/usecases/get_profile_usecase.dart';
 import 'package:wehere_client/domain/usecases/get_statistic_summary_usecase.dart';
@@ -72,6 +76,10 @@ Future<void> initializeDependencies() async {
   injector.registerSingleton(ReportUseCase(injector()));
   injector.registerSingleton(CreateBlacklistUseCase(injector()));
   injector.registerSingleton(DeleteBlacklistUseCase(injector()));
+  injector.registerSingleton(BookmarkUseCase(injector()));
+  injector.registerSingleton(CancelBookmarkUseCase(injector()));
+  injector.registerSingleton(GetBookmarkUseCase(injector()));
+  injector.registerSingleton(GetOtherBookmarksUseCase(injector()));
 
   // provider
   injector.registerFactory(() => AuthenticationProvider(

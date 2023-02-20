@@ -1,6 +1,9 @@
+import 'package:wehere_client/core/params/get_bookmark.dart';
 import 'package:wehere_client/core/params/update_member.dart';
 import 'package:wehere_client/data/datasources/api.dart';
 import 'package:wehere_client/data/models/member_model.dart';
+import 'package:wehere_client/data/models/nostalgia_summary_model.dart';
+import 'package:wehere_client/data/models/pagination_model.dart';
 
 class MemberService {
   static const _endpoint = '/api/members';
@@ -37,5 +40,33 @@ class MemberService {
     final dio = Api().dio;
     dio.options.contentType = 'application/json';
     await dio.patch('$_endpoint/me', data: requestBody);
+  }
+
+  Future<PaginationModel<NostalgiaSummaryModel>> getBookmarks(
+      GetBookmarkParams params) async {
+    final queryParameters = {
+      'page': params.page,
+      'size': params.size,
+      'latitude': params.latitude,
+      'longitude': params.longitude
+    };
+    final dio = Api().dio;
+    final response = await dio.get('$_endpoint/me/bookmarks',
+        queryParameters: queryParameters);
+    return PaginationModel.fromJson(response, NostalgiaSummaryModel.fromJson);
+  }
+
+  Future<PaginationModel<NostalgiaSummaryModel>> getBookmarksOther(
+      GetBookmarkParams params) async {
+    final queryParameters = {
+      'page': params.page,
+      'size': params.size,
+      'latitude': params.latitude,
+      'longitude': params.longitude
+    };
+    final dio = Api().dio;
+    final response = await dio.get('$_endpoint/${params.memberId}/bookmarks',
+        queryParameters: queryParameters);
+    return PaginationModel.fromJson(response, NostalgiaSummaryModel.fromJson);
   }
 }

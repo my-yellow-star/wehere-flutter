@@ -17,6 +17,8 @@ class Nostalgia extends Equatable {
   final NostalgiaVisibility visibility;
   final MarkerColor markerColor;
   final String address;
+  final DateTime memorizedAt;
+  final bool isRealLocation;
 
   const Nostalgia({
     required this.id,
@@ -31,6 +33,8 @@ class Nostalgia extends Equatable {
     required this.visibility,
     required this.markerColor,
     required this.address,
+    required this.memorizedAt,
+    required this.isRealLocation,
   });
 
   @override

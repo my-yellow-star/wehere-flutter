@@ -61,9 +61,29 @@ class NostalgiaRepositoryImpl extends NostalgiaRepository {
   }
 
   @override
-  Future<DataState<dynamic>> delete(String nostalgiaId) async {
+  Future<DataState> delete(String nostalgiaId) async {
     try {
       await _nostalgiaService.delete(nostalgiaId);
+      return DataSuccess(null);
+    } on DioError catch (error) {
+      return DataFailed(error);
+    }
+  }
+
+  @override
+  Future<DataState> bookmark(String nostalgiaId) async {
+    try {
+      await _nostalgiaService.bookmark(nostalgiaId);
+      return DataSuccess(null);
+    } on DioError catch (error) {
+      return DataFailed(error);
+    }
+  }
+
+  @override
+  Future<DataState> cancelBookmark(String nostalgiaId) async {
+    try {
+      await _nostalgiaService.cancelBookmark(nostalgiaId);
       return DataSuccess(null);
     } on DioError catch (error) {
       return DataFailed(error);

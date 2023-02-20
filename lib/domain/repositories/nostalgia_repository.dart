@@ -18,5 +18,9 @@ abstract class NostalgiaRepository {
 
   Future<DataState<String>> update(UpdateNostalgiaParams params);
 
-  Future<DataState<dynamic>> delete(String nostalgiaId);
+  Future<DataState> delete(String nostalgiaId);
+
+  Future<DataState> bookmark(String nostalgiaId);
+
+  Future<DataState> cancelBookmark(String nostalgiaId);
 }
