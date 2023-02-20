@@ -33,6 +33,7 @@ class _HomeScreenState extends State<HomeScreen>
   void initState() {
     super.initState();
     context.read<NostalgiaListProvider>().initialize();
+    context.read<RefreshPropagator>().consume('nostalgia-list');
     _loadItems();
   }
 

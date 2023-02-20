@@ -29,6 +29,7 @@ class _MyPageScreenState extends State<MyPageScreen> {
   @override
   void initState() {
     super.initState();
+    context.read<RefreshPropagator>().consume('member');
     _refresh();
   }
 

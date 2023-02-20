@@ -49,6 +49,7 @@ class _MapScreenState extends State<MapScreen> with AfterLayoutMixin {
   void initState() {
     super.initState();
     context.read<NostalgiaListProvider>().initialize();
+    context.read<RefreshPropagator>().consume('nostalgia-list');
     final locationProvider = context.read<LocationProvider>();
     locationProvider.getLocation();
     _location = context.read<LocationProvider>().location!;

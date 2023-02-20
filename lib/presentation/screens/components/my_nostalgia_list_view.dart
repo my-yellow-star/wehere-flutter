@@ -26,6 +26,7 @@ class _MyNostalgiaListViewState extends State<MyNostalgiaListView>
   void initState() {
     super.initState();
     context.read<MyNostalgiaGridProvider>().initialize();
+    context.read<RefreshPropagator>().consume('nostalgia-list');
   }
 
   @override
