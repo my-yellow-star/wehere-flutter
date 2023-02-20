@@ -6,7 +6,7 @@ class SearchedLocationModel extends SearchedLocation {
       {required super.name,
       required super.location,
       required super.address,
-      required super.distance,
+      super.distance,
       super.category});
 
   factory SearchedLocationModel.fromJson(dynamic json) {

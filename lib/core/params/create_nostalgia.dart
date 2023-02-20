@@ -9,6 +9,9 @@ class CreateNostalgiaParams {
   final double longitude;
   final List<String> images;
   final MarkerColor markerColor;
+  final DateTime? memorizedAt;
+  final String? address;
+  final bool isRealLocation;
 
   CreateNostalgiaParams({
     required this.title,
@@ -18,5 +21,8 @@ class CreateNostalgiaParams {
     required this.longitude,
     required this.images,
     required this.markerColor,
+    required this.isRealLocation,
+    this.memorizedAt,
+    this.address,
   });
 }

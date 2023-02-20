@@ -6,16 +6,15 @@ class SearchedLocation extends Equatable {
   final Location location;
   final String address;
   final String? category;
-  final int distance;
+  final int? distance;
 
   const SearchedLocation(
       {required this.name,
       required this.location,
       required this.address,
-      required this.distance,
+      this.distance,
       this.category});
 
   @override
-  // TODO: implement props
   List<Object?> get props => [name, location, address, category];
 }

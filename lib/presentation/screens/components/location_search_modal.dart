@@ -2,14 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wehere_client/core/extensions.dart';
 import 'package:wehere_client/core/resources/constant.dart';
-import 'package:wehere_client/domain/entities/location.dart';
 import 'package:wehere_client/domain/entities/searched_location.dart';
 import 'package:wehere_client/presentation/providers/location_provider.dart';
 import 'package:wehere_client/presentation/providers/search_location_provider.dart';
 import 'package:wehere_client/presentation/widgets/text.dart';
 
 class LocationSearchModal extends StatefulWidget {
-  final Function(Location) onItemPressed;
+  final Function(SearchedLocation) onItemPressed;
 
   const LocationSearchModal({Key? key, required this.onItemPressed})
       : super(key: key);
@@ -38,7 +37,7 @@ class _LocationSearchModalState extends State<LocationSearchModal> {
         .map((item) => InkWell(
               onTap: () {
                 Navigator.of(context).pop();
-                widget.onItemPressed(item.location);
+                widget.onItemPressed(item);
               },
               child: Container(
                 decoration: BoxDecoration(
@@ -56,12 +55,14 @@ class _LocationSearchModalState extends State<LocationSearchModal> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          IText(
-                            item.category!,
-                            color: Colors.grey,
-                            size: FontSize.small,
-                            weight: FontWeight.w200,
-                          ),
+                          item.category != null
+                              ? IText(
+                                  item.category!,
+                                  color: Colors.grey,
+                                  size: FontSize.small,
+                                  weight: FontWeight.w200,
+                                )
+                              : Container(),
                           IText(
                             item.name,
                             color: ColorTheme.primary,
@@ -75,19 +76,21 @@ class _LocationSearchModalState extends State<LocationSearchModal> {
                         ],
                       ),
                     ),
-                    Column(
-                      children: [
-                        Icon(
-                          Icons.location_on_rounded,
-                          color: Colors.grey,
-                        ),
-                        IText(
-                          item.distance.parseDistance(),
-                          color: Colors.grey,
-                          size: FontSize.small,
-                        )
-                      ],
-                    )
+                    item.distance != null
+                        ? Column(
+                            children: [
+                              Icon(
+                                Icons.location_on_rounded,
+                                color: Colors.grey,
+                              ),
+                              IText(
+                                item.distance!.parseDistance(),
+                                color: Colors.grey,
+                                size: FontSize.small,
+                              )
+                            ],
+                          )
+                        : Container()
                   ],
                 ),
               ),

@@ -11,6 +11,7 @@ import 'package:wehere_client/core/resources/location_util.dart';
 import 'package:wehere_client/core/resources/logger.dart';
 import 'package:wehere_client/domain/entities/location.dart';
 import 'package:wehere_client/domain/entities/nostalgia_summary.dart';
+import 'package:wehere_client/domain/entities/searched_location.dart';
 import 'package:wehere_client/presentation/providers/authentication_provider.dart';
 import 'package:wehere_client/presentation/providers/location_provider.dart';
 import 'package:wehere_client/presentation/providers/nostalgia_list_provider.dart';
@@ -185,10 +186,12 @@ class _MapScreenState extends State<MapScreen> with AfterLayoutMixin {
         });
   }
 
-  void _updatePosition(Location location) async {
+  void _updatePosition(SearchedLocation searched) async {
     (await _controller.future).moveCamera(CameraUpdate.newCameraPosition(
         CameraPosition(
-            target: LatLng(location.latitude, location.longitude), zoom: 16)));
+            target:
+                LatLng(searched.location.latitude, searched.location.longitude),
+            zoom: 16)));
   }
 
   void _onTapNostalgiaNearby() {

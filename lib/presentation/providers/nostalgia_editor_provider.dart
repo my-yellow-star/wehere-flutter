@@ -7,6 +7,7 @@ import 'package:wehere_client/core/params/update_nostalgia.dart';
 import 'package:wehere_client/core/resources/constant.dart';
 import 'package:wehere_client/core/resources/data_state.dart';
 import 'package:wehere_client/domain/entities/location.dart';
+import 'package:wehere_client/domain/entities/searched_location.dart';
 import 'package:wehere_client/domain/usecases/create_nostalgia_usecase.dart';
 import 'package:wehere_client/domain/usecases/get_nostalgia_usecase.dart';
 import 'package:wehere_client/domain/usecases/update_nostalgia_usecase.dart';
@@ -26,6 +27,10 @@ class NostalgiaEditorProvider extends ApiProvider {
   NostalgiaVisibility visibility = NostalgiaVisibility.all;
   List<IImageSource> images = [];
   MarkerColor markerColor = Constant.markerColors.first;
+  DateTime? memorizedAt;
+  Location location = Location(0, 0);
+  String? address;
+  bool isRealLocation = true;
 
   NostalgiaEditorProvider(this._createNostalgiaUseCase, this._uploadFileUseCase,
       this._updateNostalgiaUseCase, this._getNostalgiaUseCase);
@@ -39,6 +44,10 @@ class NostalgiaEditorProvider extends ApiProvider {
     images = [];
     isLoading = false;
     error = null;
+    address = null;
+    isRealLocation = true;
+    memorizedAt = null;
+    location = Location(0, 0);
   }
 
   Future<void> loadNostalgia(String id, Location location) async {
@@ -47,7 +56,10 @@ class NostalgiaEditorProvider extends ApiProvider {
     if (response is DataSuccess) {
       final nostalgia = response.data!;
       this.id = nostalgia.id;
+      this.location = nostalgia.location;
+      address = nostalgia.address;
       title = nostalgia.title;
+      memorizedAt = nostalgia.memorizedAt;
       description = nostalgia.description;
       visibility = nostalgia.visibility;
       images = nostalgia.images
@@ -59,18 +71,22 @@ class NostalgiaEditorProvider extends ApiProvider {
     notifyListeners();
   }
 
-  Future<void> create(Location location) async {
+  Future<void> create() async {
     isLoading = true;
     notifyListeners();
 
     final response = await _createNostalgiaUseCase(CreateNostalgiaParams(
-        title: title,
-        description: description,
-        visibility: visibility,
-        images: await _uploadImages(images),
-        latitude: location.latitude,
-        longitude: location.longitude,
-        markerColor: markerColor));
+      title: title,
+      description: description,
+      visibility: visibility,
+      images: await _uploadImages(images),
+      latitude: location.latitude,
+      longitude: location.longitude,
+      markerColor: markerColor,
+      memorizedAt: memorizedAt,
+      address: address,
+      isRealLocation: isRealLocation,
+    ));
     if (response is DataSuccess) {
       id = response.data!;
     } else {
@@ -90,6 +106,11 @@ class NostalgiaEditorProvider extends ApiProvider {
         description: description.isNotEmpty ? description : null,
         visibility: visibility,
         markerColor: markerColor,
+        latitude: location.latitude,
+        longitude: location.longitude,
+        memorizedAt: memorizedAt,
+        address: address,
+        isRealLocation: isRealLocation,
         images: await _uploadImages(images)));
     if (response is DataFailed) {
       error = response.error;
@@ -113,6 +134,23 @@ class NostalgiaEditorProvider extends ApiProvider {
 
   void updateMarkerColor(MarkerColor value) {
     markerColor = value;
+    notifyListeners();
+  }
+
+  void updateMemorizedAt(DateTime? value) {
+    memorizedAt = value;
+    notifyListeners();
+  }
+
+  void initializeLocation(Location value) {
+    location = value;
+    notifyListeners();
+  }
+
+  void updateLocation(SearchedLocation searched) {
+    location = searched.location;
+    address = searched.name;
+    isRealLocation = false;
     notifyListeners();
   }
 

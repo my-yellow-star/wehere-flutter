@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:wehere_client/core/extensions.dart';
 import 'package:wehere_client/core/resources/constant.dart';
 import 'package:wehere_client/presentation/providers/location_provider.dart';
 import 'package:wehere_client/presentation/providers/nostalgia_editor_provider.dart';
 import 'package:wehere_client/presentation/providers/refresh_propagator.dart';
+import 'package:wehere_client/presentation/screens/components/location_search_modal.dart';
 import 'package:wehere_client/presentation/screens/components/marker_color_selector.dart';
 import 'package:wehere_client/presentation/widgets/alert.dart';
 import 'package:wehere_client/presentation/widgets/back_button.dart';
@@ -44,9 +47,9 @@ class _NostalgiaEditorScreenState extends State<NostalgiaEditorScreen>
   @override
   void afterFirstLayout(BuildContext context) {
     final args = ModalRoute.of(context)!.settings.arguments;
+    final provider = context.read<NostalgiaEditorProvider>();
+    final location = context.read<LocationProvider>().location!;
     if (args != null) {
-      final provider = context.read<NostalgiaEditorProvider>();
-      final location = context.read<LocationProvider>().location!;
       provider.loadNostalgia(args as String, location).then((_) {
         _titleController.text = provider.title;
         _descriptionController.text = provider.description;
@@ -54,6 +57,8 @@ class _NostalgiaEditorScreenState extends State<NostalgiaEditorScreen>
       setState(() {
         _editMode = true;
       });
+    } else {
+      provider.initializeLocation(location);
     }
   }
 
@@ -66,7 +71,7 @@ class _NostalgiaEditorScreenState extends State<NostalgiaEditorScreen>
     if (_editMode) {
       await nostalgia.update();
     } else {
-      await nostalgia.create(context.read<LocationProvider>().location!);
+      await nostalgia.create();
     }
     if (nostalgia.error == null && mounted) {
       context.read<RefreshPropagator>().propagate('nostalgia-list');
@@ -76,13 +81,44 @@ class _NostalgiaEditorScreenState extends State<NostalgiaEditorScreen>
     }
   }
 
+  void _onTapDateTimeSelector() {
+    final provider = context.read<NostalgiaEditorProvider>();
+    DatePicker.showDatePicker(
+      context,
+      showTitleActions: true,
+      minTime: DateTime(1900, 1, 1),
+      maxTime: DateTime.now(),
+      onConfirm: (date) {
+        provider.updateMemorizedAt(date);
+      },
+      currentTime: provider.memorizedAt ?? DateTime.now(),
+      locale: LocaleType.ko,
+    );
+  }
+
+  void _onTapLocationSelector() {
+    showModalBottomSheet(
+        context: context,
+        builder: (context) => LocationSearchModal(onItemPressed: (searched) {
+              context.read<NostalgiaEditorProvider>().updateLocation(searched);
+            }));
+  }
+
+  Widget _underline() => Container(
+        width: double.infinity,
+        height: 0.5,
+        color: Colors.grey.shade300,
+      );
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final nostalgia = context.watch<NostalgiaEditorProvider>();
     if (nostalgia.error != null) {
-      Alert.build(context,
-          title: '오류', description: '오류가 발생했어요. 잠시 후 다시 시도해주세요.');
+      Future.microtask(() {
+        Alert.build(context,
+            title: '오류', description: '오류가 발생했어요. 잠시 후 다시 시도해주세요.');
+      });
     }
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
@@ -102,7 +138,7 @@ class _NostalgiaEditorScreenState extends State<NostalgiaEditorScreen>
                             onDeleteItem: nostalgia.deleteImage,
                           )
                         : Container(
-                            height: size.height * .4,
+                            height: size.height * .3,
                             width: size.width,
                             color: Colors.black,
                             child: Center(
@@ -152,6 +188,60 @@ class _NostalgiaEditorScreenState extends State<NostalgiaEditorScreen>
                               ],
                             ),
                           ),
+                          _underline(),
+                          InkWell(
+                            onTap: _onTapDateTimeSelector,
+                            child: Container(
+                              padding: EdgeInsets.only(
+                                top: PaddingVertical.small,
+                                bottom: PaddingVertical.small,
+                              ),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Icon(
+                                    Icons.calendar_month,
+                                    size: IconSize.normal,
+                                    color: Colors.green,
+                                  ),
+                                  IText(
+                                    nostalgia.memorizedAt?.parseString() ??
+                                        '지금',
+                                    size: FontSize.small,
+                                    color: Colors.green,
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                          _underline(),
+                          InkWell(
+                            onTap: _onTapLocationSelector,
+                            child: Container(
+                              padding: EdgeInsets.only(
+                                top: PaddingVertical.small,
+                                bottom: PaddingVertical.small,
+                              ),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Icon(
+                                    Icons.place_rounded,
+                                    size: IconSize.normal,
+                                    color: Colors.blue,
+                                  ),
+                                  IText(
+                                    nostalgia.address ?? '현위치',
+                                    size: FontSize.small,
+                                    color: Colors.blue,
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                          _underline(),
                           TextField(
                             autofocus: true,
                             key: _titleKey,
