@@ -20,6 +20,8 @@ class NostalgiaModel extends Nostalgia {
     required super.address,
     required super.isRealLocation,
     required super.memorizedAt,
+    required super.bookmarkCount,
+    required super.isBookmarked,
   });
 
   factory NostalgiaModel.fromJson(dynamic json) {
@@ -40,6 +42,8 @@ class NostalgiaModel extends Nostalgia {
       address: json['address'] ?? '',
       memorizedAt: DateTime.parse(json['memorizedAt']),
       isRealLocation: json['isRealLocation'],
+      bookmarkCount: json['bookmarkCount'],
+      isBookmarked: json['isBookmarked'],
     );
   }
 }

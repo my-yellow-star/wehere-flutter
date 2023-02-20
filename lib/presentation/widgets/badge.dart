@@ -33,6 +33,7 @@ class IBadge extends StatelessWidget {
     qualitative(false),
     photographer(false),
     global(false),
+    bookmark(false),
   ];
 
   static List<IBadge> summaryItems = [
@@ -41,6 +42,7 @@ class IBadge extends StatelessWidget {
     qualitative(true),
     photographer(true),
     global(true),
+    bookmark(true),
   ];
 
   static IBadge realLocation(bool wrap) {
@@ -97,9 +99,21 @@ class IBadge extends StatelessWidget {
       label: '사진광',
       icon: Icons.camera_alt,
       condition: (item) => item.images.length >= 10,
-      summaryCondition: (item) => false,
+      summaryCondition: (item) => item.imageCount >= 10,
       wrap: wrap,
       description: '추억 사진을 10개 이상 올린 그대는 사진광',
+    );
+  }
+
+  static IBadge bookmark(bool wrap) {
+    return IBadge(
+      color: Colors.brown,
+      label: '책갈피',
+      icon: Icons.bookmark,
+      condition: (item) => item.bookmarkCount > 0,
+      summaryCondition: (item) => item.bookmarkCount > 0,
+      wrap: wrap,
+      description: '선한 영향력. 누군가 당신의 추억을 담아갔어요.',
     );
   }
 

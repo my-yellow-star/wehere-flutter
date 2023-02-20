@@ -53,7 +53,7 @@ class MemberService {
     final dio = Api().dio;
     final response = await dio.get('$_endpoint/me/bookmarks',
         queryParameters: queryParameters);
-    return PaginationModel.fromJson(response, NostalgiaSummaryModel.fromJson);
+    return PaginationModel.fromJson(response.data, NostalgiaSummaryModel.fromJson);
   }
 
   Future<PaginationModel<NostalgiaSummaryModel>> getBookmarksOther(
@@ -67,6 +67,6 @@ class MemberService {
     final dio = Api().dio;
     final response = await dio.get('$_endpoint/${params.memberId}/bookmarks',
         queryParameters: queryParameters);
-    return PaginationModel.fromJson(response, NostalgiaSummaryModel.fromJson);
+    return PaginationModel.fromJson(response.data, NostalgiaSummaryModel.fromJson);
   }
 }

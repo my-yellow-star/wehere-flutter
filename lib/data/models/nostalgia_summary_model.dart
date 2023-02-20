@@ -19,6 +19,8 @@ class NostalgiaSummaryModel extends NostalgiaSummary {
     required super.address,
     required super.isRealLocation,
     required super.memorizedAt,
+    required super.bookmarkCount,
+    required super.imageCount,
   });
 
   factory NostalgiaSummaryModel.fromJson(dynamic json) {
@@ -37,6 +39,8 @@ class NostalgiaSummaryModel extends NostalgiaSummary {
       address: json['address'] ?? '',
       memorizedAt: DateTime.parse(json['memorizedAt']),
       isRealLocation: json['isRealLocation'],
+      bookmarkCount: json['bookmarkCount'],
+      imageCount: json['imageCount'],
     );
   }
 }

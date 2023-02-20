@@ -188,7 +188,7 @@ class _GalleryPhotoViewWrapperState extends State<GalleryPhotoViewWrapper> {
   ImageProvider _resolveImageProvider(IImageSource image) {
     switch (image.type) {
       case ImageType.network:
-        return NetworkImage(image.path);
+        return CachedNetworkImageProvider(image.path);
       case ImageType.file:
         return FileImage(File(image.path));
     }

@@ -45,7 +45,10 @@ class _MyPageTabViewState extends State<MyPageTabView>
                     member: widget.member!,
                     scrollEnabled: widget.scrollEnabled,
                   ),
-                  MyBookmarkView()
+                  MyBookmarkView(
+                    member: widget.member!,
+                    scrollEnabled: widget.scrollEnabled,
+                  )
                 ]),
               )
             : Container(),

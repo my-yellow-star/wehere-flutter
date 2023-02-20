@@ -19,6 +19,8 @@ class Nostalgia extends Equatable {
   final String address;
   final DateTime memorizedAt;
   final bool isRealLocation;
+  final int bookmarkCount;
+  final bool isBookmarked;
 
   const Nostalgia({
     required this.id,
@@ -35,6 +37,8 @@ class Nostalgia extends Equatable {
     required this.address,
     required this.memorizedAt,
     required this.isRealLocation,
+    required this.bookmarkCount,
+    required this.isBookmarked,
   });
 
   bool get isRealTime => createdAt.difference(memorizedAt).inMinutes.abs() < 1;

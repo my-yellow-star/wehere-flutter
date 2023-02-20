@@ -96,11 +96,11 @@ class NostalgiaService {
 
   Future<void> bookmark(String nostalgiaId) async {
     final dio = Api().dio;
-    await dio.post('$_endpoint/$nostalgiaId/bookmarks}');
+    await dio.post('$_endpoint/$nostalgiaId/bookmarks');
   }
 
   Future<void> cancelBookmark(String nostalgiaId) async {
     final dio = Api().dio;
-    await dio.delete('$_endpoint/$nostalgiaId/bookmarks}');
+    await dio.delete('$_endpoint/$nostalgiaId/bookmarks');
   }
 }

@@ -108,6 +108,16 @@ class _NostalgiaDetailScreenState extends State<NostalgiaDetailScreen>
             ]));
   }
 
+  void _onTapBookmark() {
+    final provider = context.read<NostalgiaProvider>();
+    if (provider.isBookmarked) {
+      provider.cancelBookmark();
+    } else {
+      provider.bookmark();
+    }
+    context.read<RefreshPropagator>().propagate('nostalgia-bookmark');
+  }
+
   Future<void> _showDeleteDialog() async {
     Alert.build(context,
         title: '정말 삭제하시겠습니까?',
@@ -222,10 +232,23 @@ class _NostalgiaDetailScreenState extends State<NostalgiaDetailScreen>
                                         icon: Icons.settings,
                                         onPress: _onTapSetting,
                                       )
-                                    : RoundButton(
-                                        icon: Icons.report_problem_outlined,
-                                        color: Colors.red,
-                                        onPress: _onTapReport,
+                                    : Row(
+                                        children: [
+                                          RoundButton(
+                                            icon: Icons.report_problem_outlined,
+                                            color: Colors.red,
+                                            onPress: _onTapReport,
+                                          ),
+                                          Container(
+                                              width: PaddingHorizontal.normal),
+                                          RoundButton(
+                                            icon: provider.isBookmarked
+                                                ? Icons.bookmark
+                                                : Icons.bookmark_border,
+                                            color: Colors.white,
+                                            onPress: _onTapBookmark,
+                                          )
+                                        ],
                                       )
                               ],
                             ),

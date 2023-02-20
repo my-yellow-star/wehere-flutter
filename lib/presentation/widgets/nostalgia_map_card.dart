@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:wehere_client/core/extensions.dart';
@@ -29,7 +30,7 @@ class NostalgiaMapCard extends StatelessWidget {
             image: DecorationImage(
                 fit: BoxFit.cover,
                 image: item.thumbnail != null
-                    ? NetworkImage(item.thumbnail!)
+                    ? CachedNetworkImageProvider(item.thumbnail!)
                     : AssetImage(Constant.defaultImageAsset) as ImageProvider)),
         height: size.height * .2 + (paddingBottom ?? 30.h),
         child: Container(

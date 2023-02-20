@@ -18,6 +18,8 @@ class NostalgiaSummary extends Equatable {
   final String address;
   final DateTime memorizedAt;
   final bool isRealLocation;
+  final int bookmarkCount;
+  final int imageCount;
 
   const NostalgiaSummary({
     required this.id,
@@ -33,6 +35,8 @@ class NostalgiaSummary extends Equatable {
     required this.address,
     required this.memorizedAt,
     required this.isRealLocation,
+    required this.bookmarkCount,
+    required this.imageCount,
   });
 
   bool get isRealTime => createdAt.difference(memorizedAt).inMinutes.abs() < 1;

@@ -8,6 +8,7 @@ import 'package:wehere_client/injector.dart';
 import 'package:wehere_client/presentation/providers/authentication_provider.dart';
 import 'package:wehere_client/presentation/providers/location_provider.dart';
 import 'package:wehere_client/presentation/providers/member_provider.dart';
+import 'package:wehere_client/presentation/providers/my_nostalgia_bookmark_provider.dart';
 import 'package:wehere_client/presentation/providers/my_nostalgia_grid_provider.dart';
 import 'package:wehere_client/presentation/providers/nostalgia_editor_provider.dart';
 import 'package:wehere_client/presentation/providers/nostalgia_list_provider.dart';
@@ -60,7 +61,9 @@ Future<void> main() async {
         ChangeNotifierProvider(create: (_) => injector<StatisticProvider>()),
         ChangeNotifierProvider(create: (_) => RefreshPropagator()),
         ChangeNotifierProvider(
-            create: (_) => injector<SearchLocationProvider>())
+            create: (_) => injector<SearchLocationProvider>()),
+        ChangeNotifierProvider(
+            create: (_) => injector<MyNostalgiaBookmarkProvider>()),
       ],
       child: ScreenUtilInit(
         designSize: Size(390, 844),
