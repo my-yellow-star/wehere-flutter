@@ -7,8 +7,8 @@ import 'package:google_maps_cluster_manager/google_maps_cluster_manager.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:wehere_client/domain/entities/nostalgia_summary.dart';
 import 'package:wehere_client/presentation/components/image.dart';
-import 'package:wehere_client/presentation/screens/widgets/map/clustered_place.dart';
-import 'package:wehere_client/presentation/screens/widgets/map/marker_icon_provider.dart';
+import 'package:wehere_client/presentation/components/clustered_place.dart';
+import 'package:wehere_client/presentation/components/marker_icon_provider.dart';
 
 class MarkerBuilder {
   static Future<Marker> build(

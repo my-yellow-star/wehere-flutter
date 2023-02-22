@@ -16,7 +16,7 @@ import 'package:wehere_client/presentation/providers/location_provider.dart';
 import 'package:wehere_client/presentation/providers/my_nostalgia_map_provider.dart';
 import 'package:wehere_client/presentation/providers/refresh_propagator.dart';
 import 'package:wehere_client/presentation/providers/statistic_provider.dart';
-import 'package:wehere_client/presentation/screens/widgets/map/marker_icon_provider.dart';
+import 'package:wehere_client/presentation/components/marker_icon_provider.dart';
 import 'package:wehere_client/presentation/components/mixin.dart';
 import 'package:wehere_client/presentation/screens/widgets/text.dart';
 

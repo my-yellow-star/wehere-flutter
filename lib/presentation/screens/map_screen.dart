@@ -19,10 +19,10 @@ import 'package:wehere_client/presentation/providers/nostalgia_list_provider.dar
 import 'package:wehere_client/presentation/providers/refresh_propagator.dart';
 import 'package:wehere_client/presentation/screens/widgets/button.dart';
 import 'package:wehere_client/presentation/screens/widgets/location_search_modal.dart';
-import 'package:wehere_client/presentation/screens/widgets/map/clustered_place.dart';
+import 'package:wehere_client/presentation/components/clustered_place.dart';
 import 'package:wehere_client/presentation/screens/widgets/map/create_nostalgia_bubble.dart';
 import 'package:wehere_client/presentation/screens/widgets/map/map_visibility_switch.dart';
-import 'package:wehere_client/presentation/screens/widgets/map/marker.dart';
+import 'package:wehere_client/presentation/components/marker.dart';
 import 'package:wehere_client/presentation/screens/widgets/map/nostalgia_map_card.dart';
 import 'package:wehere_client/presentation/screens/widgets/map/nostalgia_nearby_modal.dart';
 import 'package:wehere_client/presentation/screens/widgets/text.dart';
