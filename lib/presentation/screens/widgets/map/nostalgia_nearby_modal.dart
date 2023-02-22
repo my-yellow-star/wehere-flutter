@@ -14,15 +14,32 @@ class NostalgiaNearbyModal extends StatelessWidget {
     return Container(
       color: ColorTheme.primary,
       height: size.height * .8,
-      padding: EdgeInsets.only(),
-      child: ListView(
-        physics: RangeMaintainingScrollPhysics(),
-        children: items
-            .map((item) => NostalgiaMapCard(
-                  item: item,
-                  paddingBottom: PaddingVertical.normal,
-                ))
-            .toList(),
+      child: Column(
+        children: [
+          SizedBox(
+            height: 24,
+            child: Center(
+              child: Container(
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(100)),
+                height: 2,
+                width: size.width * .2,
+              ),
+            ),
+          ),
+          Expanded(
+            child: ListView(
+              physics: RangeMaintainingScrollPhysics(),
+              children: items
+                  .map((item) => NostalgiaMapCard(
+                        item: item,
+                        paddingBottom: PaddingVertical.normal,
+                      ))
+                  .toList(),
+            ),
+          ),
+        ],
       ),
     );
   }
