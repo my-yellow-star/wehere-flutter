@@ -190,8 +190,8 @@ class _MapScreenState extends State<MapScreen> with AfterLayoutMixin {
   void _updatePosition(SearchedLocation searched) async {
     (await _controller.future).moveCamera(CameraUpdate.newCameraPosition(
         CameraPosition(
-            target:
-                LatLng(searched.location.latitude, searched.location.longitude),
+            target: LatLng(
+                searched.location!.latitude, searched.location!.longitude),
             zoom: 16)));
   }
 

@@ -1,4 +1,5 @@
 import 'package:wehere_client/core/params/search_location.dart';
+import 'package:wehere_client/data/models/location_model.dart';
 import 'package:wehere_client/data/models/pagination_model.dart';
 import 'package:wehere_client/data/models/searched_location_model.dart';
 
@@ -27,5 +28,11 @@ class SearchService {
         await dio.get('$_endpoint/locations', queryParameters: queryParameters);
     return PaginationModel.fromJson(
         response.data, SearchedLocationModel.fromJson);
+  }
+
+  Future<LocationModel> getPlaceLocation(String placeId) async {
+    final dio = Api().dio;
+    final response = await dio.get('$_endpoint/places/$placeId/location');
+    return LocationModel.fromJson(response.data);
   }
 }

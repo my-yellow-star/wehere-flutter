@@ -1,8 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wehere_client/core/extensions.dart';
+import 'package:wehere_client/core/params/search_location.dart';
 import 'package:wehere_client/core/resources/constant.dart';
 import 'package:wehere_client/domain/entities/searched_location.dart';
+import 'package:wehere_client/presentation/components/location_manager.dart';
 import 'package:wehere_client/presentation/providers/location_provider.dart';
 import 'package:wehere_client/presentation/providers/search_location_provider.dart';
 import 'package:wehere_client/presentation/screens/widgets/text.dart';
@@ -30,14 +33,30 @@ class _LocationSearchModalState extends State<LocationSearchModal> {
     context.read<SearchLocationProvider>().updateKeyword(value);
   }
 
+  void _onSelectItem(SearchedLocation item) async {
+    Navigator.of(context).pop();
+    if (item.location == null) {
+      final location = await LocationManager().getLocation(item.id);
+      final locatedItem = SearchedLocation(
+          id: item.id,
+          address: item.address,
+          name: item.name,
+          category: item.category,
+          distance: item.distance,
+          location: location);
+      widget.onItemPressed(locatedItem);
+    } else {
+      widget.onItemPressed(item);
+    }
+  }
+
   List<Widget> _buildItems(List<SearchedLocation> items) {
     final size = MediaQuery.of(context).size;
 
     return items
         .map((item) => InkWell(
               onTap: () {
-                Navigator.of(context).pop();
-                widget.onItemPressed(item);
+                _onSelectItem(item);
               },
               child: Container(
                 decoration: BoxDecoration(
@@ -105,12 +124,45 @@ class _LocationSearchModalState extends State<LocationSearchModal> {
     return Container(
       height: size.height * .8,
       padding: EdgeInsets.only(
-        top: PaddingVertical.big,
+        top: PaddingVertical.small,
       ),
       child: SafeArea(
         top: false,
         child: Column(
           children: [
+            Container(
+              padding: EdgeInsets.only(
+                left: PaddingHorizontal.normal,
+                right: PaddingHorizontal.normal,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  IText(
+                    '글로벌',
+                    color: Colors.blue,
+                    size: FontSize.small,
+                  ),
+                  SizedBox(width: PaddingHorizontal.tiny),
+                  SizedBox(
+                    height: IconSize.normal,
+                    child: FittedBox(
+                      fit: BoxFit.contain,
+                      child: CupertinoSwitch(
+                        activeColor: Colors.blue,
+                        value: provider.country == SearchLocationCountry.other,
+                        onChanged: (value) {
+                          provider.updateCountry(value
+                              ? SearchLocationCountry.other
+                              : SearchLocationCountry.korea);
+                        },
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Container(height: PaddingVertical.small),
             TextField(
               onChanged: _onTextChanged,
               style: TextStyle(

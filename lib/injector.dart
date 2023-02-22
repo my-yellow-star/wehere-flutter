@@ -22,6 +22,7 @@ import 'package:wehere_client/domain/usecases/get_nostalgia_list_usecase.dart';
 import 'package:wehere_client/domain/usecases/get_nostalgia_usecase.dart';
 import 'package:wehere_client/domain/usecases/get_other_bookmarks_usecase.dart';
 import 'package:wehere_client/domain/usecases/get_other_profile_usecase.dart';
+import 'package:wehere_client/domain/usecases/get_place_location_usecase.dart';
 import 'package:wehere_client/domain/usecases/get_profile_usecase.dart';
 import 'package:wehere_client/domain/usecases/get_statistic_summary_usecase.dart';
 import 'package:wehere_client/domain/usecases/login_usecase.dart';
@@ -81,6 +82,7 @@ Future<void> initializeDependencies() async {
   injector.registerSingleton(CancelBookmarkUseCase(injector()));
   injector.registerSingleton(GetBookmarkUseCase(injector()));
   injector.registerSingleton(GetOtherBookmarksUseCase(injector()));
+  injector.registerSingleton(GetPlaceLocationUseCase(injector()));
 
   // provider
   injector.registerFactory(() => AuthenticationProvider(

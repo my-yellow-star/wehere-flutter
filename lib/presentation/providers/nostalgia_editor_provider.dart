@@ -150,7 +150,7 @@ class NostalgiaEditorProvider extends ApiProvider {
   }
 
   void updateLocation(SearchedLocation searched) {
-    location = searched.location;
+    location = searched.location!;
     address = searched.name;
     isRealLocation = false;
     notifyListeners();

@@ -4,19 +4,20 @@ import 'package:wehere_client/core/params/search_location.dart';
 import 'package:wehere_client/domain/entities/location.dart';
 import 'package:wehere_client/domain/entities/searched_location.dart';
 import 'package:wehere_client/domain/usecases/search_location_usecase.dart';
+import 'package:wehere_client/presentation/components/debounce.dart';
 import 'package:wehere_client/presentation/providers/api_provider.dart';
 
 class SearchLocationProvider extends ApiProvider {
   final SearchLocationUseCase _searchLocationUseCase;
+  final Debounce _debounce = Debounce(300);
 
   List<SearchedLocation> items = [];
   int _page = 1;
   bool _end = false;
   String _keyword = "";
   Location? _location;
-  Timer? _debounce;
 
-  SearchLocationCountry _country = SearchLocationCountry.korea;
+  SearchLocationCountry country = SearchLocationCountry.korea;
 
   SearchLocationProvider(this._searchLocationUseCase);
 
@@ -42,7 +43,7 @@ class SearchLocationProvider extends ApiProvider {
     final response = await _searchLocationUseCase(SearchLocationParams(
         keyword: _keyword,
         page: _page,
-        country: _country,
+        country: country,
         latitude: _location!.latitude,
         longitude: _location!.longitude));
     items = response.items;
@@ -57,17 +58,15 @@ class SearchLocationProvider extends ApiProvider {
   }
 
   void updateKeyword(String keyword) {
-    if (_debounce?.isActive ?? false) _debounce?.cancel();
-
-    _debounce = Timer(const Duration(milliseconds: 300), () {
+    _debounce.run(() {
       _keyword = keyword;
       initialize();
       loadList();
     });
   }
 
-  void updateCountry(SearchLocationCountry country) {
-    _country = country;
+  void updateCountry(SearchLocationCountry value) {
+    country = value;
     notifyListeners();
   }
 }
