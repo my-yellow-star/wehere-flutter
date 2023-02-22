@@ -12,19 +12,19 @@ import 'package:wehere_client/core/resources/logger.dart';
 import 'package:wehere_client/domain/entities/location.dart';
 import 'package:wehere_client/domain/entities/nostalgia_summary.dart';
 import 'package:wehere_client/domain/entities/searched_location.dart';
+import 'package:wehere_client/presentation/components/mixin.dart';
 import 'package:wehere_client/presentation/providers/authentication_provider.dart';
 import 'package:wehere_client/presentation/providers/location_provider.dart';
 import 'package:wehere_client/presentation/providers/nostalgia_list_provider.dart';
 import 'package:wehere_client/presentation/providers/refresh_propagator.dart';
+import 'package:wehere_client/presentation/screens/widgets/button.dart';
+import 'package:wehere_client/presentation/screens/widgets/location_search_modal.dart';
 import 'package:wehere_client/presentation/screens/widgets/map/clustered_place.dart';
 import 'package:wehere_client/presentation/screens/widgets/map/create_nostalgia_bubble.dart';
-import 'package:wehere_client/presentation/screens/widgets/location_search_modal.dart';
 import 'package:wehere_client/presentation/screens/widgets/map/map_visibility_switch.dart';
 import 'package:wehere_client/presentation/screens/widgets/map/marker.dart';
-import 'package:wehere_client/presentation/screens/widgets/map/nostalgia_nearby_modal.dart';
-import 'package:wehere_client/presentation/screens/widgets/button.dart';
-import 'package:wehere_client/presentation/components/mixin.dart';
 import 'package:wehere_client/presentation/screens/widgets/map/nostalgia_map_card.dart';
+import 'package:wehere_client/presentation/screens/widgets/map/nostalgia_nearby_modal.dart';
 import 'package:wehere_client/presentation/screens/widgets/text.dart';
 
 class MapScreen extends StatefulWidget {
@@ -53,17 +53,15 @@ class _MapScreenState extends State<MapScreen> with AfterLayoutMixin {
     final locationProvider = context.read<LocationProvider>();
     locationProvider.getLocation();
     _location = context.read<LocationProvider>().location!;
-    _clusterManager = ClusterManager<ClusteredPlace>(
-      [],
-      _updateMarkers,
-      markerBuilder: (cluster) async {
-        return await MarkerBuilder.build(
-            cluster: cluster,
-            onTapSingle: _onTapSingleMarker,
-            onTapMultiple: _showNostalgiaList);
-      },
-      levels: [1, 4.25, 6.75, 8.25, 11.5, 14.5, 16.0, 16.5, 20.0],
-    );
+    _clusterManager = ClusterManager<ClusteredPlace>([], _updateMarkers,
+        markerBuilder: (cluster) async {
+      return await MarkerBuilder.build(
+          cluster: cluster,
+          onTapSingle: _onTapSingleMarker,
+          onTapMultiple: _showNostalgiaList);
+    },
+        levels: [1, 2, 4, 6.75, 9, 12, 14.5, 16.0, 17],
+        stopClusteringZoom: 18);
   }
 
   @override
