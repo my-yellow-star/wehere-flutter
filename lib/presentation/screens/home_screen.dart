@@ -10,9 +10,9 @@ import 'package:wehere_client/presentation/providers/location_provider.dart';
 import 'package:wehere_client/presentation/providers/nostalgia_list_provider.dart';
 import 'package:wehere_client/presentation/providers/refresh_propagator.dart';
 import 'package:wehere_client/presentation/screens/nostalgia_editor_screen.dart';
-import 'package:wehere_client/presentation/widgets/background_image.dart';
-import 'package:wehere_client/presentation/widgets/nostalgia_summary_card.dart';
-import 'package:wehere_client/presentation/widgets/text.dart';
+import 'package:wehere_client/presentation/screens/widgets/background_image.dart';
+import 'package:wehere_client/presentation/screens/widgets/home/nostalgia_summary_card.dart';
+import 'package:wehere_client/presentation/screens/widgets/text.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});

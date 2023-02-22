@@ -7,15 +7,15 @@ import 'package:wehere_client/core/resources/constant.dart';
 import 'package:wehere_client/presentation/providers/location_provider.dart';
 import 'package:wehere_client/presentation/providers/nostalgia_editor_provider.dart';
 import 'package:wehere_client/presentation/providers/refresh_propagator.dart';
-import 'package:wehere_client/presentation/screens/components/location_search_modal.dart';
-import 'package:wehere_client/presentation/screens/components/marker_color_selector.dart';
-import 'package:wehere_client/presentation/widgets/alert.dart';
-import 'package:wehere_client/presentation/widgets/back_button.dart';
-import 'package:wehere_client/presentation/widgets/gallery.dart';
-import 'package:wehere_client/presentation/widgets/mixin.dart';
-import 'package:wehere_client/presentation/widgets/text.dart';
-import 'package:wehere_client/presentation/widgets/upload_button.dart';
-import 'package:wehere_client/presentation/widgets/visibility_dropdown.dart';
+import 'package:wehere_client/presentation/screens/widgets/location_search_modal.dart';
+import 'package:wehere_client/presentation/screens/widgets/editor/marker_color_selector.dart';
+import 'package:wehere_client/presentation/screens/widgets/alert.dart';
+import 'package:wehere_client/presentation/screens/widgets/back_button.dart';
+import 'package:wehere_client/presentation/screens/widgets/gallery.dart';
+import 'package:wehere_client/presentation/components/mixin.dart';
+import 'package:wehere_client/presentation/screens/widgets/text.dart';
+import 'package:wehere_client/presentation/screens/widgets/upload_button.dart';
+import 'package:wehere_client/presentation/screens/widgets/editor/visibility_dropdown.dart';
 
 class NostalgiaEditorScreen extends StatefulWidget {
   const NostalgiaEditorScreen({super.key});

@@ -15,19 +15,19 @@ import 'package:wehere_client/presentation/providers/authentication_provider.dar
 import 'package:wehere_client/presentation/providers/location_provider.dart';
 import 'package:wehere_client/presentation/providers/nostalgia_provider.dart';
 import 'package:wehere_client/presentation/providers/refresh_propagator.dart';
-import 'package:wehere_client/presentation/screens/components/nostalgia_detail_meta.dart';
-import 'package:wehere_client/presentation/screens/components/report_manager.dart';
-import 'package:wehere_client/presentation/widgets/alert.dart';
-import 'package:wehere_client/presentation/widgets/back_button.dart';
-import 'package:wehere_client/presentation/widgets/bottom_sheet.dart';
-import 'package:wehere_client/presentation/widgets/button.dart';
-import 'package:wehere_client/presentation/widgets/gallery.dart';
-import 'package:wehere_client/presentation/widgets/mixin.dart';
-import 'package:wehere_client/presentation/widgets/profile_image.dart';
-import 'package:wehere_client/presentation/widgets/report_modal.dart';
-import 'package:wehere_client/presentation/widgets/text.dart';
+import 'package:wehere_client/presentation/screens/widgets/detail/nostalgia_detail_meta.dart';
+import 'package:wehere_client/presentation/components/report_manager.dart';
+import 'package:wehere_client/presentation/screens/widgets/alert.dart';
+import 'package:wehere_client/presentation/screens/widgets/back_button.dart';
+import 'package:wehere_client/presentation/screens/widgets/bottom_sheet.dart';
+import 'package:wehere_client/presentation/screens/widgets/button.dart';
+import 'package:wehere_client/presentation/screens/widgets/gallery.dart';
+import 'package:wehere_client/presentation/components/mixin.dart';
+import 'package:wehere_client/presentation/screens/widgets/profile_image.dart';
+import 'package:wehere_client/presentation/screens/widgets/detail/report_modal.dart';
+import 'package:wehere_client/presentation/screens/widgets/text.dart';
 
-import 'package:wehere_client/presentation/widgets/not_found_view.dart';
+import 'package:wehere_client/presentation/screens/widgets/not_found_view.dart';
 
 class NostalgiaDetailScreen extends StatefulWidget {
   const NostalgiaDetailScreen({super.key});

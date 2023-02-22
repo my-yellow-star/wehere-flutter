@@ -16,16 +16,16 @@ import 'package:wehere_client/presentation/providers/authentication_provider.dar
 import 'package:wehere_client/presentation/providers/location_provider.dart';
 import 'package:wehere_client/presentation/providers/nostalgia_list_provider.dart';
 import 'package:wehere_client/presentation/providers/refresh_propagator.dart';
-import 'package:wehere_client/presentation/screens/components/clustered_place.dart';
-import 'package:wehere_client/presentation/screens/components/create_nostalgia_bubble.dart';
-import 'package:wehere_client/presentation/screens/components/location_search_modal.dart';
-import 'package:wehere_client/presentation/screens/components/map_visibility_switch.dart';
-import 'package:wehere_client/presentation/screens/components/marker.dart';
-import 'package:wehere_client/presentation/screens/components/nostalgia_nearby_modal.dart';
-import 'package:wehere_client/presentation/widgets/button.dart';
-import 'package:wehere_client/presentation/widgets/mixin.dart';
-import 'package:wehere_client/presentation/widgets/nostalgia_map_card.dart';
-import 'package:wehere_client/presentation/widgets/text.dart';
+import 'package:wehere_client/presentation/screens/widgets/map/clustered_place.dart';
+import 'package:wehere_client/presentation/screens/widgets/map/create_nostalgia_bubble.dart';
+import 'package:wehere_client/presentation/screens/widgets/location_search_modal.dart';
+import 'package:wehere_client/presentation/screens/widgets/map/map_visibility_switch.dart';
+import 'package:wehere_client/presentation/screens/widgets/map/marker.dart';
+import 'package:wehere_client/presentation/screens/widgets/map/nostalgia_nearby_modal.dart';
+import 'package:wehere_client/presentation/screens/widgets/button.dart';
+import 'package:wehere_client/presentation/components/mixin.dart';
+import 'package:wehere_client/presentation/screens/widgets/map/nostalgia_map_card.dart';
+import 'package:wehere_client/presentation/screens/widgets/text.dart';
 
 class MapScreen extends StatefulWidget {
   const MapScreen({Key? key}) : super(key: key);

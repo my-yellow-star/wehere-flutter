@@ -4,15 +4,16 @@ import 'package:wehere_client/core/resources/constant.dart';
 import 'package:wehere_client/presentation/providers/authentication_provider.dart';
 import 'package:wehere_client/presentation/providers/member_provider.dart';
 import 'package:wehere_client/presentation/providers/refresh_propagator.dart';
-import 'package:wehere_client/presentation/screens/components/mypage_header.dart';
-import 'package:wehere_client/presentation/screens/components/mypage_tabview.dart';
-import 'package:wehere_client/presentation/screens/components/profile_background.dart';
-import 'package:wehere_client/presentation/screens/components/setting_options.dart';
+import 'package:wehere_client/presentation/screens/widgets/mypage/mypage_header.dart';
+import 'package:wehere_client/presentation/screens/widgets/mypage/mypage_tabview.dart';
+
+import 'package:wehere_client/presentation/screens/widgets/mypage/profile_background.dart';
+import 'package:wehere_client/presentation/screens/widgets/mypage/setting_options.dart';
 import 'package:wehere_client/presentation/screens/nostalgia_editor_screen.dart';
-import 'package:wehere_client/presentation/widgets/alert.dart';
-import 'package:wehere_client/presentation/widgets/bottom_sheet.dart';
-import 'package:wehere_client/presentation/widgets/image_selector.dart';
-import 'package:wehere_client/presentation/widgets/text.dart';
+import 'package:wehere_client/presentation/screens/widgets/alert.dart';
+import 'package:wehere_client/presentation/screens/widgets/bottom_sheet.dart';
+import 'package:wehere_client/presentation/screens/widgets/image_selector.dart';
+import 'package:wehere_client/presentation/screens/widgets/text.dart';
 
 class MyPageScreen extends StatefulWidget {
   const MyPageScreen({super.key});

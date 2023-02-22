@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wehere_client/core/resources/constant.dart';
 import 'package:wehere_client/presentation/providers/authentication_provider.dart';
-import 'package:wehere_client/presentation/widgets/alert.dart';
-import 'package:wehere_client/presentation/widgets/background_image.dart';
-import 'package:wehere_client/presentation/widgets/login_button.dart';
-import 'package:wehere_client/presentation/widgets/text.dart';
+import 'package:wehere_client/presentation/screens/widgets/alert.dart';
+import 'package:wehere_client/presentation/screens/widgets/background_image.dart';
+import 'package:wehere_client/presentation/screens/widgets/login/login_button.dart';
+import 'package:wehere_client/presentation/screens/widgets/text.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});

@@ -5,13 +5,13 @@ import 'package:wehere_client/core/resources/constant.dart';
 import 'package:wehere_client/presentation/providers/authentication_provider.dart';
 import 'package:wehere_client/presentation/providers/location_provider.dart';
 import 'package:wehere_client/presentation/providers/refresh_propagator.dart';
-import 'package:wehere_client/presentation/screens/components/app_version_manager.dart';
+import 'package:wehere_client/presentation/components/app_version_manager.dart';
 import 'package:wehere_client/presentation/screens/home_screen.dart';
 import 'package:wehere_client/presentation/screens/map_screen.dart';
 import 'package:wehere_client/presentation/screens/mypage_screen.dart';
 import 'package:wehere_client/presentation/screens/nostalgia_editor_screen.dart';
 import 'package:wehere_client/presentation/screens/permission_screen.dart';
-import 'package:wehere_client/presentation/widgets/mixin.dart';
+import 'package:wehere_client/presentation/components/mixin.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
