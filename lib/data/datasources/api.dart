@@ -22,8 +22,10 @@ class Api {
       sendTimeout: 15000,
     ));
 
-    dio.interceptors
-        .addAll([LoggingInterceptor(), RefreshSessionInterceptor(dio)]);
+    dio.interceptors.addAll([
+      // LoggingInterceptor(), for debug mode
+      RefreshSessionInterceptor(dio),
+    ]);
     return dio;
   }
 }
