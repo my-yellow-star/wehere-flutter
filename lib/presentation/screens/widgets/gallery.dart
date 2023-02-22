@@ -4,7 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
-import 'package:wehere_client/presentation/image.dart';
+import 'package:wehere_client/presentation/components/image.dart';
 import 'package:wehere_client/presentation/screens/widgets/back_button.dart';
 import 'package:wehere_client/presentation/screens/widgets/button.dart';
 import 'package:wehere_client/presentation/screens/widgets/text.dart';

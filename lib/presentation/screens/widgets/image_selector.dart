@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:wehere_client/core/resources/constant.dart';
-import 'package:wehere_client/presentation/image.dart';
+import 'package:wehere_client/presentation/components/image.dart';
 import 'package:wehere_client/presentation/screens/widgets/text.dart';
 
 class ImageSelector extends StatefulWidget {

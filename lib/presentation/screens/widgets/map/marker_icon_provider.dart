@@ -1,7 +1,7 @@
 import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:wehere_client/core/resources/constant.dart';
-import 'package:wehere_client/presentation/image.dart';
+import 'package:wehere_client/presentation/components/image.dart';
 
 class MarkerIconProvider {
   static final Map<MarkerIconSize, Map<String, BitmapDescriptor>> _iconMap = {

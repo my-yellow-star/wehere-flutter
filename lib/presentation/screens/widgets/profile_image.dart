@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:wehere_client/presentation/image.dart';
+import 'package:wehere_client/presentation/components/image.dart';
 
 class ProfileImage extends StatelessWidget {
   final double size;

@@ -10,7 +10,7 @@ import 'package:wehere_client/core/extensions.dart';
 import 'package:wehere_client/core/params/nostalgia_visibility.dart';
 import 'package:wehere_client/core/resources/constant.dart';
 import 'package:wehere_client/domain/entities/location.dart';
-import 'package:wehere_client/presentation/image.dart';
+import 'package:wehere_client/presentation/components/image.dart';
 import 'package:wehere_client/presentation/providers/authentication_provider.dart';
 import 'package:wehere_client/presentation/providers/location_provider.dart';
 import 'package:wehere_client/presentation/providers/nostalgia_provider.dart';

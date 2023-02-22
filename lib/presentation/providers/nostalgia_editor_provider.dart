@@ -12,7 +12,7 @@ import 'package:wehere_client/domain/usecases/create_nostalgia_usecase.dart';
 import 'package:wehere_client/domain/usecases/get_nostalgia_usecase.dart';
 import 'package:wehere_client/domain/usecases/update_nostalgia_usecase.dart';
 import 'package:wehere_client/domain/usecases/upload_file_usecase.dart';
-import 'package:wehere_client/presentation/image.dart';
+import 'package:wehere_client/presentation/components/image.dart';
 import 'package:wehere_client/presentation/providers/api_provider.dart';
 
 class NostalgiaEditorProvider extends ApiProvider {
