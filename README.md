@@ -1,3 +1,8 @@
+## 비활성화 되었음 (프로젝트 종료)
+ - 스토어 앱 삭제 완
+ - google cloud 및 kakao developer 프로젝트 삭제 완
+ - aws 서비스 삭제 완
+
 # wehere_client
 
 wehere app
